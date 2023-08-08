@@ -4,7 +4,6 @@ exports.createSubProyecto = async (req, res, next) => {
   try {
 
     let params = {
-      idSubProyecto : req.body.idSubProyecto,
       idProyecto : req.body.idProyecto,
       cantidadUnidades: req.body.cantidadUnidades,
       fechaInicioVenta: req.body.fechaInicioVenta,

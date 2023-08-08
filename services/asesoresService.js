@@ -23,7 +23,6 @@ const db = require("../src/models");
     
     let createAsesor = async (params) => {
     const newAsesor = await db.models.EMPLEADO_ASESOR.create({
-        Id_empleado: params.idEmpleado,
         Primer_nombre: params.primerNombre,
         Segundo_nombre: params.segundoNombre,
         Otros_nombres: params.otrosNombres,
@@ -44,7 +43,6 @@ const db = require("../src/models");
 
     let createAsesorDetalle = async (params) => {
         const newAsesorDetalle = await db.models.ASESOR_DETALLE.create({
-            Id_detalle_asesor: params.idDetalleAsesor,
             Id_sub_proyecto: params.idSubProyecto,
             Id_empleado: params.idEmpleado,
             Comision: params.comision,

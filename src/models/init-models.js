@@ -19,7 +19,6 @@ var _PARENTESCO = require("./PARENTESCO");
 var _PLAN_FINANCIERO_PROY = require("./PLAN_FINANCIERO_PROY");
 var _PROYECTO = require("./PROYECTO");
 var _PUESTO = require("./PUESTO");
-var _Profile = require("./Profile");
 var _SUB_PROYECTO = require("./SUB_PROYECTO");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
 var _TIPO_PROYECTO = require("./TIPO_PROYECTO");
@@ -46,12 +45,15 @@ function initModels(sequelize) {
   var PLAN_FINANCIERO_PROY = _PLAN_FINANCIERO_PROY(sequelize, DataTypes);
   var PROYECTO = _PROYECTO(sequelize, DataTypes);
   var PUESTO = _PUESTO(sequelize, DataTypes);
-  var Profile = _Profile(sequelize, DataTypes);
   var SUB_PROYECTO = _SUB_PROYECTO(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
   var TIPO_PROYECTO = _TIPO_PROYECTO(sequelize, DataTypes);
   var User = _User(sequelize, DataTypes);
 
+  EMPRESA.belongsToMany(PROYECTO, { as: 'Id_proyecto_PROYECTOs', through: PLAN_FINANCIERO_PROY, foreignKey: "Id_empresa", otherKey: "Id_proyecto" });
+  PLAN_FINANCIERO_PROY.belongsToMany(PUESTO, { as: 'Id_puesto_PUESTOs', through: EJECUTIVO, foreignKey: "Id_plan_financiero", otherKey: "Id_puesto" });
+  PROYECTO.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESAs', through: PLAN_FINANCIERO_PROY, foreignKey: "Id_proyecto", otherKey: "Id_empresa" });
+  PUESTO.belongsToMany(PLAN_FINANCIERO_PROY, { as: 'Id_plan_financiero_PLAN_FINANCIERO_PROYs', through: EJECUTIVO, foreignKey: "Id_puesto", otherKey: "Id_plan_financiero" });
   DETALLE_FIADOR.belongsTo(APLICACION, { as: "Id_aplicacion_APLICACION", foreignKey: "Id_aplicacion"});
   APLICACION.hasMany(DETALLE_FIADOR, { as: "DETALLE_FIADORs", foreignKey: "Id_aplicacion"});
   COTIZACION.belongsTo(ASESOR_DETALLE, { as: "Id_detalle_asesor_ASESOR_DETALLE", foreignKey: "Id_detalle_asesor"});
@@ -70,14 +72,14 @@ function initModels(sequelize) {
   COTIZACION.hasMany(DETALLE_COTIZACION, { as: "DETALLE_COTIZACIONs", foreignKey: "Id_cotizacion"});
   EMPRESA.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});
   DEPARTAMENTO.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_departamento"});
-  PLAN_FINANCIERO_PROY.belongsTo(DETALLE_EJECUTIVO, { as: "Id_detalle_ejecutivo_DETALLE_EJECUTIVO", foreignKey: "Id_detalle_ejecutivo"});
-  DETALLE_EJECUTIVO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_detalle_ejecutivo"});
   APLICACION.belongsTo(DETALLE_FIADOR, { as: "Id_dtalle_fiador_DETALLE_FIADOR", foreignKey: "Id_dtalle_fiador"});
   DETALLE_FIADOR.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_dtalle_fiador"});
   APLICACION.belongsTo(EJECUTIVO, { as: "Id_ejecutivo_EJECUTIVO", foreignKey: "Id_ejecutivo"});
   EJECUTIVO.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_ejecutivo"});
   ASESOR_DETALLE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(ASESOR_DETALLE, { as: "ASESOR_DETALLEs", foreignKey: "Id_empleado"});
+  PLAN_FINANCIERO_PROY.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
+  EMPRESA.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_empresa"});
   PROYECTO.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
   EMPRESA.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_empresa"});
   EJECUTIVO.belongsTo(ENTIDAD_FINANCIERA, { as: "Id_ent_financiera_ENTIDAD_FINANCIERA", foreignKey: "Id_ent_financiera"});
@@ -100,22 +102,24 @@ function initModels(sequelize) {
   PARENTESCO.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_parentesco"});
   COTIZACION.belongsTo(PLAN_FINANCIERO_PROY, { as: "Id_plan_financiero_PLAN_FINANCIERO_PROY", foreignKey: "Id_plan_financiero"});
   PLAN_FINANCIERO_PROY.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_plan_financiero"});
+  EJECUTIVO.belongsTo(PLAN_FINANCIERO_PROY, { as: "Id_plan_financiero_PLAN_FINANCIERO_PROY", foreignKey: "Id_plan_financiero"});
+  PLAN_FINANCIERO_PROY.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_plan_financiero"});
+  PLAN_FINANCIERO_PROY.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_proyecto"});
   SUB_PROYECTO.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(SUB_PROYECTO, { as: "SUB_PROYECTOs", foreignKey: "Id_proyecto"});
+  EJECUTIVO.belongsTo(PUESTO, { as: "Id_puesto_PUESTO", foreignKey: "Id_puesto"});
+  PUESTO.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_puesto"});
   EMPLEADO_ASESOR.belongsTo(PUESTO, { as: "Id_puesto_PUESTO", foreignKey: "Id_puesto"});
   PUESTO.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_puesto"});
   ASESOR_DETALLE.belongsTo(SUB_PROYECTO, { as: "Id_sub_proyecto_SUB_PROYECTO", foreignKey: "Id_sub_proyecto"});
   SUB_PROYECTO.hasMany(ASESOR_DETALLE, { as: "ASESOR_DETALLEs", foreignKey: "Id_sub_proyecto"});
   COTIZACION.belongsTo(SUB_PROYECTO, { as: "Id_sub_proyecto_SUB_PROYECTO", foreignKey: "Id_sub_proyecto"});
   SUB_PROYECTO.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_sub_proyecto"});
-  PLAN_FINANCIERO_PROY.belongsTo(SUB_PROYECTO, { as: "Id_sub_proyecto_SUB_PROYECTO", foreignKey: "Id_sub_proyecto"});
-  SUB_PROYECTO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_sub_proyecto"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
   PROYECTO.belongsTo(TIPO_PROYECTO, { as: "Id_tipo_proyecto_TIPO_PROYECTO", foreignKey: "Id_tipo_proyecto"});
   TIPO_PROYECTO.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_tipo_proyecto"});
-  Profile.belongsTo(User, { as: "User_Id_user_User", foreignKey: "User_Id_user"});
-  User.hasMany(Profile, { as: "Profiles", foreignKey: "User_Id_user"});
 
   return {
     APLICACION,
@@ -138,7 +142,6 @@ function initModels(sequelize) {
     PLAN_FINANCIERO_PROY,
     PROYECTO,
     PUESTO,
-    Profile,
     SUB_PROYECTO,
     TIPO_CREDITO,
     TIPO_PROYECTO,

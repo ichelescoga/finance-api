@@ -4,7 +4,6 @@ let userRepository = function () {
 
   let createProyecto = async (params) => {
     const newProyecto = await db.models.PROYECTO.create({
-      Id_proyecto: params.id,
       Nombre_proyecto: params.nombreProyecto,
       Id_empresa: params.idEmpresa,
       Id_pais:params. idPais,

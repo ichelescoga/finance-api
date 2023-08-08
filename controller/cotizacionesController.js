@@ -1,7 +1,7 @@
-const tipoProyectoService = require("../services/tipoProyectoService");
-exports.listTiposProyecto = async (req, res, next) => {
+const cotizaciones = require("../services/cotizacionesService");
+exports.listCotizaciones = async (req, res, next) => {
     try {
-        let results = await tipoProyectoService.listTipoProyectos();
+        let results = await cotizaciones.listaCotizaciones();
         const longitud = results.length;
     
         if (longitud >= 1) {
@@ -9,7 +9,7 @@ exports.listTiposProyecto = async (req, res, next) => {
         } else {
           res.status(202).json({
             success: true,
-            message: "No hay tipos de Proyectos Registrados",
+            message: "No hay cotizaciones Registrados",
           });
         }
       } catch (error) {

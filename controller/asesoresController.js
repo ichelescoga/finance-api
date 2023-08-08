@@ -8,7 +8,7 @@ try {
         res.json(results);
     } else {
         res.status(202).json({
-        success: false,
+        success: true,
         message: "No hay Asesores Registrados",
         });
     }
@@ -22,7 +22,6 @@ exports.createAsesor = async (req, res, next) => {
     try {
   
       let paramsEmpleadoAsesor = {
-        idEmpleado : req.body.idEmpleado,
         primerNombre: req.body.primerNombre,
         segundoNombre: req.body.segundoNombre,
         otrosNombres: req.body.otrosNombres,
@@ -42,7 +41,6 @@ exports.createAsesor = async (req, res, next) => {
       let empleadoAsesor = await asesoresService.createAsesor(paramsEmpleadoAsesor);
 
       let paramsAsesorDetalle = {
-        idDetalleAsesor : req.body.idDetalleAsesor,
         idSubProyecto: req.body.idSubProyecto,
         idEmpleado: empleadoAsesor.Id_empleado,
         comision: req.body.comision,

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('EJECUTIVO', {
     Id_ejecutivo: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -57,11 +58,37 @@ module.exports = function(sequelize, DataTypes) {
     Foto: {
       type: DataTypes.STRING(200),
       allowNull: true
+    },
+    Id_plan_financiero: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'PLAN_FINANCIERO_PROY',
+        key: 'Id_plan_financiero'
+      }
+    },
+    Id_puesto: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'PUESTO',
+        key: 'Id_puesto'
+      }
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'EJECUTIVO',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
@@ -69,6 +96,8 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_ejecutivo" },
+          { name: "Id_plan_financiero" },
+          { name: "Id_puesto" },
         ]
       },
       {
@@ -84,6 +113,20 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_ent_financiera" },
+        ]
+      },
+      {
+        name: "fk_EJECUTIVO_PLAN_FINANCIERO_PROY1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_plan_financiero" },
+        ]
+      },
+      {
+        name: "fk_EJECUTIVO_PUESTO1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_puesto" },
         ]
       },
     ]

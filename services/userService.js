@@ -35,6 +35,7 @@ let userRepository = function () {
     const newUser = await db.models.User.create({
       Correo: params.email,
       Contrasenia: encript,
+      Nombre: params.nombre
     });
     return newUser;
   };
@@ -47,11 +48,20 @@ let userRepository = function () {
           },
       });
   }
+  let getUserByEmailSinPassword = async (params) => {
+    return await  db.models.User.findAll({
+      attributes: ["Correo", "Nombre", "created_at", "updated_at"],
+        where: {
+            Correo: params
+        },
+    });
+}
 
   return {
     listlogin,
     create,
-    getUserByEmail
+    getUserByEmail,
+    getUserByEmailSinPassword
   };
 };
 

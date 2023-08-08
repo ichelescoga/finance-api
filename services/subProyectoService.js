@@ -7,7 +7,6 @@ const db = require("../src/models");
     
     let createSubProyecto = async (params) => {
       const newEmpresa = await db.models.SUB_PROYECTO.create({
-        Id_sub_proyecto: params.idSubProyecto,
         Id_proyecto: params.idProyecto,
         Cantidad_unidades: params.cantidadUnidades,
         Fecha_inicio_venta: params.fechaInicioVenta,

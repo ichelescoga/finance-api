@@ -8,7 +8,7 @@ exports.listEmpresas = async (req, res, next) => {
           res.json(results);
         } else {
           res.status(202).json({
-            success: false,
+            success: true,
             message: "No hay Empresas Registradas",
           });
         }
@@ -23,7 +23,6 @@ exports.createEmpresa = async (req, res, next) => {
   try {
 
     let params = {
-      idEmpresa : req.body.idEmpresa,
       razonSocial: req.body.razonSocial,
       nombreComercial: req.body.nombreComercial,
       representanteLegal: req.body.representanteLegal,

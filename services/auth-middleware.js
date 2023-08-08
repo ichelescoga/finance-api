@@ -16,14 +16,19 @@ exports.verifyToken = async (req, res, next) =>{
             params.username = decodedNonce.email
             console.log(decodedNonce);
             let user = await UserService.getUserByEmail(params)
-            console.log(user);
             if (!user)
-                res.sendStatus(403)
+            res.status(403).json({
+                success: false,
+                message: "Esta accion esta prohibida, necesitas credenciales validas",
+              });
             else
                 next()
         }
         else
-            res.sendStatus(403)
+        res.status(403).json({
+            success: false,
+            message: "Esta accion esta prohibida, necesitas credenciales validas",
+          });
 
     }
     else

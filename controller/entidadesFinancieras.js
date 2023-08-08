@@ -8,7 +8,7 @@ exports.listEntidadesFinancieras = async (req, res, next) => {
           res.json(results);
         } else {
           res.status(202).json({
-            success: false,
+            success: true,
             message: "No hay Entidades Financieras Registradas",
           });
         }

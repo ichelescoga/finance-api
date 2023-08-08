@@ -4,7 +4,6 @@ exports.createProyecto = async (req, res, next) => {
     try {
   
       let params = {
-        id: req.body.idProyecto,
         nombreProyecto : req.body.nombreProyecto,
         idEmpresa : req.body.idEmpresa,
         idPais: req.body.idPais,

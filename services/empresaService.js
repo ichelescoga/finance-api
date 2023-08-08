@@ -10,7 +10,6 @@ const db = require("../src/models");
     
     let createEmpresa = async (params) => {
       const newEmpresa = await db.models.EMPRESA.create({
-        Id_empresa: params.idEmpresa,
         Razon_social: params.razonSocial,
         Nombre_comercial: params.nombreComercial,
         Representante_legal: params.representanteLegal,

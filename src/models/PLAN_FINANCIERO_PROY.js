@@ -2,17 +2,10 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('PLAN_FINANCIERO_PROY', {
     Id_plan_financiero: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
-    Id_sub_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'SUB_PROYECTO',
-        key: 'Id_sub_proyecto'
-      }
     },
     Id_ent_financiera: {
       type: DataTypes.INTEGER,
@@ -46,18 +39,36 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true
     },
-    Id_detalle_ejecutivo: {
+    Id_proyecto: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      primaryKey: true,
       references: {
-        model: 'DETALLE_EJECUTIVO',
-        key: 'Id_detalle_ejecutivo'
+        model: 'PROYECTO',
+        key: 'Id_proyecto'
       }
+    },
+    Id_empresa: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'EMPRESA',
+        key: 'Id_empresa'
+      }
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'PLAN_FINANCIERO_PROY',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
@@ -65,6 +76,8 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_plan_financiero" },
+          { name: "Id_proyecto" },
+          { name: "Id_empresa" },
         ]
       },
       {
@@ -76,13 +89,6 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "SubProyecto_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_sub_proyecto" },
-        ]
-      },
-      {
         name: "EntidadFinanciera_idx",
         using: "BTREE",
         fields: [
@@ -90,17 +96,24 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Ejecutivos_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_detalle_ejecutivo" },
-        ]
-      },
-      {
         name: "TipoCredito_idx",
         using: "BTREE",
         fields: [
           { name: "Id_tipo_credito" },
+        ]
+      },
+      {
+        name: "fk_PLAN_FINANCIERO_PROY_PROYECTO1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_proyecto" },
+        ]
+      },
+      {
+        name: "fk_PLAN_FINANCIERO_PROY_EMPRESA1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_empresa" },
         ]
       },
     ]

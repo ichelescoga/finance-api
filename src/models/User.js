@@ -12,14 +12,26 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: "Correo_UNIQUE"
     },
+    Nombre: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     Contrasenia: {
       type: DataTypes.STRING(255),
       allowNull: false
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'User',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

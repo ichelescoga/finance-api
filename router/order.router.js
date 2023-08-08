@@ -12,6 +12,10 @@ const asesoresController = require('../controller/asesoresController')
 const puestoController = require('../controller/puestoController')
 const tipoCreditoController = require('../controller/tipoCreditoController')
 const entidadesFinancController = require('../controller/entidadesFinancieras')
+const planFinancieroController = require('../controller/planFinancieroController')
+const ejecutivoController = require('../controller/ejecutivoController')
+const cotizacionesController = require('../controller/cotizacionesController')
+const clientesCortroller = require('../controller/clientesController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -22,7 +26,8 @@ router.get('/healthcheck', (req, res) => {
 
 router.post('/signin', authController.signIn)
 // router.post('/fakeToken',authController.fakeToken)
-router.post("/register",  auth.verifyToken, userController.createUser)
+router.post("/register",   userController.createUser)
+router.get("/user", auth.verifyToken, userController.UserToken)
 
 //Empresa
 router.get("/empresas", auth.verifyToken, empresasController.listEmpresas)
@@ -80,4 +85,25 @@ router.get("/tiposCreditos", auth.verifyToken, tipoCreditoController.listaTiposC
 
 //Entidades Financieras
 router.get("/entidadesFinanciera", auth.verifyToken, entidadesFinancController.listEntidadesFinancieras)
+
+
+
+//Plan Financiero Proyecto
+router.post("/planFinacieroProyect",  auth.verifyToken, planFinancieroController.createPlanFinancieroProyecto)
+
+
+
+//Ejecutivo
+router.post("/ejecutivo",  auth.verifyToken, ejecutivoController.createEjecutivo)
+router.get("/listEjecutivos", auth.verifyToken, ejecutivoController.listEjecutivos)
+
+
+
+//Cotizaciones
+router.get("/listCotizaciones", auth.verifyToken, cotizacionesController.listCotizaciones)
+
+
+
+//Cliente
+router.get("/listClientes", auth.verifyToken, clientesCortroller.listClientes)
 module.exports = router

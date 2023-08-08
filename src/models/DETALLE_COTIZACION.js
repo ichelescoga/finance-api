@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('DETALLE_COTIZACION', {
     Id_detalle_cotizacion: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -25,11 +26,19 @@ module.exports = function(sequelize, DataTypes) {
     Suma_intereses: {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'DETALLE_COTIZACION',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

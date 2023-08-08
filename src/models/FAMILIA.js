@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('FAMILIA', {
     Id_familia: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -45,11 +46,19 @@ module.exports = function(sequelize, DataTypes) {
         model: 'PAIS',
         key: 'Id_pais'
       }
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'FAMILIA',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

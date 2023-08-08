@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('SUB_PROYECTO', {
     Id_sub_proyecto: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -41,11 +42,19 @@ module.exports = function(sequelize, DataTypes) {
     Descripcion: {
       type: DataTypes.STRING(250),
       allowNull: true
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'SUB_PROYECTO',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

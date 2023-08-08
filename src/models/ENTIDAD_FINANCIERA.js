@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('ENTIDAD_FINANCIERA', {
     Id_ent_financiera: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -53,11 +54,19 @@ module.exports = function(sequelize, DataTypes) {
     Id_municipio: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
     }
   }, {
     sequelize,
     tableName: 'ENTIDAD_FINANCIERA',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

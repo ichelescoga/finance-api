@@ -39,7 +39,6 @@ exports.signIn = async (req, res, next) => {
     userCredential.password = req.body.password;
 
     let results = await UserService.listlogin(userCredential);
-    console.log(results);
     if (results == null || results == undefined) {
       res.status(400).json({
         success: false,
