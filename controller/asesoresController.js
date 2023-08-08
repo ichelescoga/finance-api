@@ -26,7 +26,7 @@ exports.createAsesor = async (req, res, next) => {
         segundoNombre: req.body.segundoNombre,
         otrosNombres: req.body.otrosNombres,
         primerApellido: req.body.primerApellido,
-        codigoPostal: req.body.segundoApellido,
+        segundoApellido: req.body.segundoApellido,
         apellidoCasada: req.body.apellidoCasada,
         nit: req.body.nit,
         dpi: req.body.dpi,
