@@ -1,23 +1,14 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
-    Id_user: {
+  return sequelize.define('ESTADO', {
+    Id_estado: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Correo: {
+    Name_estado: {
       type: DataTypes.STRING(45),
-      allowNull: false,
-      unique: "Correo_UNIQUE"
-    },
-    Nombre: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    Contrasenia: {
-      type: DataTypes.STRING(255),
       allowNull: false
     },     
     createdAt: {          
@@ -30,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'User',
+    tableName: 'ESTADO',
     timestamps: true,
     indexes: [
       {
@@ -38,15 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_user" },
-        ]
-      },
-      {
-        name: "Correo_UNIQUE",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "Correo" },
+          { name: "Id_estado" },
         ]
       },
     ]

@@ -50,6 +50,26 @@ module.exports = function(sequelize, DataTypes) {
         model: 'DETALLE_FIADOR',
         key: 'Id_detalle_fiador'
       }
+    },
+    Empresa: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Sueldo: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Fecha_ingreso: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    DPI: {
+      type: DataTypes.STRING(13),
+      allowNull: true
+    },
+    NIT: {
+      type: DataTypes.STRING(13),
+      allowNull: true
     },     
     createdAt: {          
       field: 'created_at',          

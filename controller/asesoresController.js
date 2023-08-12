@@ -22,6 +22,7 @@ exports.createAsesor = async (req, res, next) => {
     try {
   
       let paramsEmpleadoAsesor = {
+        idUser: req.body.idUser,
         primerNombre: req.body.primerNombre,
         segundoNombre: req.body.segundoNombre,
         otrosNombres: req.body.otrosNombres,
@@ -41,7 +42,6 @@ exports.createAsesor = async (req, res, next) => {
       let empleadoAsesor = await asesoresService.createAsesor(paramsEmpleadoAsesor);
 
       let paramsAsesorDetalle = {
-        idSubProyecto: req.body.idSubProyecto,
         idEmpleado: empleadoAsesor.Id_empleado,
         comision: req.body.comision,
         metaVenta: req.body.metaVenta,

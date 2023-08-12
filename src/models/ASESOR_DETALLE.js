@@ -7,14 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Id_sub_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'SUB_PROYECTO',
-        key: 'Id_sub_proyecto'
-      }
-    },
     Id_empleado: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -58,13 +50,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_detalle_asesor" },
-        ]
-      },
-      {
-        name: "SubProyecto_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_sub_proyecto" },
         ]
       },
       {

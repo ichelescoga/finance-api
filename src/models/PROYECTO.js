@@ -21,11 +21,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     Id_pais: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false,
+      primaryKey: true
     },
     Id_departamento: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false,
+      primaryKey: true
     },
     Id_municipio: {
       type: DataTypes.INTEGER,
@@ -46,6 +48,34 @@ module.exports = function(sequelize, DataTypes) {
         model: 'TIPO_PROYECTO',
         key: 'Id_tipo_proyecto'
       }
+    },
+    Cantidad_unidades: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    Fecha_inicio_venta: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    Fecha_fin_venta: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    Costo_promedio_unidad: {
+      type: DataTypes.DECIMAL(10,0),
+      allowNull: true
+    },
+    Costo_total_venta: {
+      type: DataTypes.DECIMAL(10,0),
+      allowNull: true
+    },
+    Logo_proyecto: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    Descripcion: {
+      type: DataTypes.STRING(250),
+      allowNull: true
     },     
     createdAt: {          
       field: 'created_at',          
@@ -66,6 +96,8 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },
+          { name: "Id_pais" },
+          { name: "Id_departamento" },
         ]
       },
       {

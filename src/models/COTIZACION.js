@@ -7,20 +7,21 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Id_sub_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'SUB_PROYECTO',
-        key: 'Id_sub_proyecto'
-      }
-    },
     Id_detalle_asesor: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'ASESOR_DETALLE',
         key: 'Id_detalle_asesor'
+      }
+    },
+    Id_estado: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'ESTADO',
+        key: 'Id_estado'
       }
     },
     Id_plan_financiero: {
@@ -74,6 +75,26 @@ module.exports = function(sequelize, DataTypes) {
     Anio_fin: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    Descuento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    Venta_descuento: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: true
+    },
+    Precio_contado: {
+      type: DataTypes.TINYINT,
+      allowNull: true
+    },
+    Aguinaldo: {
+      type: DataTypes.TINYINT,
+      allowNull: true
+    },
+    Bono_catorce: {
+      type: DataTypes.TINYINT,
+      allowNull: true
     },     
     createdAt: {          
       field: 'created_at',          
@@ -94,6 +115,7 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_cotizacion" },
+          { name: "Id_estado" },
         ]
       },
       {
@@ -102,13 +124,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_cotizacion" },
-        ]
-      },
-      {
-        name: "SubProyecto_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_sub_proyecto" },
         ]
       },
       {
@@ -130,6 +145,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_cliente" },
+        ]
+      },
+      {
+        name: "fk_COTIZACION_ESTADO1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_estado" },
         ]
       },
     ]

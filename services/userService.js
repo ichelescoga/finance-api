@@ -54,6 +54,12 @@ let userRepository = function () {
         where: {
             Correo: params
         },
+        include: [
+          {
+            model: db.models.EMPLEADO_ASESOR,
+            as: "EMPLEADO_ASESORs"
+          },
+        ],
     });
 }
 

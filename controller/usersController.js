@@ -28,7 +28,6 @@ exports.UserToken = async (req, res, next) => {
   try {
     let nonce = req.headers["authorization"];
     let results = await security.decodeToken(nonce);
-    console.log(results.email);
     let findUser = await UserService.getUserByEmailSinPassword(results.email);
     res.status(202).json({
       success: true,

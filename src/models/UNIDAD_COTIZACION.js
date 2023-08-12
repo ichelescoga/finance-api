@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('SUB_PROYECTO', {
-    Id_sub_proyecto: {
+  return sequelize.define('UNIDAD_COTIZACION', {
+    Id_unidad_cotizacion: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -9,39 +9,21 @@ module.exports = function(sequelize, DataTypes) {
     },
     Id_proyecto: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      primaryKey: true,
       references: {
-        model: 'PROYECTO',
+        model: 'UNIDAD',
         key: 'Id_proyecto'
       }
     },
-    Cantidad_unidades: {
+    Id_cotizacion: {
       type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    Fecha_inicio_venta: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
-    Fecha_fin_venta: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
-    Costo_promedio_unidad: {
-      type: DataTypes.DECIMAL(10,0),
-      allowNull: true
-    },
-    Costo_total_venta: {
-      type: DataTypes.DECIMAL(10,0),
-      allowNull: true
-    },
-    Logo_proyecto: {
-      type: DataTypes.STRING(200),
-      allowNull: true
-    },
-    Descripcion: {
-      type: DataTypes.STRING(250),
-      allowNull: true
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'COTIZACION',
+        key: 'Id_cotizacion'
+      }
     },     
     createdAt: {          
       field: 'created_at',          
@@ -53,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'SUB_PROYECTO',
+    tableName: 'UNIDAD_COTIZACION',
     timestamps: true,
     indexes: [
       {
@@ -61,19 +43,20 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_sub_proyecto" },
+          { name: "Id_unidad_cotizacion" },
+          { name: "Id_proyecto" },
+          { name: "Id_cotizacion" },
         ]
       },
       {
-        name: "Id_sub_proyecto_UNIQUE",
-        unique: true,
+        name: "fk_UNIDAD_has_COTIZACION_COTIZACION1_idx",
         using: "BTREE",
         fields: [
-          { name: "Id_sub_proyecto" },
+          { name: "Id_cotizacion" },
         ]
       },
       {
-        name: "Proyecto_idx",
+        name: "fk_UNIDAD_has_COTIZACION_UNIDAD1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },

@@ -7,7 +7,7 @@ const municipioController = require('../controller/municipioController')
 const departamentoController = require('../controller/departamentoController')
 const tipoProyectoController = require('../controller/tipoProyectoController')
 const proyectoController = require('../controller/proyectoController')
-const subProyectoController = require('../controller/subProyectoController')
+const unidadController = require('../controller/unidadController')
 const asesoresController = require('../controller/asesoresController')
 const puestoController = require('../controller/puestoController')
 const tipoCreditoController = require('../controller/tipoCreditoController')
@@ -34,6 +34,9 @@ router.get("/empresas", auth.verifyToken, empresasController.listEmpresas)
 router.post("/crearEmpresa",  auth.verifyToken, empresasController.createEmpresa)
 
 
+//Company
+router.post("/company",  auth.verifyToken, empresasController.createEmpresa)
+
 
 //Municipio
 router.get("/municipios", auth.verifyToken, municipioController.listMunicipios)
@@ -57,8 +60,10 @@ router.post("/nuevoProyecto",  auth.verifyToken, proyectoController.createProyec
 
 
 
-//SubProyecto 
-router.post("/subProyecto",  auth.verifyToken, subProyectoController.createSubProyecto)
+//Unidad 
+router.get("/UnidadesProyecto/:id", auth.verifyToken, unidadController.listUnidadProyecto)
+router.get("/unidad/:id", auth.verifyToken, unidadController.findOneUnidad)
+router.post("/createUnidad",  auth.verifyToken, unidadController.createUnidad)
 
 
 
@@ -101,6 +106,8 @@ router.get("/listEjecutivos", auth.verifyToken, ejecutivoController.listEjecutiv
 
 //Cotizaciones
 router.get("/listCotizaciones", auth.verifyToken, cotizacionesController.listCotizaciones)
+router.post("/createCotizacion", auth.verifyToken, cotizacionesController.creatCotizacion)
+
 
 
 
