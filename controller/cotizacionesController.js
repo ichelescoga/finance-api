@@ -82,6 +82,7 @@ exports.creatCotizacion = async (req, res, next) => {
     res.status(200).json({
       succes: true,
       message: "Cotizacion Creada cont exito",
+      idCotizacion: cotizacion.Id_cotizacion
     });
   } catch (error) {
     res.status(406).json({

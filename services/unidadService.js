@@ -53,7 +53,15 @@ const db = require("../src/models");
     };
 
     let findOneUnidad = async (params) => {
-      const unidad = await db.models.UNIDAD.findOne({ where: { Id_unidad: params } });
+      const unidad = await db.models.UNIDAD.findOne({ 
+        where: { Id_unidad: params },
+        include: [
+            {
+              model: db.models.ESTADO,
+              as: "Id_estado_ESTADO"
+            },
+          ],
+      });
       return unidad;
     };
   
