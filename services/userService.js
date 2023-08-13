@@ -19,7 +19,6 @@ let userRepository = function () {
         useCredential.password,
         usuario.Contrasenia
       );
-        console.log(compare);
       if (!compare) {
         return null;
       } else {

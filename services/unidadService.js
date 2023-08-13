@@ -16,7 +16,6 @@ const db = require("../src/models");
     };
 
     let findUnidadesProyecto = async (params) => {
-      console.log(params);
       const unidadesProyect = await db.models.PROYECTO.findAll({
         where: {Id_proyecto: params.idProyecto},
         attributes: ["Id_proyecto"],

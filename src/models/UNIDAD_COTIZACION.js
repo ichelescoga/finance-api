@@ -7,15 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Id_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'UNIDAD',
-        key: 'Id_proyecto'
-      }
-    },
     Id_cotizacion: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -23,6 +14,15 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'COTIZACION',
         key: 'Id_cotizacion'
+      }
+    },
+    Id_unidad: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'UNIDAD',
+        key: 'Id_unidad'
       }
     },     
     createdAt: {          
@@ -44,8 +44,8 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_unidad_cotizacion" },
-          { name: "Id_proyecto" },
           { name: "Id_cotizacion" },
+          { name: "Id_unidad" },
         ]
       },
       {
@@ -56,10 +56,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_UNIDAD_has_COTIZACION_UNIDAD1_idx",
+        name: "fk_UNIDAD_COTIZACION_UNIDAD1_idx",
         using: "BTREE",
         fields: [
-          { name: "Id_proyecto" },
+          { name: "Id_unidad" },
         ]
       },
     ]

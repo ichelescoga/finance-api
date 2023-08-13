@@ -106,8 +106,10 @@ router.get("/listEjecutivos", auth.verifyToken, ejecutivoController.listEjecutiv
 
 //Cotizaciones
 router.get("/listCotizaciones", auth.verifyToken, cotizacionesController.listCotizaciones)
+router.get("/cotizacionsUnidad/:id", auth.verifyToken, cotizacionesController.listCotizacionUnidad)
 router.post("/createCotizacion", auth.verifyToken, cotizacionesController.creatCotizacion)
-
+router.get("/cotizacionId/:id", auth.verifyToken, cotizacionesController.findOneCotizacion)
+router.put("/actualizarCotizacion/:id", auth.verifyToken, cotizacionesController.updateCotizacion)
 
 
 

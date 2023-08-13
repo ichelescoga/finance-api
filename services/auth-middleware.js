@@ -5,7 +5,6 @@ const security = require('../src/utils/security')
 
 exports.verifyToken = async (req, res, next) =>{
     let nonce = req.headers['authorization'];
-    console.log(nonce)
   
     if (nonce){
         nonce = nonce.replace("\"", "")
@@ -14,7 +13,6 @@ exports.verifyToken = async (req, res, next) =>{
         if (decodedNonce && decodedNonce.email){
             let params = {}
             params.username = decodedNonce.email
-            console.log(decodedNonce);
             let user = await UserService.getUserByEmail(params)
             if (!user)
             res.status(403).json({

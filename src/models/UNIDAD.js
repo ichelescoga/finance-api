@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
     Nombre_unidad: {
       type: DataTypes.STRING(100),
       allowNull: false
-    },  
+    },
     Precio_Venta: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: true
