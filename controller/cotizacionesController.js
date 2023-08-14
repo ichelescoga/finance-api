@@ -1,6 +1,8 @@
 const cotizaciones = require("../services/cotizacionesService");
 const security = require("../src/utils/security");
 const UserService = require("../services/userService");
+const moment = require('moment')
+
 exports.listCotizaciones = async (req, res, next) => {
   try {
       let results = await cotizaciones.listaCotizaciones();
@@ -51,6 +53,7 @@ exports.creatCotizacion = async (req, res, next) => {
   let nonce = req.headers["authorization"];
   let resultsToken = await security.decodeToken(nonce);
   let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
+  let fechaActual = new Date()
   try {
 
     let params = {
@@ -58,8 +61,8 @@ exports.creatCotizacion = async (req, res, next) => {
       idEstado: 1,
       idPlanFinanciero: req.body.idPlanFinanciero,
       idCliente: req.body.idCliente,
-      fecha : req.body.fecha,
-      fechaHora: req.body.fechaHora,
+      fecha : moment(fechaActual).format("YYYY/MM/DD"),
+      fechaHora:  moment(fechaActual).format("YYYY/MM/DD hh:mm:ss"),
       ingresoMensual: req.body.ingresoMensual,
       enganche: req.body.enganche,
       mesesPlazo : req.body.mesesPlazo,
