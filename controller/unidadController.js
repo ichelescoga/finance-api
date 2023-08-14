@@ -6,7 +6,7 @@ exports.createUnidad = async (req, res, next) => {
   try {
 
     let params = {
-      idEstado : req.body.idEstado,
+      idEstado : 4,
       idProyecto: req.body.idProyecto,
       nombreUnidad: req.body.nombreUnidad,
       precioVenta: req.body.precioVenta,
@@ -29,7 +29,7 @@ exports.listUnidadProyecto = async (req, res, next) => {
   try {
     let nonce = req.headers["authorization"];
     let resultsToken = await security.decodeToken(nonce);
-    let findUser = await UserService.getUserByEmailSinPassword(resultsToken.email);
+    let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
 
     let params = {
       idProyecto : req.params.id,

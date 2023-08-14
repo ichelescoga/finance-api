@@ -49,24 +49,36 @@ let userRepository = function () {
   }
   let getUserByEmailSinPassword = async (params) => {
     return await  db.models.User.findAll({
-      attributes: ["Correo", "Nombre", "created_at", "updated_at"],
-        where: {
-            Correo: params
-        },
-        include: [
-          {
-            model: db.models.EMPLEADO_ASESOR,
-            as: "EMPLEADO_ASESORs"
-          },
-        ],
     });
+}
+
+let getUserByEmailSinPasswordBackend = async (params) => {
+  return await  db.models.User.findAll({
+    attributes: ["Correo", "Nombre", "created_at", "updated_at"],
+      where: {
+          Correo: params
+      },
+      include: [
+        {
+          model: db.models.EMPLEADO_ASESOR,
+          as: "EMPLEADO_ASESORs",
+          include: [
+            {
+              model: db.models.ASESOR_DETALLE,
+              as: "ASESOR_DETALLEs"
+            },
+          ],
+        },
+      ],
+  });
 }
 
   return {
     listlogin,
     create,
     getUserByEmail,
-    getUserByEmailSinPassword
+    getUserByEmailSinPassword,
+    getUserByEmailSinPasswordBackend
   };
 };
 

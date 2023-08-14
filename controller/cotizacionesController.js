@@ -23,7 +23,7 @@ exports.listCotizacionUnidad = async (req, res, next) => {
   try {
     let nonce = req.headers["authorization"];
     let resultsToken = await security.decodeToken(nonce);
-    let findUser = await UserService.getUserByEmailSinPassword(resultsToken.email);
+    let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
 
     let params = {
       idUnidad : req.params.id,
@@ -48,11 +48,14 @@ exports.listCotizacionUnidad = async (req, res, next) => {
 
 
 exports.creatCotizacion = async (req, res, next) => {
+  let nonce = req.headers["authorization"];
+  let resultsToken = await security.decodeToken(nonce);
+  let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
   try {
 
     let params = {
-      idDetalleAsesor : req.body.idDetalleAsesor,
-      idEstado: req.body.idEstado,
+      idDetalleAsesor : findUser[0].EMPLEADO_ASESORs[0].ASESOR_DETALLEs[0].Id_detalle_asesor ? findUser[0].EMPLEADO_ASESORs[0].ASESOR_DETALLEs[0].Id_detalle_asesor : null,
+      idEstado: 1,
       idPlanFinanciero: req.body.idPlanFinanciero,
       idCliente: req.body.idCliente,
       fecha : req.body.fecha,
