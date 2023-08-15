@@ -145,7 +145,7 @@ exports.updateCotizacion = async (req, res, next) => {
     if (cotizacionUpdate) {
       res.status(200).json({
         succes: true,
-        message: "Cotizacion actualiza con exito",
+        message: "Cotizacion actualizado con exito",
         body: cotizacionUpdate
       });
     } else {

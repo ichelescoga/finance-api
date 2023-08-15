@@ -16,6 +16,7 @@ const planFinancieroController = require('../controller/planFinancieroController
 const ejecutivoController = require('../controller/ejecutivoController')
 const cotizacionesController = require('../controller/cotizacionesController')
 const clientesCortroller = require('../controller/clientesController')
+const aplicarCreditoCortroller = require('../controller/creditoController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -115,4 +116,12 @@ router.put("/actualizarCotizacion/:id", auth.verifyToken, cotizacionesController
 
 //Cliente
 router.get("/listClientes", auth.verifyToken, clientesCortroller.listClientes)
+
+
+
+//Aplicar al credito
+router.post("/crearCredito", auth.verifyToken, aplicarCreditoCortroller.createAplicacionCredito)
+router.get("/credito/:id", auth.verifyToken, aplicarCreditoCortroller.findOneAplicacionCredito)
+router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.updateCotizacion)
+
 module.exports = router
