@@ -32,7 +32,7 @@ exports.pmtCalculate = async (req, res, next) => {
     } catch (error) {
       res.status(406).json({
         succes: false,
-        message: "Problemas al crear usuario, intentelo de nuevo",
+        message: "Payments list generation error.",
       });
     }
   };
