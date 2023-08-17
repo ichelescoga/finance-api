@@ -8,10 +8,37 @@ const db = require("../src/models");
       return clientes;
     };
     
-  
+    let createCliente = async (params) => {
+      const creatCliente = await db.models.CLIENTE.create({
+        Primer_nombre: params.primerNombre,
+        Segundo_nombre: params.segundoNombre,
+        Otros_nombres: params.otrosNombres,
+        Primer_apellido: params.primerApellido,
+        Segundo_apellido: params.segundoApellido,
+        Apellido_casada: params.apellidoCasada,
+        Estado_civil: params.estadoCivil,
+        Id_genero: params.idGenero,
+        Fecha_nacimiento: params.fechaNacimiento,
+        Oficio: params.oficio,
+        Nivel_estudios: params.nivelEstudio,
+        Direccion_residencia: params.direccionResidencia,
+        Telefono_residencia: params.telefonoResidencia,
+        Lugar_de_trabajo: params.lugarTrabajo,
+        Direccion_trabajo: params.direccionTrabajo,
+        Telefono_trabajo: params.telefonoTrabajo,
+        DPI: params.dpi,
+        NIT: params.nit,
+        Telefono: params.telefono,
+        Correo: params.correo,
+        Id_nacionalidad: params.idNacionalidad,
+      });
+      return creatCliente;
+
+    };
   
     return {
-        listClientes
+        listClientes,
+        createCliente
     };
   };
   

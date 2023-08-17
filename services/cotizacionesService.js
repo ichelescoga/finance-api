@@ -99,7 +99,15 @@ const db = require("../src/models");
     };
 
     let findOneCotizacion = async (params) => {
-      const cotizacion = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params } });
+      const cotizacion = await db.models.COTIZACION.findOne({ 
+        where: { Id_cotizacion: params },
+        include: [
+          {
+            model: db.models.CLIENTE,
+            as: "Id_cliente_CLIENTE",
+          },
+        ],
+      });
       return cotizacion;
     };
 

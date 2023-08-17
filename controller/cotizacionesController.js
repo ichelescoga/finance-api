@@ -1,6 +1,7 @@
 const cotizaciones = require("../services/cotizacionesService");
 const security = require("../src/utils/security");
 const UserService = require("../services/userService");
+const clienteService = require("../services/clienteService");
 const moment = require('moment')
 
 exports.listCotizaciones = async (req, res, next) => {
@@ -56,11 +57,38 @@ exports.creatCotizacion = async (req, res, next) => {
   let fechaActual = new Date()
   try {
 
+
+    let paramsCliente = {
+      primerNombre: req.body.cliente.primerNombre,
+      segundoNombre: req.body.cliente.segundoNombre,
+      otrosNombres: req.body.cliente.otrosNombres,
+      primerApellido: req.body.cliente.primerApellido,
+      segundoApellido: req.body.cliente.segundoApellido,
+      apellidoCasada: req.body.cliente.apellidoCasada,
+      estadoCivil: req.body.cliente.estadoCivil,
+      idGenero : req.body.cliente.idGenero,
+      fechaNacimiento: req.body.cliente.fechaNacimiento,
+      oficio: req.body.cliente.oficio,
+      nivelEstudio: req.body.cliente.nivelEstudio,
+      direccionResidencia : req.body.cliente.direccionResidencia,
+      telefonoResidencia: req.body.cliente.telefonoResidencia,
+      lugarTrabajo: req.body.cliente.lugarTrabajo,
+      direccionTrabajo: req.body.cliente.direccionTrabajo,
+      telefonoTrabajo : req.body.cliente.telefonoTrabajo,
+      nit: req.body.cliente.nit,
+      dpi: req.body.cliente.dpi,
+      telefono: req.body.cliente.telefono,
+      correo: req.body.cliente.correo,
+      idNacionalidad: req.body.cliente.idNacionalidad,
+    } 
+
+    let clienteId = await clienteService.createCliente(paramsCliente);
+
     let params = {
       idDetalleAsesor : findUser[0].EMPLEADO_ASESORs[0].ASESOR_DETALLEs[0].Id_detalle_asesor ? findUser[0].EMPLEADO_ASESORs[0].ASESOR_DETALLEs[0].Id_detalle_asesor : null,
       idEstado: 1,
       idPlanFinanciero: req.body.idPlanFinanciero,
-      idCliente: req.body.idCliente,
+      idCliente: clienteId.Id_cliente,
       fecha : moment(fechaActual).format("YYYY/MM/DD"),
       fechaHora:  moment(fechaActual).format("YYYY/MM/DD hh:mm:ss"),
       ingresoMensual: req.body.ingresoMensual,
