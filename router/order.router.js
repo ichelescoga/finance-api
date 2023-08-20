@@ -122,6 +122,6 @@ router.get("/listClientes", auth.verifyToken, clientesCortroller.listClientes)
 //Aplicar al credito
 router.post("/crearCredito", auth.verifyToken, aplicarCreditoCortroller.createAplicacionCredito)
 router.get("/credito/:id", auth.verifyToken, aplicarCreditoCortroller.findOneAplicacionCredito)
-router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.updateCotizacion)
+router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.updateApliCredito)
 
 module.exports = router

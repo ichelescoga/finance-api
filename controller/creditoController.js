@@ -1,6 +1,8 @@
 const aplicacionCredito = require("../services/creditoService");
-const security = require("../src/utils/security");
-const UserService = require("../services/userService");
+const cotizacionServi = require("../services/cotizacionesService");
+const clienteService = require("../services/clienteService");
+// const security = require("../src/utils/security");
+// const UserService = require("../services/userService");
 
 exports.createAplicacionCredito = async (req, res, next) => {
   try {
@@ -32,13 +34,24 @@ exports.createAplicacionCredito = async (req, res, next) => {
   }
 };
 
-exports.updateCotizacion = async (req, res, next) => {
+exports.updateApliCredito = async (req, res, next) => {
     try {
-  
+
+      let cotizacion = await cotizacionServi.findOneCotizacion(req.body.idCotizacion)
+      if (cotizacion.Id_cliente) {
+        let paramsUpdate  = {
+          id: cotizacion.Id_cliente,
+          puesto: req.body.puesto,
+          fechaNacimiento: req.body.fechaNacimiento,
+        };
+        await clienteService.updateCliente(paramsUpdate)
+      }
+
+
       let params = {
         id: req.params.id,
         idCotizacion: req.body.idCotizacion,
-        idCliente: req.body.idCliente,
+        idCliente: cotizacion.Id_cliente ? cotizacion.Id_cliente : null,
         fotoDpiEnfrente: req.body.fotoDpiEnfrente,
         fotoDpiReverso: req.body.fotoDpiReverso,
         estado: req.body.estado,

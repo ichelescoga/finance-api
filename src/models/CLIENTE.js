@@ -98,7 +98,11 @@ module.exports = function(sequelize, DataTypes) {
         model: 'PAIS',
         key: 'Id_pais'
       }
-    },     
+    },
+    Puesto: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },    
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

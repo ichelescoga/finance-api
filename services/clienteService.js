@@ -35,8 +35,29 @@ const db = require("../src/models");
       return creatCliente;
 
     };
+
+
+    let updateCliente = async (params) => {
+      const clienteUpdate = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
+
+      if(!clienteUpdate) {
+         return
+      } else {
+          await db.models.CLIENTE.update({
+            Fecha_nacimiento: params.fechaNacimiento,
+            Puesto: params.puesto
+        },{
+          where:{
+            Id_cliente: params.id
+          }
+      });
+      }
+      const clienteActualizado = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
+      return clienteActualizado
+    };
   
     return {
+        updateCliente,
         listClientes,
         createCliente
     };
