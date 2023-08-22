@@ -102,7 +102,15 @@ module.exports = function(sequelize, DataTypes) {
     Puesto: {
       type: DataTypes.STRING(100),
       allowNull: true
-    },    
+    },
+    Foto_DPI_enfrente: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    Foto_DPI_reverso: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },      
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

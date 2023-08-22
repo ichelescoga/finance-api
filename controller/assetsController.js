@@ -2,13 +2,14 @@ const AWS = require("aws-sdk");
 
   exports.uploadS3 = async (req, res, next) => {
     try {
-            let imageUrl = "";
-            await uploadFileS3(req.body.file, req.body.fileName, req.body.transactionType).then (async (s3Response) =>{
-                if (await s3Response){
+        let imageUrl = "";
+        await uploadFileS3(req.body.file, req.body.fileName, req.body.transactionType)
+            .then(async (s3Response) => {
+                if (s3Response) {
                     imageUrl = s3Response;
                 }
             })
-        res.json({s3Response: s3Response})
+        res.json({ s3Response: imageUrl })
     } catch (error) {
       res.status(406).json({
         succes: false,

@@ -45,7 +45,28 @@ const db = require("../src/models");
       } else {
           await db.models.CLIENTE.update({
             Fecha_nacimiento: params.fechaNacimiento,
-            Puesto: params.puesto
+            Puesto: params.puesto,
+            Foto_DPI_enfrente: params.fotoDpiEnfrente,
+            Foto_DPI_reverso: params.fotoDpiReverso
+        },{
+          where:{
+            Id_cliente: params.id
+          }
+      });
+      }
+      const clienteActualizado = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
+      return clienteActualizado
+    };
+
+    let updateClienteFotoDpi = async (params) => {
+      const clienteUpdate = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
+
+      if(!clienteUpdate) {
+         return
+      } else {
+          await db.models.CLIENTE.update({
+            Foto_DPI_enfrente: params.fotoDpiEnfrente,
+            Foto_DPI_reverso: params.fotoDpiReverso
         },{
           where:{
             Id_cliente: params.id
@@ -57,6 +78,7 @@ const db = require("../src/models");
     };
   
     return {
+      updateClienteFotoDpi,
         updateCliente,
         listClientes,
         createCliente

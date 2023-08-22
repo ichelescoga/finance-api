@@ -103,6 +103,7 @@ exports.creatCotizacion = async (req, res, next) => {
       precioContado: req.body.precioContado,
       aguinaldo : req.body.aguinaldo,
       bonoCatorce: req.body.bonoCatorce,
+      urlCotizacion: req.body.urlCotizacion,
     };
 
 
@@ -166,6 +167,7 @@ exports.updateCotizacion = async (req, res, next) => {
       precioContado: req.body.precioContado,
       aguinaldo : req.body.aguinaldo,
       bonoCatorce: req.body.bonoCatorce,
+      urlCotizacion: req.body.urlCotizacion,
     };
 
 

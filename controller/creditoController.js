@@ -6,10 +6,19 @@ const clienteService = require("../services/clienteService");
 
 exports.createAplicacionCredito = async (req, res, next) => {
   try {
+    let cotizacion = await cotizacionServi.findOneCotizacion(req.body.idCotizacion)
+    if (cotizacion.Id_cliente) {
+      let paramsUpdate  = {
+        id: cotizacion.Id_cliente,
+        fotoDpiEnfrente: req.body.fotoDpiEnfrente,
+        fotoDpiReverso: req.body.fotoDpiReverso,
+      };
+      await clienteService.updateClienteFotoDpi(paramsUpdate)
+    }
 
     let params = {
       idCotizacion: req.body.idCotizacion,
-      idCliente: req.body.idCliente,
+      idCliente: cotizacion.Id_cliente ? cotizacion.Id_cliente : null,
       fotoDpiEnfrente: req.body.fotoDpiEnfrente,
       fotoDpiReverso: req.body.fotoDpiReverso,
       estado: req.body.estado,
@@ -43,6 +52,8 @@ exports.updateApliCredito = async (req, res, next) => {
           id: cotizacion.Id_cliente,
           puesto: req.body.puesto,
           fechaNacimiento: req.body.fechaNacimiento,
+          fotoDpiEnfrente: req.body.fotoDpiEnfrente,
+          fotoDpiReverso: req.body.fotoDpiReverso,
         };
         await clienteService.updateCliente(paramsUpdate)
       }

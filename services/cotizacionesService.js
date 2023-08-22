@@ -28,6 +28,7 @@ const db = require("../src/models");
         Precio_contado: params.precioContado,
         Aguinaldo: params.aguinaldo,
         Bono_catorce: params.bonoCatorce,
+        Url_cotizacion: params.urlCotizacion,
       });
       return newCotizacion;
     };
@@ -57,6 +58,7 @@ const db = require("../src/models");
           Precio_contado: params.precioContado,
           Aguinaldo: params.aguinaldo,
           Bono_catorce: params.bonoCatorce,
+          Url_cotizacion: params.urlCotizacion,
         },{
           where:{
             Id_cotizacion: params.id

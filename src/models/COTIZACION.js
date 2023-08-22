@@ -95,7 +95,11 @@ module.exports = function(sequelize, DataTypes) {
     Bono_catorce: {
       type: DataTypes.TINYINT,
       allowNull: true
-    },     
+    },
+    Url_cotizacion: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },      
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      
