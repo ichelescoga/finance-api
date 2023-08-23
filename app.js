@@ -10,7 +10,7 @@ const assetsRouter = require('./router/assets.router')
 const sequelize = require('./components/conn_sqlz')
 
 app.use(cors())
-app.use(bodyParser.json({limit: `${process.env.FILE_MAX_LIMIT}!`}))
+app.use(bodyParser.json({limit: process.env.FILE_MAX_LIMIT}))
 app.use(bodyParser.urlencoded({
     extended:true
 }))
