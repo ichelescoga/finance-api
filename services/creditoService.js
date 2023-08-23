@@ -51,7 +51,16 @@ const db = require("../src/models");
   
 
       let findOneCredito = async (params) => {
-        const credito = await db.models.APLICACION.findOne({ where: { Id_cotizacion: params } });
+        const credito = await db.models.APLICACION.findOne({ 
+          where: { Id_cotizacion: params },
+          include: [
+            {
+              model: db.models.CLIENTE,
+              as: "Id_cliente_CLIENTE",
+              requerid: false
+            },
+          ], 
+        });
         return credito;
       };
   
