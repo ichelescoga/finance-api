@@ -10,10 +10,11 @@ const assetsRouter = require('./router/assets.router')
 const sequelize = require('./components/conn_sqlz')
 
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '10mb'}))
 app.use(bodyParser.urlencoded({
     extended:true
 }))
+//app.use(express.bodyParser({limit: '10mb'}));
 
 
 
