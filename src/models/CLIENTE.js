@@ -110,7 +110,7 @@ module.exports = function(sequelize, DataTypes) {
     Foto_DPI_reverso: {
       type: DataTypes.STRING(500),
       allowNull: true
-    },      
+    },     
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

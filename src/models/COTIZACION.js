@@ -99,7 +99,11 @@ module.exports = function(sequelize, DataTypes) {
     Url_cotizacion: {
       type: DataTypes.STRING(500),
       allowNull: true
-    },      
+    },
+    Comentario: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },        
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

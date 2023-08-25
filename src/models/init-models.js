@@ -20,10 +20,12 @@ var _PARENTESCO = require("./PARENTESCO");
 var _PLAN_FINANCIERO_PROY = require("./PLAN_FINANCIERO_PROY");
 var _PROYECTO = require("./PROYECTO");
 var _PUESTO = require("./PUESTO");
+var _ROL = require("./ROL");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
 var _TIPO_PROYECTO = require("./TIPO_PROYECTO");
 var _UNIDAD = require("./UNIDAD");
 var _UNIDAD_COTIZACION = require("./UNIDAD_COTIZACION");
+var _USER_PROFILE = require("./USER_PROFILE");
 var _User = require("./User");
 
 function initModels(sequelize) {
@@ -48,10 +50,12 @@ function initModels(sequelize) {
   var PLAN_FINANCIERO_PROY = _PLAN_FINANCIERO_PROY(sequelize, DataTypes);
   var PROYECTO = _PROYECTO(sequelize, DataTypes);
   var PUESTO = _PUESTO(sequelize, DataTypes);
+  var ROL = _ROL(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
   var TIPO_PROYECTO = _TIPO_PROYECTO(sequelize, DataTypes);
   var UNIDAD = _UNIDAD(sequelize, DataTypes);
   var UNIDAD_COTIZACION = _UNIDAD_COTIZACION(sequelize, DataTypes);
+  var USER_PROFILE = _USER_PROFILE(sequelize, DataTypes);
   var User = _User(sequelize, DataTypes);
 
   COTIZACION.belongsToMany(UNIDAD, { as: 'Id_unidad_UNIDADs', through: UNIDAD_COTIZACION, foreignKey: "Id_cotizacion", otherKey: "Id_unidad" });
@@ -74,6 +78,8 @@ function initModels(sequelize) {
   CLIENTE.hasMany(DETALLE_FIADOR, { as: "DETALLE_FIADORs", foreignKey: "Id_cliente"});
   FAMILIA.belongsTo(CLIENTE, { as: "Id_clinete_CLIENTE", foreignKey: "Id_clinete"});
   CLIENTE.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_clinete"});
+  USER_PROFILE.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
+  CLIENTE.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_cliente"});
   APLICACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cotizacion"});
   DETALLE_COTIZACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
@@ -86,8 +92,12 @@ function initModels(sequelize) {
   DETALLE_FIADOR.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_dtalle_fiador"});
   APLICACION.belongsTo(EJECUTIVO, { as: "Id_ejecutivo_EJECUTIVO", foreignKey: "Id_ejecutivo"});
   EJECUTIVO.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_ejecutivo"});
+  USER_PROFILE.belongsTo(EJECUTIVO, { as: "Id_ejecutivo_EJECUTIVO", foreignKey: "Id_ejecutivo"});
+  EJECUTIVO.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_ejecutivo"});
   ASESOR_DETALLE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(ASESOR_DETALLE, { as: "ASESOR_DETALLEs", foreignKey: "Id_empleado"});
+  USER_PROFILE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
+  EMPLEADO_ASESOR.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_empleado"});
   PLAN_FINANCIERO_PROY.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
   EMPRESA.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_empresa"});
   PROYECTO.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
@@ -126,14 +136,16 @@ function initModels(sequelize) {
   PUESTO.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_puesto"});
   EMPLEADO_ASESOR.belongsTo(PUESTO, { as: "Id_puesto_PUESTO", foreignKey: "Id_puesto"});
   PUESTO.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_puesto"});
+  USER_PROFILE.belongsTo(ROL, { as: "Id_rol_ROL", foreignKey: "Id_rol"});
+  ROL.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_rol"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
   PROYECTO.belongsTo(TIPO_PROYECTO, { as: "Id_tipo_proyecto_TIPO_PROYECTO", foreignKey: "Id_tipo_proyecto"});
   TIPO_PROYECTO.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_tipo_proyecto"});
   UNIDAD_COTIZACION.belongsTo(UNIDAD, { as: "Id_unidad_UNIDAD", foreignKey: "Id_unidad"});
   UNIDAD.hasMany(UNIDAD_COTIZACION, { as: "UNIDAD_COTIZACIONs", foreignKey: "Id_unidad"});
-  EMPLEADO_ASESOR.belongsTo(User, { as: "Id_user_User", foreignKey: "Id_user"});
-  User.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_user"});
+  USER_PROFILE.belongsTo(User, { as: "Id_user_User", foreignKey: "Id_user"});
+  User.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_user"});
 
   return {
     APLICACION,
@@ -157,10 +169,12 @@ function initModels(sequelize) {
     PLAN_FINANCIERO_PROY,
     PROYECTO,
     PUESTO,
+    ROL,
     TIPO_CREDITO,
     TIPO_PROYECTO,
     UNIDAD,
     UNIDAD_COTIZACION,
+    USER_PROFILE,
     User,
   };
 }

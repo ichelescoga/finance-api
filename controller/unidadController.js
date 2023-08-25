@@ -27,13 +27,13 @@ exports.createUnidad = async (req, res, next) => {
 
 exports.listUnidadProyecto = async (req, res, next) => {
   try {
-    let nonce = req.headers["authorization"];
-    let resultsToken = await security.decodeToken(nonce);
-    let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
+    // let nonce = req.headers["authorization"];
+    // let resultsToken = await security.decodeToken(nonce);
+    // let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
 
     let params = {
       idProyecto : req.params.id,
-      idEmpleadoAsesor: findUser[0].EMPLEADO_ASESORs[0].Id_empleado ? findUser[0].EMPLEADO_ASESORs[0].Id_empleado : null,
+      // idEmpleadoAsesor: findUser[0].EMPLEADO_ASESORs[0].Id_empleado ? findUser[0].EMPLEADO_ASESORs[0].Id_empleado : null,
     };
     
       let results = await unidad.findUnidadesProyecto(params);

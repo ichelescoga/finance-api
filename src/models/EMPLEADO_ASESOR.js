@@ -7,15 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Id_user: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'User',
-        key: 'Id_user'
-      }
-    },
     Primer_nombre: {
       type: DataTypes.STRING(60),
       allowNull: true
@@ -91,7 +82,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_empleado" },
-          { name: "Id_user" },
         ]
       },
       {
@@ -107,13 +97,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_puesto" },
-        ]
-      },
-      {
-        name: "fk_EMPLEADO_ASESOR_User1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_user" },
         ]
       },
     ]

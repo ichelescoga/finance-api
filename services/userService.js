@@ -9,6 +9,31 @@ let userRepository = function () {
       where: {
         Correo: useCredential.email,
       },
+      include: [
+        {
+          model: db.models.USER_PROFILE,
+          as: "USER_PROFILEs",
+          include: [
+            {
+              model: db.models.EJECUTIVO,
+              as: "Id_ejecutivo_EJECUTIVO",
+            },
+            {
+              model: db.models.CLIENTE,
+              as: "Id_cliente_CLIENTE",
+            },
+            {
+              model: db.models.EMPLEADO_ASESOR,
+              as: "Id_empleado_EMPLEADO_ASESOR",
+            },
+            {
+              model: db.models.ROL,
+              as: "Id_rol_ROL"
+            }
+          ],
+        },
+      ],
+
     });
 
 
@@ -53,20 +78,37 @@ let userRepository = function () {
 }
 
 let getUserByEmailSinPasswordBackend = async (params) => {
-  return await  db.models.User.findAll({
+  return await  db.models.User.findOne({
     attributes: ["Correo", "Nombre", "created_at", "updated_at"],
       where: {
           Correo: params
       },
       include: [
         {
-          model: db.models.EMPLEADO_ASESOR,
-          as: "EMPLEADO_ASESORs",
+          model: db.models.USER_PROFILE,
+          as: "USER_PROFILEs",
+          required: true,
           include: [
             {
-              model: db.models.ASESOR_DETALLE,
-              as: "ASESOR_DETALLEs"
+              model: db.models.EMPLEADO_ASESOR,
+              as: "Id_empleado_EMPLEADO_ASESOR",
+              required: true,
+              include: [
+                {
+                  model: db.models.ASESOR_DETALLE,
+                  as: "ASESOR_DETALLEs",
+                  required: true
+                },
+              ],
             },
+            {
+              model: db.models.ROL,
+              as: "Id_rol_ROL",
+              required: true,
+              where: {
+                Id_rol: 1
+            },
+            }
           ],
         },
       ],

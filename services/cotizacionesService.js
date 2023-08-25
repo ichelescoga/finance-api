@@ -1,4 +1,5 @@
 const db = require("../src/models");
+
   
   let userRepository = function () {
 
@@ -29,6 +30,7 @@ const db = require("../src/models");
         Aguinaldo: params.aguinaldo,
         Bono_catorce: params.bonoCatorce,
         Url_cotizacion: params.urlCotizacion,
+        Comentario: params.comentario
       });
       return newCotizacion;
     };
@@ -59,6 +61,7 @@ const db = require("../src/models");
           Aguinaldo: params.aguinaldo,
           Bono_catorce: params.bonoCatorce,
           Url_cotizacion: params.urlCotizacion,
+          Comentario: params.comentario
         },{
           where:{
             Id_cotizacion: params.id
@@ -93,6 +96,10 @@ const db = require("../src/models");
                 required: true,
                 attributes: ["Id_detalle_asesor"],
               },
+              {
+                model: db.models.CLIENTE,
+                as: "Id_cliente_CLIENTE",
+              },
             ],
           },
         ],
@@ -113,6 +120,142 @@ const db = require("../src/models");
       return cotizacion;
     };
 
+
+    let listCotizCotizadasRechazada = async () => {
+      const Op = db.Sequelize.Op;
+      const cotizaciones = await db.models.COTIZACION.findAll({
+        where: {
+          [Op.or]: [
+            { Id_estado: 2 },
+            { Id_estado: 6 }
+          ]
+        },
+        include: [
+          {
+            model: db.models.CLIENTE,
+            as: "Id_cliente_CLIENTE",
+          },
+          {
+            model: db.models.ESTADO,
+            as: "Id_estado_ESTADO",
+          },
+          {
+            model: db.models.APLICACION,
+            as: "APLICACIONs",
+          },
+          {
+            model: db.models.PLAN_FINANCIERO_PROY,
+            as: "Id_plan_financiero_PLAN_FINANCIERO_PROY",
+          },
+        ],
+      });
+      return cotizaciones;
+    };
+
+
+    let listCotizAprovadoReservado = async (params) => {
+      const Op = db.Sequelize.Op;
+      const cotizaciones = await db.models.COTIZACION.findAll({
+        where: {
+          [Op.or]: [
+            { Id_estado: 5},
+            { Id_estado: 7 }
+          ]
+        },
+        include: [
+          {
+            model: db.models.ASESOR_DETALLE,
+            as: "Id_detalle_asesor_ASESOR_DETALLE",
+            where: {Id_empleado: params.idEmpleadoAsesor},
+            required: true,
+            attributes: ["Id_detalle_asesor"],
+          },
+          {
+            model: db.models.CLIENTE,
+            as: "Id_cliente_CLIENTE",
+          },
+          {
+            model: db.models.ESTADO,
+            as: "Id_estado_ESTADO",
+          },
+          {
+            model: db.models.APLICACION,
+            as: "APLICACIONs",
+          },
+          {
+            model: db.models.PLAN_FINANCIERO_PROY,
+            as: "Id_plan_financiero_PLAN_FINANCIERO_PROY",
+          },
+        ],
+      });
+      return cotizaciones;
+    };
+
+
+    let updateCotizacionVendida = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({ 
+        where: { Id_cotizacion: params.id },
+        include: [
+          {
+            model: db.models.UNIDAD_COTIZACION,
+            as: "UNIDAD_COTIZACIONs",
+            include: [
+              {
+                model: db.models.UNIDAD,
+                as: "Id_unidad_UNIDAD",
+              },
+            ],
+          },
+        ],
+      },);
+
+      if(!cotizacion && cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad_UNIDAD.Id_unidad) {
+         return
+      } else {
+
+
+      await db.models.COTIZACION.update({
+          Id_estado: params.idEstado,
+        },{
+          where:{
+            Id_cotizacion: params.id
+          }
+      });
+      await db.models.UNIDAD.update({
+        Id_estado: params.idEstado,
+      },{
+        where:{
+          Id_unidad: cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad_UNIDAD.Id_unidad
+        }
+    });
+      }
+      const cotizacionActualizada  = await db.models.COTIZACION.findOne({ 
+        where: { Id_cotizacion: params.id },
+        include: [
+          {
+            model: db.models.UNIDAD_COTIZACION,
+            as: "UNIDAD_COTIZACIONs",
+            include: [
+              {
+                model: db.models.UNIDAD,
+                as: "Id_unidad_UNIDAD",
+                include: [
+                  {
+                    model: db.models.ESTADO,
+                    as: "Id_estado_ESTADO",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: db.models.ESTADO,
+            as: "Id_estado_ESTADO",
+          }
+        ],
+      },);
+      return cotizacionActualizada
+    };
   
     return {
         listaCotizaciones,
@@ -120,7 +263,10 @@ const db = require("../src/models");
         finCotizacionUnidad,
         createCotizacion_Unidad,
         findOneCotizacion,
-        updateCotizacion
+        updateCotizacion,
+        listCotizCotizadasRechazada,
+        listCotizAprovadoReservado,
+        updateCotizacionVendida
     };
   };
   

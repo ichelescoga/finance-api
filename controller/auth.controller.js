@@ -53,9 +53,11 @@ exports.signIn = async (req, res, next) => {
       });
     } else {
       let acccesToken = await security.generateToken(results);
+
       res.json({
         message: "Successful authentication.",
         token: acccesToken,
+        usuario: results
       });
     }
   } catch (error) {
