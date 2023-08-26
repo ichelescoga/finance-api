@@ -403,7 +403,6 @@ exports.updateCotizacion = async (req, res, next) => {
 exports.findOneCotizacionPdf = async (req, res, next) => {
   try {
     let results = await cotizaciones.findOneCotizacionpdf(req.params.id);
-    let nombre = results.Id_detalle_asesor_ASESOR_DETALLE.Id_empleado_EMPLEADO_ASESOR.Primer_nombre
     let fechaActual = new Date()
     let valueTerreno = results.Venta_descuento
     var divisionesValueTerreno = valueTerreno.split(".");
@@ -411,7 +410,6 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
     // res.status(406).json({
     //   succes: false,
     //   message: results,
-    //   nombre: nombre,
     //   divisiones: divisionesValueTerreno[0]
     // });
 
@@ -683,28 +681,38 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
       </body>
       </html>`;
 
-    htmlToBase64Pdf(htmlContent)
-    .then(async base64Pdf => {
-      let imageUrl = "";
-        await uploadFileS3(base64Pdf, results.Id_cotizacion, "")
-            .then(async (s3Response) => {
-                if (s3Response) {
-                    imageUrl = s3Response;
-                    console.log(s3Response);
-                }
-            })
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-      if (results) {
-        res.json(results);
-      } else {
-        res.status(202).json({
-          success: true,
-          message: "Cotizacion no existente",
-        });
-      }
+    // htmlToBase64Pdf(htmlContent)
+    // .then(async base64Pdf => {
+    //   let imageUrl = "";
+    //     await uploadFileS3(base64Pdf, results.Id_cotizacion, "")
+    //         .then(async (s3Response) => {
+    //             if (s3Response) {
+    //                 imageUrl = s3Response;
+    //                 console.log(s3Response);
+    //             }
+    //         })
+    // })
+    // .catch(error => {
+    //     console.error('Error:', error);
+    // });
+    //   if (results) {
+    //     res.json(results);
+    //   } else {
+    //     res.status(202).json({
+    //       success: true,
+    //       message: "Cotizacion no existente",
+    //     });
+    //   }
+
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setContent(htmlContent);
+    
+    await page.pdf({ path: 'c:/Users/deleon.m120119/Desktop/finance-api/archivo.pdf', format: 'A4' });
+
+    await browser.close();
     } catch (error) {
       next(error);
     }
