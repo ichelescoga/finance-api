@@ -53,6 +53,43 @@ let userRepository = function () {
   };
 
 
+  let listUser = async (useCredential) => {
+
+    const usuario = await db.models.User.findOne({
+      attributes: ["Id_user", "Correo", "Nombre"],
+      where: {
+        Correo: useCredential.email,
+      },
+      include: [
+        {
+          model: db.models.USER_PROFILE,
+          as: "USER_PROFILEs",
+          include: [
+            {
+              model: db.models.EJECUTIVO,
+              as: "Id_ejecutivo_EJECUTIVO",
+            },
+            {
+              model: db.models.CLIENTE,
+              as: "Id_cliente_CLIENTE",
+            },
+            {
+              model: db.models.EMPLEADO_ASESOR,
+              as: "Id_empleado_EMPLEADO_ASESOR",
+            },
+            {
+              model: db.models.ROL,
+              as: "Id_rol_ROL"
+            }
+          ],
+        },
+      ],
+
+    });
+
+        return usuario;
+  };
+
 
   let create = async (params) => {
     const encript = await bcrypt.hash(params.password, 10);
@@ -120,7 +157,8 @@ let getUserByEmailSinPasswordBackend = async (params) => {
     create,
     getUserByEmail,
     getUserByEmailSinPassword,
-    getUserByEmailSinPasswordBackend
+    getUserByEmailSinPasswordBackend,
+    listUser
   };
 };
 

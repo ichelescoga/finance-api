@@ -246,6 +246,37 @@ exports.updateCotizacionEstado = async (req, res, next) => {
 };
 
 
+exports.updateCotizEstadoParams = async (req, res, next) => {
+  try {
+
+    let params = {
+      id: req.params.id,
+      idEstado: req.body.idEstado,
+    };
+
+    let cotizacionUpdate  =  await cotizaciones.updateCotizEstado(params);
+    if (cotizacionUpdate) {
+      res.status(200).json({
+        succes: true,
+        message: "Estado de la cotizacion actualizado con exito",
+        body: cotizacionUpdate
+      });
+    }else{
+      res.status(200).json({
+        succes: false,
+        message: "Cotizacion no existe",
+      });
+    }
+
+  } catch (error) {
+    res.status(406).json({
+      succes: false,
+      message: error,
+    });
+  }
+};
+
+
 exports.updateCotizacion = async (req, res, next) => {
   try {
 

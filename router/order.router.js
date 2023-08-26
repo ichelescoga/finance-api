@@ -117,6 +117,7 @@ router.put("/actualizarCotizacion/:id", auth.verifyToken, cotizacionesController
 router.get("/cotizacionesAnalista", auth.verifyToken, cotizacionesController.listaCotizacionesCotizaRechazada)
 router.get("/cotizacionEjeAprovReser", auth.verifyToken, cotizacionesController.listCotizEjecAprovadoReservado)
 router.put("/cotizacionVendida/:id", auth.verifyToken, cotizacionesController.updateCotizacionEstado)
+router.put("/cotizacionUpdEstado/:id", auth.verifyToken, cotizacionesController.updateCotizEstadoParams)
 
 //Cliente
 router.get("/listClientes", auth.verifyToken, clientesCortroller.listClientes)
