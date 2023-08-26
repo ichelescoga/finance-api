@@ -6,6 +6,7 @@ exports.pmtCalculate = async (req, res, next) => {
         let annualPayments = req.body.annualPayments;
         let monthlyPayments = annualPayments * 12;
         let totalValue = req.body.totalCreditValue
+        let cashPrice = req.body.precioContado;
 
         let baseCalculate = Math.pow((1 + (monthlyI/100)), monthlyPayments)
 
@@ -14,6 +15,12 @@ exports.pmtCalculate = async (req, res, next) => {
         let monthlyInterest = paymentCalculator - monthlyCapitalPayment
         let paymentList = []
         let totalValueCalculate = totalValue
+
+        if (cashPrice){
+            paymentCalculator = totalValue / monthlyPayments
+            monthlyCapitalPayment = totalValue / monthlyPayments
+            monthlyInterest = 0.00
+        }
         for (let index = 0; index < monthlyPayments; index++) {
             let month = "Mes " + (index + 1)
             totalValueCalculate = totalValueCalculate - monthlyCapitalPayment
