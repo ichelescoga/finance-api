@@ -743,6 +743,18 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
                 console.log(s3Response);
             }
         })
+    if (imageUrl!=="") {
+      res.status(200).json({
+        succes: true,
+        message: "PDF Generado con exito",
+        body: imageUrl
+      });
+    } else {
+      res.status(404).json({
+        succes: true,
+        message: "PDF No Generado",
+      });
+    }
     } catch (error) {
       next(error);
     }
