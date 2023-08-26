@@ -302,6 +302,7 @@ const db = require("../src/models");
       } else {
           await db.models.COTIZACION.update({
           Id_estado: params.idEstado,
+          Comentario: params.comentario
         },{
           where:{
             Id_cotizacion: params.id

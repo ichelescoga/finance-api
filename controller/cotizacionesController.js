@@ -252,6 +252,7 @@ exports.updateCotizEstadoParams = async (req, res, next) => {
     let params = {
       id: req.params.id,
       idEstado: req.body.idEstado,
+      comentario: req.body.comentario
     };
 
     let cotizacionUpdate  =  await cotizaciones.updateCotizEstado(params);
