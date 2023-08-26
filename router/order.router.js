@@ -130,6 +130,6 @@ router.get("/credito/:id", auth.verifyToken, aplicarCreditoCortroller.findOneApl
 router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.updateApliCredito)
 
 
-router.post("/cotizacionPdf/:id", auth.verifyToken, cotizacionesController.findOneCotizacionPdf)
+router.post("/cotizacionPdf/:id", cotizacionesController.findOneCotizacionPdf)
 
 module.exports = router

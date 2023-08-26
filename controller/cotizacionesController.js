@@ -70,8 +70,9 @@ async function htmlToPdfBuffer(htmlContent) {
 
   const browser = await puppeteer.launch(
     {
-      headless: false,
-      args: ["--no-sandbox"]
+      headless: true,
+      args: ["--no-sandbox"],
+      executablePath: '/usr/bin/google-chrome'
     }
     );
   const page = await browser.newPage();
