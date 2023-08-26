@@ -1,4 +1,4 @@
-FROM node:13
+FROM node:16
 
 RUN echo "UTC" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
