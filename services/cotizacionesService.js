@@ -313,6 +313,51 @@ const db = require("../src/models");
       return cotizacionActualizada
     };
 
+
+    let findOneCotizacionpdf = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({
+        where: { Id_cotizacion: params},
+        include: [
+          {
+            model: db.models.ASESOR_DETALLE,
+            as: "Id_detalle_asesor_ASESOR_DETALLE",
+            include: [
+              {
+                model: db.models.EMPLEADO_ASESOR,
+                as: "Id_empleado_EMPLEADO_ASESOR",
+              },
+            ],
+          },
+          {
+            model: db.models.CLIENTE,
+            as: "Id_cliente_CLIENTE",
+          },
+          {
+            model: db.models.ESTADO,
+            as: "Id_estado_ESTADO",
+          },
+          {
+            model: db.models.APLICACION,
+            as: "APLICACIONs",
+          },
+          {
+            model: db.models.UNIDAD_COTIZACION,
+            as: "UNIDAD_COTIZACIONs",
+            include: [
+              {
+                model: db.models.UNIDAD,
+                as: "Id_unidad_UNIDAD",
+              },
+            ],
+          },
+          {
+            model: db.models.PLAN_FINANCIERO_PROY,
+            as: "Id_plan_financiero_PLAN_FINANCIERO_PROY",
+          },
+        ],
+      });
+      return cotizacion;
+    };
     return {
         listaCotizaciones,
         creatCotizacion,
@@ -323,7 +368,8 @@ const db = require("../src/models");
         listCotizCotizadasRechazada,
         listCotizAprovadoReservado,
         updateCotizacionVendida,
-        updateCotizEstado
+        updateCotizEstado,
+        findOneCotizacionpdf
 
     };
   };

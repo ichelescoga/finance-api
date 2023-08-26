@@ -27,6 +27,7 @@
     "pdfkit": "^0.13.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
+    "puppeteer": "^21.1.0",
     "qrcode": "^1.4.4",
     "request": "^2.88.2",
     "sequelize": "^6.23.0",
