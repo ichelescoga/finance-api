@@ -6,7 +6,7 @@ const assetsControllerss = require("./assetsController");
 const moment = require('moment')
 const AWS = require("aws-sdk");
 
-function uploadFileS3(imageBase64, fileName, transactionType){
+function uploadFileS3(pdfBuffer, fileName, transactionType){
   try {
       let s3Bucket;
       s3Bucket = new AWS.S3({
@@ -18,19 +18,16 @@ function uploadFileS3(imageBase64, fileName, transactionType){
           }
       });
 
-      let filePath = `dpiupload/${fileName}`;
-
-      let buffer = Buffer.from(imageBase64.replace(/^data:pdf\/\w+;base64,/, ""), "base64");
-      let imageData = {
+      let filePath = `dpiupload/${fileName}.pdf`;
+      let pdfData = {
           Key: filePath,
-          Body: buffer,
-          ContentEncoding: "base64",
+          Body: pdfBuffer,
           ContentType: "application/pdf",
           CacheControl: "max-age=172800"
       };
 
       return new Promise((resolve) => {
-          s3Bucket.upload(imageData, function (err, data) {
+          s3Bucket.upload(pdfData, function (err, data) {
               if (err) {
                   console.error(err);
                   reject(false);
@@ -67,6 +64,22 @@ async function htmlToBase64Pdf(htmlContent) {
     // Convert the PDF buffer to base64
     const base64Pdf = pdfBuffer.toString('base64');
     return base64Pdf;
+}
+
+async function htmlToPdfBuffer(htmlContent) {
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Set the content of the page to the provided HTML
+  await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+  // Generate a PDF buffer
+  const pdfBuffer = await page.pdf({ format: 'A4' });
+
+  await browser.close();
+
+  return pdfBuffer;
 }
 
 
@@ -705,14 +718,24 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
     //   }
 
 
-    const browser = await puppeteer.launch();
+    /*const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.setContent(htmlContent);
     
     await page.pdf({ path: 'c:/Users/deleon.m120119/Desktop/finance-api/archivo.pdf', format: 'A4' });
 
-    await browser.close();
+    await browser.close();*/
+    
+    let pdfBuffer = await htmlToPdfBuffer();
+    let imageUrl = "";
+    await uploadFileS3(pdfBuffer, results.Id_cotizacion, "")
+        .then(async (s3Response) => {
+            if (s3Response) {
+                imageUrl = s3Response;
+                console.log(s3Response);
+            }
+        })
     } catch (error) {
       next(error);
     }
