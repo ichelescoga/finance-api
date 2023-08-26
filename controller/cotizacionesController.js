@@ -68,7 +68,12 @@ async function htmlToBase64Pdf(htmlContent) {
 
 async function htmlToPdfBuffer(htmlContent) {
 
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch(
+    {
+      headless: false,
+      args: ["--no-sandbox"]
+    }
+    );
   const page = await browser.newPage();
 
   // Set the content of the page to the provided HTML
