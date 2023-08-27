@@ -456,7 +456,7 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
       cuotaNivelMensual = servicioPago[0].monthlyCapitalPayment.toFixed(2)
       let separadorcuatoNivelada = cuotaNivelMensual.split(".");
       cuotaNiveladaEntero= separadorcuatoNivelada[0],
-      cuotaNiveladaDecimal= separadorcuatoNivelada[0]
+      cuotaNiveladaDecimal= separadorcuatoNivelada[1]
     }
 
 
