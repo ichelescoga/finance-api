@@ -427,7 +427,7 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
     let valueTerreno = results.Venta_descuento
     let divisionesValueTerreno = valueTerreno.split(".");
     let enganche = results.Enganche
-    let engancheSeparador = enganche.split(".");
+    let engancheSeparador = enganche.toFixed(2).split(".");
     let valorFinanciar = valueTerreno - enganche
     let valorFinanciarSepar = valorFinanciar.toFixed(2).split(".");
     let PrimerNombre = results.Id_cliente_CLIENTE.Primer_nombre ? results.Id_cliente_CLIENTE.Primer_nombre : "";
