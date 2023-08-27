@@ -740,7 +740,7 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
 
     await browser.close();*/
     
-    let pdfBuffer = await htmlToPdfBuffer();
+    let pdfBuffer = await htmlToPdfBuffer(htmlContent);
     let imageUrl = "";
     await uploadFileS3(pdfBuffer, results.Id_cotizacion, "")
         .then(async (s3Response) => {
