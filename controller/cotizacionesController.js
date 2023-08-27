@@ -426,7 +426,7 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
     let fechaActual = new Date()
     let valueTerreno = results.Venta_descuento
     let divisionesValueTerreno = valueTerreno.split(".");
-    let enganche = (results.Enganche.toString()).toFixed(2)
+    let enganche = (results.Enganche.toFixed(2)).toString()
     let engancheSeparador = enganche.split(".");
     let valorFinanciar = valueTerreno - enganche
     let valorFinanciarSepar = valorFinanciar.toFixed(2).split(".");
