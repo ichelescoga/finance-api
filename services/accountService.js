@@ -36,6 +36,7 @@ const db = require("../src/models");
             }
             paymentList.push(paymentItem)
         }
+        console.log(paymentList)
         return paymentList;
     }
 

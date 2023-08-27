@@ -43,7 +43,7 @@ exports.pmtCalculate = async (req, res, next) => {
             paymentList.push(paymentItem)
         }
 
-        res.json(calculatePaymentList.paymentList)
+        res.json(calculatePaymentList)
     } catch (error) {
       res.status(406).json({
         succes: false,
