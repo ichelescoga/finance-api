@@ -1,20 +1,14 @@
-const accountService = require("../services/accountService");
+const db = require("../src/models");
+  
+  let accountService = function () {
 
-exports.pmtCalculate = async (req, res, next) => {
-    try {
-        let annualI = req.body.annualInterest;
+    let pmtCalculate = (params) => {
+        let annualI = params.annualInterest;
         let monthlyI = annualI / 12;
-        let annualPayments = req.body.annualPayments;
+        let annualPayments = params.annualPayments;
         let monthlyPayments = annualPayments * 12;
-        let totalValue = req.body.totalCreditValue
-        let cashPrice = req.body.precioContado;
-        let params = {}
-        params.annualInterest = req.body.annualInterest
-        params.annualPayments = req.body.annualPayments
-        params.totalCreditValue = req.body.totalCreditValue
-        params.precioContado = req.body.precioContado
-
-        let calculatePaymentList = accountService.pmtCalculate(params);
+        let totalValue = params.totalCreditValue
+        let cashPrice = params.precioContado;
 
         let baseCalculate = Math.pow((1 + (monthlyI/100)), monthlyPayments)
 
@@ -42,16 +36,13 @@ exports.pmtCalculate = async (req, res, next) => {
             }
             paymentList.push(paymentItem)
         }
-
-        res.json(calculatePaymentList.paymentList)
-    } catch (error) {
-      res.status(406).json({
-        succes: false,
-        message: "Payments list generation error.",
-      });
+        return paymentList;
     }
+
+    return {
+        pmtCalculate
+    };
   };
-
-
-
-
+  
+  module.exports = accountService();
+  
