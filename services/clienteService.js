@@ -65,6 +65,8 @@ const db = require("../src/models");
          return
       } else {
           await db.models.CLIENTE.update({
+            Fecha_nacimiento: params.fechaNacimiento,
+            Puesto: params.puesto,
             Foto_DPI_enfrente: params.fotoDpiEnfrente,
             Foto_DPI_reverso: params.fotoDpiReverso
         },{

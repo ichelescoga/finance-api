@@ -10,6 +10,8 @@ exports.createAplicacionCredito = async (req, res, next) => {
     if (cotizacion.Id_cliente) {
       let paramsUpdate  = {
         id: cotizacion.Id_cliente,
+        puesto: req.body.puesto,
+        fechaNacimiento: req.body.fechaNacimiento,
         fotoDpiEnfrente: req.body.fotoDpiEnfrente,
         fotoDpiReverso: req.body.fotoDpiReverso,
       };
