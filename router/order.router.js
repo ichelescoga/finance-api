@@ -131,5 +131,6 @@ router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.
 
 
 router.post("/cotizacionPdf/:id", cotizacionesController.findOneCotizacionPdf)
-
+router.post("/preVentaPdf/:id", cotizacionesController.findOnePrecioVentaPdf)
+router.get("/infoPreventa/:id", auth.verifyToken, cotizacionesController.findOneCotizacionInfoPreventa)
 module.exports = router

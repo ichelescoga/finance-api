@@ -331,6 +331,12 @@ const db = require("../src/models");
           {
             model: db.models.CLIENTE,
             as: "Id_cliente_CLIENTE",
+            include: [
+              {
+                model: db.models.PAIS,
+                as: "Id_nacionalidad_PAI",
+              },
+            ],
           },
           {
             model: db.models.ESTADO,
@@ -358,6 +364,36 @@ const db = require("../src/models");
       });
       return cotizacion;
     };
+
+    let findOneInfoPreventapdf = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({
+        attributes: ["Id_cotizacion"],
+        where: { Id_cotizacion: params},
+        include: [
+          {
+            model: db.models.CLIENTE,
+            as: "Id_cliente_CLIENTE",
+            include: [
+              {
+                model: db.models.PAIS,
+                as: "Id_nacionalidad_PAI",
+              },
+            ],
+          },
+          {
+            model: db.models.UNIDAD_COTIZACION,
+            as: "UNIDAD_COTIZACIONs",
+            include: [
+              {
+                model: db.models.UNIDAD,
+                as: "Id_unidad_UNIDAD",
+              },
+            ],
+          },
+        ],
+      });
+      return cotizacion;
+    };
     return {
         listaCotizaciones,
         creatCotizacion,
@@ -369,7 +405,8 @@ const db = require("../src/models");
         listCotizAprovadoReservado,
         updateCotizacionVendida,
         updateCotizEstado,
-        findOneCotizacionpdf
+        findOneCotizacionpdf,
+        findOneInfoPreventapdf
 
     };
   };

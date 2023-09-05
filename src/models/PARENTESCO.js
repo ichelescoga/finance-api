@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: {          
       field: 'updated_at',          
       type: Sequelize.DATE 
-    }
+    },
   }, {
     sequelize,
     tableName: 'PARENTESCO',

@@ -1,18 +1,30 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('DETALLE_EJECUTIVO', {
-    Id_detalle_ejecutivo: {
+  return sequelize.define('REFERENCIA', {
+    Id_referecia: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_plan_financiero: {
+    Id_compraventa: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'COMPRA_VENTA',
+        key: 'Id_compraventa'
+      }
+    },
+    Nombre_completo: {
+      type: DataTypes.STRING(300),
       allowNull: true
     },
-    Id_ejecutivo: {
-      type: DataTypes.INTEGER,
+    Residencia: {
+      type: DataTypes.STRING(150),
+      allowNull: true
+    },
+    Telefono: {
+      type: DataTypes.STRING(20),
       allowNull: true
     },     
     createdAt: {          
@@ -25,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     },
   }, {
     sequelize,
-    tableName: 'DETALLE_EJECUTIVO',
+    tableName: 'REFERENCIA',
     timestamps: true,
     indexes: [
       {
@@ -33,15 +45,14 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_detalle_ejecutivo" },
+          { name: "Id_referecia" },
         ]
       },
       {
-        name: "Id_detalle_ejecutivo_UNIQUE",
-        unique: true,
+        name: "fk_Referencias_COMPRA_VENTA1_idx",
         using: "BTREE",
         fields: [
-          { name: "Id_detalle_ejecutivo" },
+          { name: "Id_compraventa" },
         ]
       },
     ]

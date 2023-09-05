@@ -103,7 +103,11 @@ module.exports = function(sequelize, DataTypes) {
     Comentario: {
       type: DataTypes.STRING(500),
       allowNull: true
-    },        
+    },
+    Url_compraventa: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },     
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      
@@ -111,7 +115,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: {          
       field: 'updated_at',          
       type: Sequelize.DATE 
-    }
+    },
   }, {
     sequelize,
     tableName: 'COTIZACION',
