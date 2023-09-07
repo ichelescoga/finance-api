@@ -10,6 +10,7 @@ var _DETALLE_EJECUTIVO = require("./DETALLE_EJECUTIVO");
 var _DETALLE_FIADOR = require("./DETALLE_FIADOR");
 var _EJECUTIVO = require("./EJECUTIVO");
 var _EMPLEADO_ASESOR = require("./EMPLEADO_ASESOR");
+var _EMPLEADO_EMPRESA = require("./EMPLEADO_EMPRESA");
 var _EMPRESA = require("./EMPRESA");
 var _ENTIDAD_FINANCIERA = require("./ENTIDAD_FINANCIERA");
 var _ESTADO = require("./ESTADO");
@@ -42,6 +43,7 @@ function initModels(sequelize) {
   var DETALLE_FIADOR = _DETALLE_FIADOR(sequelize, DataTypes);
   var EJECUTIVO = _EJECUTIVO(sequelize, DataTypes);
   var EMPLEADO_ASESOR = _EMPLEADO_ASESOR(sequelize, DataTypes);
+  var EMPLEADO_EMPRESA = _EMPLEADO_EMPRESA(sequelize, DataTypes);
   var EMPRESA = _EMPRESA(sequelize, DataTypes);
   var ENTIDAD_FINANCIERA = _ENTIDAD_FINANCIERA(sequelize, DataTypes);
   var ESTADO = _ESTADO(sequelize, DataTypes);
@@ -63,10 +65,12 @@ function initModels(sequelize) {
   var User = _User(sequelize, DataTypes);
 
   COTIZACION.belongsToMany(UNIDAD, { as: 'Id_unidad_UNIDADs', through: UNIDAD_COTIZACION, foreignKey: "Id_cotizacion", otherKey: "Id_unidad" });
+  EMPLEADO_ASESOR.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESAs', through: EMPLEADO_EMPRESA, foreignKey: "Id_empleado", otherKey: "Id_empresa" });
+  EMPRESA.belongsToMany(EMPLEADO_ASESOR, { as: 'Id_empleado_EMPLEADO_ASESORs', through: EMPLEADO_EMPRESA, foreignKey: "Id_empresa", otherKey: "Id_empleado" });
   EMPRESA.belongsToMany(PROYECTO, { as: 'Id_proyecto_PROYECTOs', through: PLAN_FINANCIERO_PROY, foreignKey: "Id_empresa", otherKey: "Id_proyecto" });
   ESTADO.belongsToMany(PROYECTO, { as: 'Id_proyecto_PROYECTO_UNIDADs', through: UNIDAD, foreignKey: "Id_estado", otherKey: "Id_proyecto" });
   PLAN_FINANCIERO_PROY.belongsToMany(PUESTO, { as: 'Id_puesto_PUESTOs', through: EJECUTIVO, foreignKey: "Id_plan_financiero", otherKey: "Id_puesto" });
-  PROYECTO.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESAs', through: PLAN_FINANCIERO_PROY, foreignKey: "Id_proyecto", otherKey: "Id_empresa" });
+  PROYECTO.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESA_PLAN_FINANCIERO_PROYs', through: PLAN_FINANCIERO_PROY, foreignKey: "Id_proyecto", otherKey: "Id_empresa" });
   PROYECTO.belongsToMany(ESTADO, { as: 'Id_estado_ESTADOs', through: UNIDAD, foreignKey: "Id_proyecto", otherKey: "Id_estado" });
   PUESTO.belongsToMany(PLAN_FINANCIERO_PROY, { as: 'Id_plan_financiero_PLAN_FINANCIERO_PROYs', through: EJECUTIVO, foreignKey: "Id_puesto", otherKey: "Id_plan_financiero" });
   UNIDAD.belongsToMany(COTIZACION, { as: 'Id_cotizacion_COTIZACIONs', through: UNIDAD_COTIZACION, foreignKey: "Id_unidad", otherKey: "Id_cotizacion" });
@@ -104,10 +108,12 @@ function initModels(sequelize) {
   EJECUTIVO.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_ejecutivo"});
   ASESOR_DETALLE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(ASESOR_DETALLE, { as: "ASESOR_DETALLEs", foreignKey: "Id_empleado"});
-  EMPRESA.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
-  EMPLEADO_ASESOR.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_empleado"});
+  EMPLEADO_EMPRESA.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
+  EMPLEADO_ASESOR.hasMany(EMPLEADO_EMPRESA, { as: "EMPLEADO_EMPRESAs", foreignKey: "Id_empleado"});
   USER_PROFILE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_empleado"});
+  EMPLEADO_EMPRESA.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
+  EMPRESA.hasMany(EMPLEADO_EMPRESA, { as: "EMPLEADO_EMPRESAs", foreignKey: "Id_empresa"});
   PLAN_FINANCIERO_PROY.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
   EMPRESA.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_empresa"});
   PROYECTO.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
@@ -169,6 +175,7 @@ function initModels(sequelize) {
     DETALLE_FIADOR,
     EJECUTIVO,
     EMPLEADO_ASESOR,
+    EMPLEADO_EMPRESA,
     EMPRESA,
     ENTIDAD_FINANCIERA,
     ESTADO,

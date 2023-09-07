@@ -78,9 +78,15 @@ let userRepository = function () {
               as: "Id_empleado_EMPLEADO_ASESOR",
               include: [
                 {
-                  model: db.models.EMPRESA,
-                  as: "EMPRESAs",
-                  attributes: ["Id_empresa", "Nombre_comercial"],
+                  model: db.models.EMPLEADO_EMPRESA,
+                  as: "EMPLEADO_EMPRESAs",
+                  include: [
+                    {
+                      model: db.models.EMPRESA,
+                      as: "Id_empresa_EMPRESA",
+                      attributes: ["Id_empresa", "Nombre_comercial"]
+                    },
+                  ],
                 },
               ],
             },
@@ -160,9 +166,10 @@ let getUserByEmailSinPasswordBackend = async (params) => {
 }
 
 
-let findOneProyecto = async (params) => {
-  const Proyecto = await db.models.PROYECTO.findOne({ 
+let findProyectoEmpresa = async (params) => {
+  const Proyecto = await db.models.PROYECTO.findAll({ 
     where: { Id_empresa: params },
+    attributes: ["Id_proyecto", "Nombre_proyecto"],
   });
   return Proyecto;
 };
@@ -173,7 +180,7 @@ let findOneProyecto = async (params) => {
     getUserByEmailSinPassword,
     getUserByEmailSinPasswordBackend,
     listUser,
-    findOneProyecto
+    findProyectoEmpresa
   };
 };
 
