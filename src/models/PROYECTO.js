@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     Id_empresa: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'EMPRESA',
         key: 'Id_empresa'
@@ -84,7 +85,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: {          
       field: 'updated_at',          
       type: Sequelize.DATE 
-    },
+    }
   }, {
     sequelize,
     tableName: 'PROYECTO',
@@ -98,6 +99,7 @@ module.exports = function(sequelize, DataTypes) {
           { name: "Id_proyecto" },
           { name: "Id_pais" },
           { name: "Id_departamento" },
+          { name: "Id_empresa" },
         ]
       },
       {

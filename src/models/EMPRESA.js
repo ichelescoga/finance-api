@@ -7,6 +7,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    Id_empleado: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'EMPLEADO_ASESOR',
+        key: 'Id_empleado'
+      }
+    },
     Razon_social: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -86,7 +94,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: {          
       field: 'updated_at',          
       type: Sequelize.DATE 
-    },
+    }
   }, {
     sequelize,
     tableName: 'EMPRESA',
@@ -127,6 +135,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_municipio" },
+        ]
+      },
+      {
+        name: "fk_EMPRESA_EMPLEADO_ASESOR1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_empleado" },
         ]
       },
     ]

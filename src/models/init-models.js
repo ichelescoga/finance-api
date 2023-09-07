@@ -104,6 +104,8 @@ function initModels(sequelize) {
   EJECUTIVO.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_ejecutivo"});
   ASESOR_DETALLE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(ASESOR_DETALLE, { as: "ASESOR_DETALLEs", foreignKey: "Id_empleado"});
+  EMPRESA.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
+  EMPLEADO_ASESOR.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_empleado"});
   USER_PROFILE.belongsTo(EMPLEADO_ASESOR, { as: "Id_empleado_EMPLEADO_ASESOR", foreignKey: "Id_empleado"});
   EMPLEADO_ASESOR.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_empleado"});
   PLAN_FINANCIERO_PROY.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});

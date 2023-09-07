@@ -54,10 +54,15 @@ exports.signIn = async (req, res, next) => {
     } else {
       let acccesToken = await security.generateToken(results);
       let resultsUser = await UserService.listUser(userCredential);
+      let usuarioLog = resultsUser.USER_PROFILEs.length > 0 ? resultsUser.USER_PROFILEs[0]: null;
+      let usuarioLog1 = usuarioLog.Id_empleado_EMPLEADO_ASESOR.EMPRESAs.length > 0 ? usuarioLog.Id_empleado_EMPLEADO_ASESOR.EMPRESAs[0] : null;
+      let proyectoId = usuarioLog1 ? await UserService.findOneProyecto(usuarioLog1.Id_empresa) : null;
+     
       res.json({
         message: "Successful authentication.",
         token: acccesToken,
-        usuario: resultsUser
+        usuario: resultsUser,
+        proyecto: proyectoId
       });
     }
   } catch (error) {

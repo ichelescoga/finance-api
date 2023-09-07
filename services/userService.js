@@ -76,6 +76,13 @@ let userRepository = function () {
             {
               model: db.models.EMPLEADO_ASESOR,
               as: "Id_empleado_EMPLEADO_ASESOR",
+              include: [
+                {
+                  model: db.models.EMPRESA,
+                  as: "EMPRESAs",
+                  attributes: ["Id_empresa", "Nombre_comercial"],
+                },
+              ],
             },
             {
               model: db.models.ROL,
@@ -152,13 +159,21 @@ let getUserByEmailSinPasswordBackend = async (params) => {
   });
 }
 
+
+let findOneProyecto = async (params) => {
+  const Proyecto = await db.models.PROYECTO.findOne({ 
+    where: { Id_empresa: params },
+  });
+  return Proyecto;
+};
   return {
     listlogin,
     create,
     getUserByEmail,
     getUserByEmailSinPassword,
     getUserByEmailSinPasswordBackend,
-    listUser
+    listUser,
+    findOneProyecto
   };
 };
 
