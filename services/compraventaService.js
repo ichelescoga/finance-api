@@ -40,9 +40,20 @@ const db = require("../src/models");
       return newCotizacionUnidad;
     };
 
+
+    let createReferencia = async (params) => {
+      const newReferencia = await db.models.REFERENCIA.create({
+        Id_compraventa: params.idCompraventa,
+        Nombre_completo: params.nombreCompleto,
+        Residencia: params.residencia,
+        Telefono: params.telefono
+      });
+      return newReferencia;
+    };
  
     return {
         createFormularioCompraVenta,
+        createReferencia
     };
   };
   
