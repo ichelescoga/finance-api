@@ -167,7 +167,7 @@ let getUserByEmailSinPasswordBackend = async (params) => {
 
 
 let findProyectoEmpresa = async (params) => {
-  const Proyecto = await db.models.PROYECTO.findAll({ 
+  const Proyecto = await db.models.PROYECTO.findOne({ 
     where: { Id_empresa: params },
     attributes: ["Id_proyecto", "Nombre_proyecto"],
   });
