@@ -121,7 +121,7 @@ const db = require("../src/models");
     };
 
 
-    let listCotizCotizadasRechazada = async () => {
+    let listCotizCotizadasRechazada = async (idProyecto) => {
       const Op = db.Sequelize.Op;
       const cotizaciones = await db.models.COTIZACION.findAll({
         where: {
@@ -150,6 +150,10 @@ const db = require("../src/models");
               {
                 model: db.models.UNIDAD,
                 as: "Id_unidad_UNIDAD",
+                required:true,
+                where: {
+                  Id_proyecto: idProyecto
+                }
               },
             ],
           },

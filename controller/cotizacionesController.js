@@ -117,7 +117,7 @@ exports.listCotizaciones = async (req, res, next) => {
 
 exports.listaCotizacionesCotizaRechazada = async (req, res, next) => {
   try {
-      let results = await cotizaciones.listCotizCotizadasRechazada();
+      let results = await cotizaciones.listCotizCotizadasRechazada(req.params.idProyecto);
       const longitud = results.length;
   
       if (longitud >= 1) {
