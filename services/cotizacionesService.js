@@ -146,6 +146,7 @@ const db = require("../src/models");
           {
             model: db.models.UNIDAD_COTIZACION,
             as: "UNIDAD_COTIZACIONs",
+            required:true,
             include: [
               {
                 model: db.models.UNIDAD,
