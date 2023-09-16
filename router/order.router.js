@@ -17,6 +17,7 @@ const ejecutivoController = require('../controller/ejecutivoController')
 const cotizacionesController = require('../controller/cotizacionesController')
 const clientesCortroller = require('../controller/clientesController')
 const aplicarCreditoCortroller = require('../controller/creditoController')
+const albumController = require('../controller/albunController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -133,4 +134,24 @@ router.put("/actualizarCredito/:id", auth.verifyToken, aplicarCreditoCortroller.
 router.post("/cotizacionPdf/:id", cotizacionesController.findOneCotizacionPdf)
 router.post("/preVentaPdf/:id", cotizacionesController.findOnePrecioVentaPdf)
 router.get("/infoPreventa/:id", auth.verifyToken, cotizacionesController.findOneCotizacionInfoPreventa)
+
+
+
+//Modulo de mercadeo
+//Albun
+router.post("/crearAlbum",  auth.verifyToken, albumController.creacionAlbum)
+//Recurso
+router.post("/crearRecurso",  auth.verifyToken, albumController.creacionRecurso)
+//TiposRecurso
+router.get("/listaRecursos", auth.verifyToken, albumController.listaTiposRecurso)
+//lista de albums por proyecto 
+router.get("/albumsProyect/proyect/:idProyect/idStat/:idState", auth.verifyToken, albumController.listaAlbumsProyect)
+//Favoritas 
+router.get("/albumsProyectFavoritas/:idProyect", auth.verifyToken, albumController.listaAlbumsFavoritas)
+//RecursosAlbums
+router.get("/recursos/album/:idAlbum/idStat/:idState", auth.verifyToken, albumController.listaAlbunRecursos)
+//UpdateAlbums
+router.put("/actualizarAlbum/:idAlbum", auth.verifyToken, albumController.updateAlbum)
+//UpdateRecurso
+router.put("/actualizarRecurso/:idRecurso", auth.verifyToken, albumController.updateRecurso)
 module.exports = router
