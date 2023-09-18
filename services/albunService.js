@@ -22,6 +22,7 @@ const db = require("../src/models");
                   model: db.models.RECURSO,
                   as: "RECURSOs",
                   where: { State: params.idState},
+                  required: false,
                   include: [
                     {
                       model: db.models.TIPO_RECURSO,
