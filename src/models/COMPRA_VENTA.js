@@ -131,7 +131,15 @@ module.exports = function(sequelize, DataTypes) {
     FechaCreacion: {
       type: DataTypes.DATEONLY,
       allowNull: true
-    },     
+    },
+    Area_lote: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Lote_numero: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },   
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

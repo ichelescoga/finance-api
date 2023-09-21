@@ -36,6 +36,8 @@ const db = require("../src/models");
         Valor_cuotas: params.valorCuota,
         Ciudad: params.ciudad,
         FechaCreacion: params.fechaCreacion,
+        Area_lote: params.areaLote,
+        Lote_numero:  params.loteNumero
       });
       return newCotizacionUnidad;
     };
