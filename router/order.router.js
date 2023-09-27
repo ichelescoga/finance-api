@@ -18,6 +18,7 @@ const cotizacionesController = require('../controller/cotizacionesController')
 const clientesCortroller = require('../controller/clientesController')
 const aplicarCreditoCortroller = require('../controller/creditoController')
 const albumController = require('../controller/albunController')
+const contactController = require('../controller/contactoController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -154,4 +155,16 @@ router.get("/recursos/album/:idAlbum/idStat/:idState", auth.verifyToken, albumCo
 router.put("/actualizarAlbum/:idAlbum", auth.verifyToken, albumController.updateAlbum)
 //UpdateRecurso
 router.put("/actualizarRecurso/:idRecurso", auth.verifyToken, albumController.updateRecurso)
+
+
+
+//Contacto
+//Create contacto
+router.post("/crearContacto",  auth.verifyToken, contactController.createContact),
+//Find contactos por proyecto 
+router.get("/contactos/:id", auth.verifyToken, contactController.findContacts)
+//Update contacto 
+router.put("/actualizarContacto/:id", auth.verifyToken, contactController.updateContacto)
+//Update state contacto
+router.put("/actuContactState/:id", auth.verifyToken, contactController.updateContactoState)
 module.exports = router

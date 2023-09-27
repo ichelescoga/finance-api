@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ALBUN', {
-    Id_albun: {
+  return sequelize.define('CONTACTO', {
+    Id_contacto: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -16,16 +16,24 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id_proyecto'
       }
     },
-    Name_albun: {
+    State: {
+      type: DataTypes.TINYINT,
+      allowNull: true
+    },
+    Nombre_completo: {
+      type: DataTypes.STRING(300),
+      allowNull: false
+    },
+    Telefono: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    Correo: {
       type: DataTypes.STRING(150),
       allowNull: true
     },
-    Posicion: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    State: {
-      type: DataTypes.TINYINT,
+    Direccion: {
+      type: DataTypes.STRING(150),
       allowNull: true
     },     
     createdAt: {          
@@ -38,7 +46,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'ALBUN',
+    tableName: 'CONTACTO',
     timestamps: true,
     indexes: [
       {
@@ -46,12 +54,12 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_albun" },
+          { name: "Id_contacto" },
           { name: "Id_proyecto" },
         ]
       },
       {
-        name: "fk_ALBUn_PROYECTO1_idx",
+        name: "fk_CONTACTO_PROYECTO1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },

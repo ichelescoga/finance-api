@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Posicion: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: true
     },
     State: {
       type: DataTypes.TINYINT,
@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     Favorito: {
       type: DataTypes.TINYINT,
       allowNull: true
-    },    
+    },     
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      

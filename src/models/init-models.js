@@ -4,6 +4,7 @@ var _APLICACION = require("./APLICACION");
 var _ASESOR_DETALLE = require("./ASESOR_DETALLE");
 var _CLIENTE = require("./CLIENTE");
 var _COMPRA_VENTA = require("./COMPRA_VENTA");
+var _CONTACTO = require("./CONTACTO");
 var _COTIZACION = require("./COTIZACION");
 var _DEPARTAMENTO = require("./DEPARTAMENTO");
 var _DETALLE_COTIZACION = require("./DETALLE_COTIZACION");
@@ -40,6 +41,7 @@ function initModels(sequelize) {
   var ASESOR_DETALLE = _ASESOR_DETALLE(sequelize, DataTypes);
   var CLIENTE = _CLIENTE(sequelize, DataTypes);
   var COMPRA_VENTA = _COMPRA_VENTA(sequelize, DataTypes);
+  var CONTACTO = _CONTACTO(sequelize, DataTypes);
   var COTIZACION = _COTIZACION(sequelize, DataTypes);
   var DEPARTAMENTO = _DEPARTAMENTO(sequelize, DataTypes);
   var DETALLE_COTIZACION = _DETALLE_COTIZACION(sequelize, DataTypes);
@@ -154,6 +156,8 @@ function initModels(sequelize) {
   PLAN_FINANCIERO_PROY.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_plan_financiero"});
   ALBUN.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(ALBUN, { as: "ALBUNs", foreignKey: "Id_proyecto"});
+  CONTACTO.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_proyecto"});
   PLAN_FINANCIERO_PROY.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_proyecto"});
   UNIDAD.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
@@ -181,6 +185,7 @@ function initModels(sequelize) {
     ASESOR_DETALLE,
     CLIENTE,
     COMPRA_VENTA,
+    CONTACTO,
     COTIZACION,
     DEPARTAMENTO,
     DETALLE_COTIZACION,

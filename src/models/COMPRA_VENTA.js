@@ -139,7 +139,15 @@ module.exports = function(sequelize, DataTypes) {
     Lote_numero: {
       type: DataTypes.STRING(100),
       allowNull: true
-    },   
+    },     
+    createdAt: {          
+      field: 'created_at',          
+      type: Sequelize.DATE,      
+    },      
+    updatedAt: {          
+      field: 'updated_at',          
+      type: Sequelize.DATE 
+    },     
     createdAt: {          
       field: 'created_at',          
       type: Sequelize.DATE,      
