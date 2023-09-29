@@ -71,11 +71,10 @@ const db = require("../src/models");
                 {
                   model: db.models.RECURSO,
                   as: "RECURSOs",
-                  where: { Favorito: 1},
+                  where: { Favorito: 1, State: 1 },
                   include: [
                     {
                       model: db.models.TIPO_RECURSO,
-                      where: { State: 1},
                       as: "Id_tipo_recurso_TIPO_RECURSO",
                     },
                   ],
