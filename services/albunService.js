@@ -21,7 +21,7 @@ const db = require("../src/models");
                 {
                   model: db.models.RECURSO,
                   as: "RECURSOs",
-                  where: { State: params.idState},
+                  where: { State: 1},
                   required: false,
                   include: [
                     {
@@ -29,6 +29,8 @@ const db = require("../src/models");
                       as: "Id_tipo_recurso_TIPO_RECURSO",
                     },
                   ],
+                  order: [["Posicion", "ASC"]],
+                  limit: 1,
                 },
               ],
             }
@@ -72,6 +74,7 @@ const db = require("../src/models");
                   model: db.models.RECURSO,
                   as: "RECURSOs",
                   where: { Favorito: 1, State: 1 },
+                  order: [["Posicion", "ASC"]],
                   include: [
                     {
                       model: db.models.TIPO_RECURSO,
