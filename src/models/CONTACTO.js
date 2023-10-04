@@ -16,6 +16,15 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id_proyecto'
       }
     },
+    Id_user_profile: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'USER_PROFILE',
+        key: 'Id_user_profile'
+      }
+    },
     State: {
       type: DataTypes.TINYINT,
       allowNull: true
@@ -56,6 +65,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "Id_contacto" },
           { name: "Id_proyecto" },
+          { name: "Id_user_profile" },
         ]
       },
       {
@@ -63,6 +73,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },
+        ]
+      },
+      {
+        name: "fk_CONTACTO_USER_PROFILE1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_user_profile" },
         ]
       },
     ]

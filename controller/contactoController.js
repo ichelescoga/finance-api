@@ -1,22 +1,38 @@
 const contactoService = require("../services/contactoService");
-
+const security = require("../src/utils/security");
+const UserService = require("../services/userService");
 
 exports.createContact = async (req, res, next) => {
   try {
-    let params = {
-      idProyecto: req.body.idProyecto,
-      state: req.body.state,
-      nombreCompleto: req.body.nombreCompleto,
-      telefono: req.body.telefono,
-      correo: req.body.correo,
-      direccion: req.body.direccion,
-    };
+    let nonce = req.headers["authorization"];
+    let resultsToken = await security.decodeToken(nonce);
+    let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
+    if (findUser.USER_PROFILEs.length > 0) {
+      
+      let params = {
+        idProyecto: req.body.idProyecto,
+        state: req.body.state,
+        nombreCompleto: req.body.nombreCompleto,
+        telefono: req.body.telefono,
+        correo: req.body.correo,
+        direccion: req.body.direccion,
+        userProfile: findUser.USER_PROFILEs[0].Id_user_profile
+      };
+  
+      await contactoService.createContacto(params);
+      res.status(200).json({
+        succes: true,
+        message: "Contacto Creado con Exito",
+      });
+    }else{
+      res.status(200).json({
+        succes: true,
+        message: "A ocurrido un problema verifica tu usuario",
+        body: findUser
+      });
+    }
 
-    await contactoService.createContacto(params);
-    res.status(200).json({
-      succes: true,
-      message: "Contacto Creado con Exito",
-    });
+    
   } catch (error) {
     res.status(406).json({
       succes: false,

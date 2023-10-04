@@ -11,7 +11,8 @@ const db = require("../src/models");
         Nombre_completo: params.nombreCompleto,
         Telefono: params.telefono,
         Correo: params.correo,
-        Direccion: params.direccion
+        Direccion: params.direccion,
+        Id_user_profile: params.userProfile
       });
       return newContacto;
     };
