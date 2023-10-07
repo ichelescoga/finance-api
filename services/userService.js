@@ -165,6 +165,22 @@ let getUserByEmailSinPasswordBackend = async (params) => {
   });
 }
 
+let getUserByEmailWithoutPassword = async (params) => {
+  return await  db.models.User.findOne({
+    attributes: ["Correo", "Nombre", "created_at", "updated_at"],
+      where: {
+          Correo: params
+      },
+      include: [
+        {
+          model: db.models.USER_PROFILE,
+          as: "USER_PROFILEs",
+          required: true,
+        },
+    ],  
+  });
+}
+
 
 let findProyectoEmpresa = async (params) => {
   const Proyecto = await db.models.PROYECTO.findOne({ 
@@ -178,6 +194,7 @@ let findProyectoEmpresa = async (params) => {
     create,
     getUserByEmail,
     getUserByEmailSinPassword,
+    getUserByEmailWithoutPassword,
     getUserByEmailSinPasswordBackend,
     listUser,
     findProyectoEmpresa

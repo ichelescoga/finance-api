@@ -6,7 +6,7 @@ exports.createContact = async (req, res, next) => {
   try {
     let nonce = req.headers["authorization"];
     let resultsToken = await security.decodeToken(nonce);
-    let findUser = await UserService.getUserByEmailSinPasswordBackend(resultsToken.email);
+    let findUser = await UserService.getUserByEmailWithoutPassword(resultsToken.email);
     if (findUser.USER_PROFILEs.length > 0) {
       
       let params = {
