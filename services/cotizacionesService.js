@@ -399,6 +399,78 @@ const db = require("../src/models");
       });
       return cotizacion;
     };
+
+
+
+    let descuentoCotizacion = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({
+        where: { Id_cotizacion: params},
+        include: [
+          {
+            model: db.models.UNIDAD_COTIZACION,
+            as: "UNIDAD_COTIZACIONs",
+            attributes: ["Id_unidad_cotizacion"],
+            required: true,
+            include: [
+              {
+                model: db.models.UNIDAD,
+                as: "Id_unidad_UNIDAD",
+                attributes: ["Id_unidad"],
+                required: true,
+                include: [
+                  {
+                    model: db.models.PROYECTO,
+                    as: "Id_proyecto_PROYECTO",
+                    attributes: ["Id_proyecto"],
+                    required: true,
+                    include: [
+                      {
+                        model: db.models.CONFIGURACION_DESCUENTO,
+                        as: "CONFIGURACION_DESCUENTOs",
+                        required: true,
+                        include: [
+                            {
+                                model: db.models.TEMPORADA_DESCUENTO,
+                                where: { Status : 1},
+                                as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
+                                required: true
+                            },
+                        ], 
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      return cotizacion;
+    };
+
+
+    let updateDescuento = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.idCotizacion } });
+
+      if(!cotizacion) {
+         return
+      } else {
+          await db.models.COTIZACION.update({
+          Descuento: params.descuento,
+          Venta_descuento: params.totalDescuento,
+          Solicitud_descuento: params.solicitudDescuento,
+          Estado_descuento: params.estadoDescuento,
+        },{
+          where:{
+            Id_cotizacion: params.idCotizacion
+          }
+      });
+      }
+      const cotizacionActualizada = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.idCotizacion } });
+      return cotizacionActualizada
+    };
+    
+
     return {
         listaCotizaciones,
         creatCotizacion,
@@ -411,7 +483,9 @@ const db = require("../src/models");
         updateCotizacionVendida,
         updateCotizEstado,
         findOneCotizacionpdf,
-        findOneInfoPreventapdf
+        findOneInfoPreventapdf,
+        descuentoCotizacion,
+        updateDescuento
 
     };
   };

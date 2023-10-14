@@ -442,7 +442,7 @@ exports.findOneCotizacionPdf = async (req, res, next) => {
     
 
     let parametrosPago = {
-      annualInterest: 6.2,
+      annualInterest: 16,
       annualPayments: results.Meses_plazo / 12,
       totalCreditValue: results.Venta_descuento,
       precioContado: results.Precio_contado === 1 ? true : false,
@@ -852,7 +852,7 @@ exports.findOnePrecioVentaPdf = async (req, res, next) => {
     
 
     let parametrosPago = {
-      annualInterest: 6.2,
+      annualInterest: 16,
       annualPayments: results.Meses_plazo / 12,
       totalCreditValue: results.Venta_descuento,
       precioContado: results.Precio_contado === 1 ? true : false,

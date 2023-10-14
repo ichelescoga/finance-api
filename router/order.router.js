@@ -19,6 +19,7 @@ const clientesCortroller = require('../controller/clientesController')
 const aplicarCreditoCortroller = require('../controller/creditoController')
 const albumController = require('../controller/albunController')
 const contactController = require('../controller/contactoController')
+const temporadaDescuentoController = require('../controller/descuentoController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -167,4 +168,23 @@ router.get("/contactos/:id", auth.verifyToken, contactController.findContacts)
 router.put("/actualizarContacto/:id", auth.verifyToken, contactController.updateContacto)
 //Update state contacto
 router.put("/actuContactState/:id", auth.verifyToken, contactController.updateContactoState)
+
+
+
+
+//Descuento 
+//TemporadaDescuento 
+router.post("/createTemporadaDesc",  auth.verifyToken, temporadaDescuentoController.createTemporadaDesc),
+//Configuracion Descuento 
+router.post("/createConfiguracionDesc",  auth.verifyToken, temporadaDescuentoController.createConfigDesc),
+//DescuentosProyecto 
+router.get("/descuentos/:id", auth.verifyToken, temporadaDescuentoController.findDescuentoProyect)
+//SolicitudDescuento
+router.get("/requeisitionSoliDesc", auth.verifyToken, temporadaDescuentoController.findAprobDesc)
+//DenegarDescuento 
+router.put("/denegarSolicitudDescuento/:id", auth.verifyToken, temporadaDescuentoController.denegarSolicitudDescuento)
+//AprobacionDescuento
+router.put("/aprobacionSolicitudDescuento/:id", auth.verifyToken, temporadaDescuentoController.aprobacionDescuento)
+//Descuento aprobados 
+router.get("/stateDescuento/:id", auth.verifyToken, temporadaDescuentoController.finSolicitudDescuentos)
 module.exports = router

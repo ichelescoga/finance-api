@@ -1,23 +1,27 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('TIPO_PROYECTO', {
-    Id_tipo_proyecto: {
+  return sequelize.define('TEMPORADA_DESCUENTO', {
+    Id_temporada_descuento: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Descripcion: {
-      type: DataTypes.STRING(100),
+    Temporada: {
+      type: DataTypes.STRING(150),
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    Fecha_incial: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    Fecha_final: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    Status: {
+      type: DataTypes.TINYINT,
+      allowNull: true
     },     
     createdAt: {          
       field: 'created_at',          
@@ -29,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'TIPO_PROYECTO',
+    tableName: 'TEMPORADA_DESCUENTO',
     timestamps: true,
     indexes: [
       {
@@ -37,15 +41,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_tipo_proyecto" },
-        ]
-      },
-      {
-        name: "Id_tipo_proyecto_UNIQUE",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "Id_tipo_proyecto" },
+          { name: "Id_temporada_descuento" },
         ]
       },
     ]

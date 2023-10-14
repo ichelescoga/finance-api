@@ -107,6 +107,18 @@ module.exports = function(sequelize, DataTypes) {
     Url_compraventa: {
       type: DataTypes.STRING(500),
       allowNull: true
+    },
+    Monto_descuento_soli: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: true
+    },
+    Solicitud_descuento: {
+      type: DataTypes.TINYINT,
+      allowNull: true
+    },
+    Estado_descuento: {
+      type: DataTypes.TINYINT,
+      allowNull: true
     },     
     createdAt: {          
       field: 'created_at',          

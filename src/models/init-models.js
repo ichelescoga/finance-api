@@ -4,6 +4,7 @@ var _APLICACION = require("./APLICACION");
 var _ASESOR_DETALLE = require("./ASESOR_DETALLE");
 var _CLIENTE = require("./CLIENTE");
 var _COMPRA_VENTA = require("./COMPRA_VENTA");
+var _CONFIGURACION_DESCUENTO = require("./CONFIGURACION_DESCUENTO");
 var _CONTACTO = require("./CONTACTO");
 var _COTIZACION = require("./COTIZACION");
 var _DEPARTAMENTO = require("./DEPARTAMENTO");
@@ -27,6 +28,7 @@ var _PUESTO = require("./PUESTO");
 var _RECURSO = require("./RECURSO");
 var _REFERENCIA = require("./REFERENCIA");
 var _ROL = require("./ROL");
+var _TEMPORADA_DESCUENTO = require("./TEMPORADA_DESCUENTO");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
 var _TIPO_PROYECTO = require("./TIPO_PROYECTO");
 var _TIPO_RECURSO = require("./TIPO_RECURSO");
@@ -41,6 +43,7 @@ function initModels(sequelize) {
   var ASESOR_DETALLE = _ASESOR_DETALLE(sequelize, DataTypes);
   var CLIENTE = _CLIENTE(sequelize, DataTypes);
   var COMPRA_VENTA = _COMPRA_VENTA(sequelize, DataTypes);
+  var CONFIGURACION_DESCUENTO = _CONFIGURACION_DESCUENTO(sequelize, DataTypes);
   var CONTACTO = _CONTACTO(sequelize, DataTypes);
   var COTIZACION = _COTIZACION(sequelize, DataTypes);
   var DEPARTAMENTO = _DEPARTAMENTO(sequelize, DataTypes);
@@ -64,6 +67,7 @@ function initModels(sequelize) {
   var RECURSO = _RECURSO(sequelize, DataTypes);
   var REFERENCIA = _REFERENCIA(sequelize, DataTypes);
   var ROL = _ROL(sequelize, DataTypes);
+  var TEMPORADA_DESCUENTO = _TEMPORADA_DESCUENTO(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
   var TIPO_PROYECTO = _TIPO_PROYECTO(sequelize, DataTypes);
   var TIPO_RECURSO = _TIPO_RECURSO(sequelize, DataTypes);
@@ -158,6 +162,8 @@ function initModels(sequelize) {
   PLAN_FINANCIERO_PROY.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_plan_financiero"});
   ALBUN.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(ALBUN, { as: "ALBUNs", foreignKey: "Id_proyecto"});
+  CONFIGURACION_DESCUENTO.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_proyecto"});
   CONTACTO.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_proyecto"});
   PLAN_FINANCIERO_PROY.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
@@ -170,6 +176,8 @@ function initModels(sequelize) {
   PUESTO.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_puesto"});
   USER_PROFILE.belongsTo(ROL, { as: "Id_rol_ROL", foreignKey: "Id_rol"});
   ROL.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_rol"});
+  CONFIGURACION_DESCUENTO.belongsTo(TEMPORADA_DESCUENTO, { as: "Id_temporada_descuento_TEMPORADA_DESCUENTO", foreignKey: "Id_temporada_descuento"});
+  TEMPORADA_DESCUENTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_temporada_descuento"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
   PROYECTO.belongsTo(TIPO_PROYECTO, { as: "Id_tipo_proyecto_TIPO_PROYECTO", foreignKey: "Id_tipo_proyecto"});
@@ -189,6 +197,7 @@ function initModels(sequelize) {
     ASESOR_DETALLE,
     CLIENTE,
     COMPRA_VENTA,
+    CONFIGURACION_DESCUENTO,
     CONTACTO,
     COTIZACION,
     DEPARTAMENTO,
@@ -212,6 +221,7 @@ function initModels(sequelize) {
     RECURSO,
     REFERENCIA,
     ROL,
+    TEMPORADA_DESCUENTO,
     TIPO_CREDITO,
     TIPO_PROYECTO,
     TIPO_RECURSO,
