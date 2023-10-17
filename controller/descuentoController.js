@@ -213,3 +213,62 @@ exports.finSolicitudDescuentos = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
+exports.solicitudDescuento = async (req, res, next) => {
+  try {
+    let cotizacionUpdate = await cotizaciones.findOneCotizacion(req.params.id);
+
+    if (cotizacionUpdate) {
+
+      if (cotizacionUpdate.Solicitud_descuento == 1 && cotizacionUpdate.Estado_descuento == 1) {
+        res.status(200).json({
+          succes: true,
+          message: "No se puede relizar un descuento, ya tiene un descuento aplicado",
+          cotizacionAct: cotizacionUpdate
+        });
+      } else {
+        let params = {
+          idCotizacion: req.params.id,
+          montoDescuento: req.body.montoDescuento
+        }
+        let aplicarDescuento = await cotizaciones.solicitudDescuento(params);
+        res.status(200).json({
+          succes: true,
+          message: "Solicitud descuento realizada con exito",
+          data: aplicarDescuento
+        });
+      }
+
+      
+    } else {
+      res.status(200).json({
+        succes: true,
+        message: "No existe la cotizacion",
+      });
+      
+    }
+
+
+    // if (cotizacionUpdate) {
+    //   res.status(200).json({
+    //     succes: true,
+    //     message: "Solicitud descuento denegado con exito",
+    //     cotizacionAct: cotizacionUpdate
+    //   });
+    // } else {
+    //   res.status(404).json({
+    //     succes: true,
+    //     message: "Numero de cotizacion no existente",
+    //   });
+    // }
+
+  } catch (error) {
+    res.status(406).json({
+      succes: false,
+      message: error,
+    });
+  }
+};

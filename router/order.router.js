@@ -187,4 +187,6 @@ router.put("/denegarSolicitudDescuento/:id", auth.verifyToken, temporadaDescuent
 router.put("/aprobacionSolicitudDescuento/:id", auth.verifyToken, temporadaDescuentoController.aprobacionDescuento)
 //Descuento aprobados 
 router.get("/stateDescuento/:id", auth.verifyToken, temporadaDescuentoController.finSolicitudDescuentos)
+//SolicitudDescuento
+router.put("/solicitudDescuento/:id",  auth.verifyToken, temporadaDescuentoController.solicitudDescuento),
 module.exports = router

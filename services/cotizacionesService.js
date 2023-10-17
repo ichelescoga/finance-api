@@ -30,7 +30,10 @@ const db = require("../src/models");
         Aguinaldo: params.aguinaldo,
         Bono_catorce: params.bonoCatorce,
         Url_cotizacion: params.urlCotizacion,
-        Comentario: params.comentario
+        Comentario: params.comentario,
+        Monto_descuento_soli: params.montoDescuentSolicitado,
+        Solicitud_descuento: params.solicitudDescuent,
+
       });
       return newCotizacion;
     };
@@ -470,6 +473,25 @@ const db = require("../src/models");
       return cotizacionActualizada
     };
     
+    let solicitudDescuento = async (params) => {
+      const cotizacion = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.idCotizacion } });
+
+      if(!cotizacion) {
+         return
+      } else {
+          await db.models.COTIZACION.update({
+            Solicitud_descuento: 0,
+            Monto_descuento_soli: params.montoDescuento
+        },{
+          where:{
+            Id_cotizacion: params.idCotizacion
+          }
+      });
+
+      }
+      const cotizacionActualizada = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.idCotizacion } });
+      return cotizacionActualizada
+    };
 
     return {
         listaCotizaciones,
@@ -485,8 +507,8 @@ const db = require("../src/models");
         findOneCotizacionpdf,
         findOneInfoPreventapdf,
         descuentoCotizacion,
-        updateDescuento
-
+        updateDescuento,
+        solicitudDescuento
     };
   };
   

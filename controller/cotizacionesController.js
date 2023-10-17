@@ -258,7 +258,9 @@ exports.creatCotizacion = async (req, res, next) => {
         aguinaldo : req.body.aguinaldo,
         bonoCatorce: req.body.bonoCatorce,
         urlCotizacion: req.body.urlCotizacion,
-        comentario: req.body.comentario
+        comentario: req.body.comentario,
+        montoDescuentSolicitado: req.body.montoDescuentSolicitado,
+        solicitudDescuent: req.body.solicitudDescuent,
       };
   
   
