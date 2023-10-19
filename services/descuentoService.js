@@ -39,20 +39,54 @@ const db = require("../src/models");
     return descuentos;
     };
 
+    // let findAprodescuento = async (params) => {
+    //     const aprobeDesc = await db.models.COTIZACION.findAll({ 
+    //         where: { Solicitud_descuento : 0},
+    //         // include: [
+    //         //     {
+    //         //         model: db.models.TEMPORADA_DESCUENTO,
+    //         //         where: { Status : 1},
+    //         //         as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
+    //         //         required: true
+    //         //     },
+    //         // ], 
+    //     });
+    //     return aprobeDesc;
+    //     };
+
     let findAprodescuento = async (params) => {
-        const aprobeDesc = await db.models.COTIZACION.findAll({ 
-            where: { Solicitud_descuento : 0},
-            // include: [
-            //     {
-            //         model: db.models.TEMPORADA_DESCUENTO,
-            //         where: { Status : 1},
-            //         as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
-            //         required: true
-            //     },
-            // ], 
+        const aprobeDesc = await db.models.COTIZACION.findAll({
+            where: { Solicitud_descuento: 0 },
+            include: [
+                {
+                    model: db.models.CLIENTE,
+                    as: "Id_cliente_CLIENTE",
+                },
+                {
+                    model: db.models.UNIDAD_COTIZACION,
+                    as: "UNIDAD_COTIZACIONs",
+                    required: true,
+                    include: [
+                        {
+                            model: db.models.UNIDAD,
+                            as: "Id_unidad_UNIDAD",
+                            required: true,
+                            where: {
+                            Id_proyecto: params
+                            }
+                        },
+                    ]
+                }
+                // {
+                //     model: db.models.TEMPORADA_DESCUENTO,
+                //     where: { Status : 1},
+                //     as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
+                //     required: true
+                // },
+            ],
         });
         return aprobeDesc;
-        };
+    };
 
     let denegarSolicitudDesc = async (params) => {
         const cotizacion = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params} });
@@ -94,17 +128,35 @@ const db = require("../src/models");
 
 
     let findEstadoSolicitudDes = async (params) => {
-        console.log(params);
         const aprobeDesc = await db.models.COTIZACION.findAll({ 
             where: { Estado_descuento: params.state},
-            // include: [
-            //     {
-            //         model: db.models.TEMPORADA_DESCUENTO,
-            //         where: { Status : 1},
-            //         as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
-            //         required: true
-            //     },
-            // ], 
+            include: [
+                {
+                    model: db.models.CLIENTE,
+                    as: "Id_cliente_CLIENTE",
+                },
+                {
+                    model: db.models.UNIDAD_COTIZACION,
+                    as: "UNIDAD_COTIZACIONs",
+                    required: true,
+                    include: [
+                        {
+                            model: db.models.UNIDAD,
+                            as: "Id_unidad_UNIDAD",
+                            required: true,
+                            where: {
+                            Id_proyecto: params.proyecto
+                            }
+                        },
+                    ]
+                }
+                // {
+                //     model: db.models.TEMPORADA_DESCUENTO,
+                //     where: { Status : 1},
+                //     as: "Id_temporada_descuento_TEMPORADA_DESCUENTO",
+                //     required: true
+                // },
+            ],
         });
         return aprobeDesc;
         };

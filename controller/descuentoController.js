@@ -72,7 +72,7 @@ exports.findDescuentoProyect = async (req, res, next) => {
 
 exports.findAprobDesc = async (req, res, next) => {
   try {
-    let results = await descService.findAprodescuento();
+    let results = await descService.findAprodescuento(req.params.id);
     if (results.length > 0) {
       res.json(results);
     } else {
@@ -198,9 +198,13 @@ exports.finSolicitudDescuentos = async (req, res, next) => {
   try {
     let params = {
       state: req.params.id,
-      // proyecto: req.params.idProyecto
+      proyecto: req.params.idProyecto
     }
     let results = await descService.findEstadoSolicitudDes(params);
+    res.status(202).json({
+      success: true,
+      message: results,
+    });
     if (results) {
       res.json(results);
     } else {
