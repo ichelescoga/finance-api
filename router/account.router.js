@@ -4,5 +4,6 @@ const auth = require("./../services/auth-middleware")
 const accountController = require('../controller/accountController')
 
 router.post("/pmtCalculate", auth.verifyToken, accountController.pmtCalculate)
+router.post("/pmtCalculateWithInterest", accountController.pmtCalculateWithInterest)
 
 module.exports = router
