@@ -1,15 +1,20 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('TIPO_PROYECTO', {
-    Id_tipo_proyecto: {
+  return sequelize.define('ESTADO_CUENTA', {
+    Idestado_cuenta: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Descripcion: {
-      type: DataTypes.STRING(100),
-      allowNull: true
+    Id_compraventa: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'COMPRA_VENTA',
+        key: 'Id_compraventa'
+      }
     },     
     createdAt: {          
       field: 'created_at',          
@@ -21,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'TIPO_PROYECTO',
+    tableName: 'ESTADO_CUENTA',
     timestamps: true,
     indexes: [
       {
@@ -29,15 +34,15 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_tipo_proyecto" },
+          { name: "Idestado_cuenta" },
+          { name: "Id_compraventa" },
         ]
       },
       {
-        name: "Id_tipo_proyecto_UNIQUE",
-        unique: true,
+        name: "fk_ESTADO_CUENTA_COMPRA_VENTA1_idx",
         using: "BTREE",
         fields: [
-          { name: "Id_tipo_proyecto" },
+          { name: "Id_compraventa" },
         ]
       },
     ]

@@ -3,11 +3,13 @@ var _ALBUN = require("./ALBUN");
 var _APLICACION = require("./APLICACION");
 var _ASESOR_DETALLE = require("./ASESOR_DETALLE");
 var _CLIENTE = require("./CLIENTE");
+var _CLIENTE_HAS_CONTACTO = require("./CLIENTE_HAS_CONTACTO");
 var _COMPRA_VENTA = require("./COMPRA_VENTA");
 var _CONFIGURACION_DESCUENTO = require("./CONFIGURACION_DESCUENTO");
 var _CONTACTO = require("./CONTACTO");
 var _COTIZACION = require("./COTIZACION");
 var _DEPARTAMENTO = require("./DEPARTAMENTO");
+var _DETALLES_CUOTA = require("./DETALLES_CUOTA");
 var _DETALLE_COTIZACION = require("./DETALLE_COTIZACION");
 var _DETALLE_EJECUTIVO = require("./DETALLE_EJECUTIVO");
 var _DETALLE_FIADOR = require("./DETALLE_FIADOR");
@@ -17,6 +19,7 @@ var _EMPLEADO_EMPRESA = require("./EMPLEADO_EMPRESA");
 var _EMPRESA = require("./EMPRESA");
 var _ENTIDAD_FINANCIERA = require("./ENTIDAD_FINANCIERA");
 var _ESTADO = require("./ESTADO");
+var _ESTADO_CUENTA = require("./ESTADO_CUENTA");
 var _FAMILIA = require("./FAMILIA");
 var _GENERO = require("./GENERO");
 var _MUNICIPIO = require("./MUNICIPIO");
@@ -42,11 +45,13 @@ function initModels(sequelize) {
   var APLICACION = _APLICACION(sequelize, DataTypes);
   var ASESOR_DETALLE = _ASESOR_DETALLE(sequelize, DataTypes);
   var CLIENTE = _CLIENTE(sequelize, DataTypes);
+  var CLIENTE_HAS_CONTACTO = _CLIENTE_HAS_CONTACTO(sequelize, DataTypes);
   var COMPRA_VENTA = _COMPRA_VENTA(sequelize, DataTypes);
   var CONFIGURACION_DESCUENTO = _CONFIGURACION_DESCUENTO(sequelize, DataTypes);
   var CONTACTO = _CONTACTO(sequelize, DataTypes);
   var COTIZACION = _COTIZACION(sequelize, DataTypes);
   var DEPARTAMENTO = _DEPARTAMENTO(sequelize, DataTypes);
+  var DETALLES_CUOTA = _DETALLES_CUOTA(sequelize, DataTypes);
   var DETALLE_COTIZACION = _DETALLE_COTIZACION(sequelize, DataTypes);
   var DETALLE_EJECUTIVO = _DETALLE_EJECUTIVO(sequelize, DataTypes);
   var DETALLE_FIADOR = _DETALLE_FIADOR(sequelize, DataTypes);
@@ -56,6 +61,7 @@ function initModels(sequelize) {
   var EMPRESA = _EMPRESA(sequelize, DataTypes);
   var ENTIDAD_FINANCIERA = _ENTIDAD_FINANCIERA(sequelize, DataTypes);
   var ESTADO = _ESTADO(sequelize, DataTypes);
+  var ESTADO_CUENTA = _ESTADO_CUENTA(sequelize, DataTypes);
   var FAMILIA = _FAMILIA(sequelize, DataTypes);
   var GENERO = _GENERO(sequelize, DataTypes);
   var MUNICIPIO = _MUNICIPIO(sequelize, DataTypes);
@@ -96,6 +102,8 @@ function initModels(sequelize) {
   ASESOR_DETALLE.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_detalle_asesor"});
   APLICACION.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cliente"});
+  CLIENTE_HAS_CONTACTO.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
+  CLIENTE.hasMany(CLIENTE_HAS_CONTACTO, { as: "CLIENTE_HAS_CONTACTOs", foreignKey: "Id_cliente"});
   COTIZACION.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_cliente"});
   DETALLE_FIADOR.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
@@ -104,8 +112,12 @@ function initModels(sequelize) {
   CLIENTE.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_clinete"});
   USER_PROFILE.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_cliente"});
+  ESTADO_CUENTA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
+  COMPRA_VENTA.hasMany(ESTADO_CUENTA, { as: "ESTADO_CUENTa", foreignKey: "Id_compraventa"});
   REFERENCIA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
   COMPRA_VENTA.hasMany(REFERENCIA, { as: "REFERENCIa", foreignKey: "Id_compraventa"});
+  CLIENTE_HAS_CONTACTO.belongsTo(CONTACTO, { as: "Id_contacto_CONTACTO", foreignKey: "Id_contacto"});
+  CONTACTO.hasMany(CLIENTE_HAS_CONTACTO, { as: "CLIENTE_HAS_CONTACTOs", foreignKey: "Id_contacto"});
   APLICACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cotizacion"});
   COMPRA_VENTA.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
@@ -142,6 +154,8 @@ function initModels(sequelize) {
   ESTADO.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_estado"});
   UNIDAD.belongsTo(ESTADO, { as: "Id_estado_ESTADO", foreignKey: "Id_estado"});
   ESTADO.hasMany(UNIDAD, { as: "UNIDADs", foreignKey: "Id_estado"});
+  DETALLES_CUOTA.belongsTo(ESTADO_CUENTA, { as: "Idestado_cuenta_ESTADO_CUENTum", foreignKey: "Idestado_cuenta"});
+  ESTADO_CUENTA.hasMany(DETALLES_CUOTA, { as: "DETALLES_CUOTa", foreignKey: "Idestado_cuenta"});
   CLIENTE.belongsTo(GENERO, { as: "Id_genero_GENERO", foreignKey: "Id_genero"});
   GENERO.hasMany(CLIENTE, { as: "CLIENTEs", foreignKey: "Id_genero"});
   EMPRESA.belongsTo(MUNICIPIO, { as: "Id_municipio_MUNICIPIO", foreignKey: "Id_municipio"});
@@ -196,11 +210,13 @@ function initModels(sequelize) {
     APLICACION,
     ASESOR_DETALLE,
     CLIENTE,
+    CLIENTE_HAS_CONTACTO,
     COMPRA_VENTA,
     CONFIGURACION_DESCUENTO,
     CONTACTO,
     COTIZACION,
     DEPARTAMENTO,
+    DETALLES_CUOTA,
     DETALLE_COTIZACION,
     DETALLE_EJECUTIVO,
     DETALLE_FIADOR,
@@ -210,6 +226,7 @@ function initModels(sequelize) {
     EMPRESA,
     ENTIDAD_FINANCIERA,
     ESTADO,
+    ESTADO_CUENTA,
     FAMILIA,
     GENERO,
     MUNICIPIO,

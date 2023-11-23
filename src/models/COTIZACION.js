@@ -77,7 +77,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     Descuento: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10,2),
       allowNull: true
     },
     Venta_descuento: {

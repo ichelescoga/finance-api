@@ -189,4 +189,15 @@ router.put("/aprobacionSolicitudDescuento/:id", auth.verifyToken, temporadaDescu
 router.get("/stateDescuento/:id/proyecto/:idProyecto", auth.verifyToken, temporadaDescuentoController.finSolicitudDescuentos)
 //SolicitudDescuento
 router.put("/solicitudDescuento/:id",  auth.verifyToken, temporadaDescuentoController.solicitudDescuento),
+
+
+
+
+
+
+//Revisar si existe el correo o telefono en contactos o clientes 
+router.post("/correoCelExistente",  auth.verifyToken, contactController.revicionCredenciales),
+router.post("/createCliente",  auth.verifyToken, contactController.createClienteController),
+//Coincidencias Nombre, Email , Telefono  de contacto contacto 
+router.post("/coincidenciasCredenciales",  auth.verifyToken, contactController.coincidenciasEmaiTelCorreo),
 module.exports = router

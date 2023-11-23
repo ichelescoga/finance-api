@@ -212,70 +212,112 @@ exports.creatCotizacion = async (req, res, next) => {
     try {
 
 
-      let paramsCliente = {
-        primerNombre: req.body.cliente.primerNombre,
-        segundoNombre: req.body.cliente.segundoNombre,
-        otrosNombres: req.body.cliente.otrosNombres,
-        primerApellido: req.body.cliente.primerApellido,
-        segundoApellido: req.body.cliente.segundoApellido,
-        apellidoCasada: req.body.cliente.apellidoCasada,
-        estadoCivil: req.body.cliente.estadoCivil,
-        idGenero : req.body.cliente.idGenero,
-        fechaNacimiento: req.body.cliente.fechaNacimiento,
-        oficio: req.body.cliente.oficio,
-        nivelEstudio: req.body.cliente.nivelEstudio,
-        direccionResidencia : req.body.cliente.direccionResidencia,
-        telefonoResidencia: req.body.cliente.telefonoResidencia,
-        lugarTrabajo: req.body.cliente.lugarTrabajo,
-        direccionTrabajo: req.body.cliente.direccionTrabajo,
-        telefonoTrabajo : req.body.cliente.telefonoTrabajo,
-        nit: req.body.cliente.nit,
-        dpi: req.body.cliente.dpi,
-        telefono: req.body.cliente.telefono,
-        correo: req.body.cliente.correo,
-        idNacionalidad: req.body.cliente.idNacionalidad,
-      } 
-  
-      let clienteId = await clienteService.createCliente(paramsCliente);
-  
-      let params = {
-        idDetalleAsesor : findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor ? findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor : null,
-        idEstado: 1,
-        idPlanFinanciero: req.body.idPlanFinanciero,
-        idCliente: clienteId.Id_cliente,
-        fecha : moment(fechaActual).format("YYYY/MM/DD"),
-        fechaHora:  moment(fechaActual).format("YYYY/MM/DD hh:mm:ss"),
-        ingresoMensual: req.body.ingresoMensual,
-        enganche: req.body.enganche,
-        mesesPlazo : req.body.mesesPlazo,
-        mesInicio: req.body.mesInicio,
-        anioInicio: req.body.anioInicio,
-        mesFin: req.body.mesFin,
-        anioFin : req.body.anioFin,
-        descuento: req.body.descuento,
-        ventaDescuento: req.body.ventaDescuento,
-        precioContado: req.body.precioContado,
-        aguinaldo : req.body.aguinaldo,
-        bonoCatorce: req.body.bonoCatorce,
-        urlCotizacion: req.body.urlCotizacion,
-        comentario: req.body.comentario,
-        montoDescuentSolicitado: req.body.montoDescuentSolicitado,
-        solicitudDescuent: req.body.solicitudDescuent,
-      };
-  
-  
-      let cotizacion = await cotizaciones.creatCotizacion(params);
-      let paramscotizacion_Unidad = {
-        idCotizacion : cotizacion.Id_cotizacion,
-        idUnidad: req.body.idUnidad
-      };
-  
-      await cotizaciones.createCotizacion_Unidad(paramscotizacion_Unidad)
-      res.status(200).json({
-        succes: true,
-        message: "Cotizacion Creada cont exito",
-        idCotizacion: cotizacion.Id_cotizacion
-      });
+      if (req.body.clienteId > 0) {
+          let params = {
+            idDetalleAsesor : findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor ? findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor : null,
+            idEstado: 1,
+            idPlanFinanciero: req.body.idPlanFinanciero,
+            idCliente: req.body.clienteId,
+            fecha : moment(fechaActual).format("YYYY/MM/DD"),
+            fechaHora:  moment(fechaActual).format("YYYY/MM/DD hh:mm:ss"),
+            ingresoMensual: req.body.ingresoMensual,
+            enganche: req.body.enganche,
+            mesesPlazo : req.body.mesesPlazo,
+            mesInicio: req.body.mesInicio,
+            anioInicio: req.body.anioInicio,
+            mesFin: req.body.mesFin,
+            anioFin : req.body.anioFin,
+            descuento: req.body.descuento,
+            ventaDescuento: req.body.ventaDescuento,
+            precioContado: req.body.precioContado,
+            aguinaldo : req.body.aguinaldo,
+            bonoCatorce: req.body.bonoCatorce,
+            urlCotizacion: req.body.urlCotizacion,
+            comentario: req.body.comentario,
+            montoDescuentSolicitado: req.body.montoDescuentSolicitado,
+            solicitudDescuent: req.body.solicitudDescuent,
+          };
+
+
+          let cotizacion = await cotizaciones.creatCotizacion(params);
+          let paramscotizacion_Unidad = {
+            idCotizacion : cotizacion.Id_cotizacion,
+            idUnidad: req.body.idUnidad
+          };
+
+          await cotizaciones.createCotizacion_Unidad(paramscotizacion_Unidad)
+          res.status(200).json({
+            succes: true,
+            message: "Cotizacion Creada cont exito",
+            idCotizacion: cotizacion.Id_cotizacion
+          });
+      }else{
+
+        let paramsCliente = {
+          primerNombre: req.body.cliente.primerNombre,
+          segundoNombre: req.body.cliente.segundoNombre,
+          otrosNombres: req.body.cliente.otrosNombres,
+          primerApellido: req.body.cliente.primerApellido,
+          segundoApellido: req.body.cliente.segundoApellido,
+          apellidoCasada: req.body.cliente.apellidoCasada,
+          estadoCivil: req.body.cliente.estadoCivil,
+          idGenero : req.body.cliente.idGenero,
+          fechaNacimiento: req.body.cliente.fechaNacimiento,
+          oficio: req.body.cliente.oficio,
+          nivelEstudio: req.body.cliente.nivelEstudio,
+          direccionResidencia : req.body.cliente.direccionResidencia,
+          telefonoResidencia: req.body.cliente.telefonoResidencia,
+          lugarTrabajo: req.body.cliente.lugarTrabajo,
+          direccionTrabajo: req.body.cliente.direccionTrabajo,
+          telefonoTrabajo : req.body.cliente.telefonoTrabajo,
+          nit: req.body.cliente.nit,
+          dpi: req.body.cliente.dpi,
+          telefono: req.body.cliente.telefono,
+          correo: req.body.cliente.correo,
+          idNacionalidad: req.body.cliente.idNacionalidad,
+        } 
+    
+        let clienteId = await clienteService.createCliente(paramsCliente);
+    
+        let params = {
+          idDetalleAsesor : findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor ? findUser.USER_PROFILEs[0].Id_empleado_EMPLEADO_ASESOR.ASESOR_DETALLEs[0].Id_detalle_asesor : null,
+          idEstado: 1,
+          idPlanFinanciero: req.body.idPlanFinanciero,
+          idCliente: clienteId.Id_cliente,
+          fecha : moment(fechaActual).format("YYYY/MM/DD"),
+          fechaHora:  moment(fechaActual).format("YYYY/MM/DD hh:mm:ss"),
+          ingresoMensual: req.body.ingresoMensual,
+          enganche: req.body.enganche,
+          mesesPlazo : req.body.mesesPlazo,
+          mesInicio: req.body.mesInicio,
+          anioInicio: req.body.anioInicio,
+          mesFin: req.body.mesFin,
+          anioFin : req.body.anioFin,
+          descuento: req.body.descuento,
+          ventaDescuento: req.body.ventaDescuento,
+          precioContado: req.body.precioContado,
+          aguinaldo : req.body.aguinaldo,
+          bonoCatorce: req.body.bonoCatorce,
+          urlCotizacion: req.body.urlCotizacion,
+          comentario: req.body.comentario,
+          montoDescuentSolicitado: req.body.montoDescuentSolicitado,
+          solicitudDescuent: req.body.solicitudDescuent,
+        };
+    
+    
+        let cotizacion = await cotizaciones.creatCotizacion(params);
+        let paramscotizacion_Unidad = {
+          idCotizacion : cotizacion.Id_cotizacion,
+          idUnidad: req.body.idUnidad
+        };
+    
+        await cotizaciones.createCotizacion_Unidad(paramscotizacion_Unidad)
+        res.status(200).json({
+          succes: true,
+          message: "Cotizacion Creada cont exito",
+          idCotizacion: cotizacion.Id_cotizacion
+        });
+      }
     } catch (error) {
       res.status(406).json({
         succes: false,

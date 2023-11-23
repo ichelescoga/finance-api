@@ -1,4 +1,5 @@
 const contactoService = require("../services/contactoService");
+const clienteService = require("../services/clienteService");
 const security = require("../src/utils/security");
 const UserService = require("../services/userService");
 
@@ -127,6 +128,133 @@ exports.updateContacto = async (req, res, next) => {
       res.status(406).json({
         succes: false,
         message: error,
+      });
+    }
+  };
+
+
+
+  exports.revicionCredenciales  = async (req, res, next) => {
+    try {
+
+        let params = {
+          telefono: req.body.telefono,
+          correo: req.body.correo,
+        };
+    
+        let contacto = await contactoService.revisionCredenciales(params);
+        if (contacto) {
+          res.status(200).json({
+            succes: true,
+            message: "Credenciales ya existentes",
+            body: contacto,
+          });
+        } else {
+          res.status(200).json({
+            succes: true,
+            message: "Credenciales no existentes",
+          });
+        }
+        
+    } catch (error) {
+      res.status(406).json({
+        succes: false,
+        message: "Problemas al crear contacto, intentelo de nuevo",
+      });
+    }
+  };
+
+
+
+
+
+  exports.createClienteController  = async (req, res, next) => {
+    try {
+
+      let paramsCliente = {
+        primerNombre: req.body.primerNombre,
+        segundoNombre: req.body.segundoNombre,
+        otrosNombres: req.body.otrosNombres,
+        primerApellido: req.body.primerApellido,
+        segundoApellido: req.body.segundoApellido,
+        apellidoCasada: req.body.apellidoCasada,
+        estadoCivil: req.body.estadoCivil,
+        idGenero : req.body.idGenero,
+        fechaNacimiento: req.body.fechaNacimiento,
+        oficio: req.body.oficio,
+        nivelEstudio: req.body.nivelEstudio,
+        direccionResidencia : req.body.direccionResidencia,
+        telefonoResidencia: req.body.telefonoResidencia,
+        lugarTrabajo: req.body.lugarTrabajo,
+        direccionTrabajo: req.body.direccionTrabajo,
+        telefonoTrabajo : req.body.telefonoTrabajo,
+        nit: req.body.nit,
+        dpi: req.body.dpi,
+        telefono: req.body.telefono,
+        correo: req.body.correo,
+        idNacionalidad: req.body.idNacionalidad,
+      } 
+    
+      let clienteId = await clienteService.createCliente(paramsCliente);
+
+      res.status(200).json({
+        succes: true,
+        message: "Cliente creado con exito",
+        body: clienteId
+      });
+        
+        
+    } catch (error) {
+      res.status(406).json({
+        succes: false,
+        message: "Problemas al crear cliente, intentelo de nuevo",
+      });
+    }
+  };
+
+
+
+
+
+  exports.coincidenciasEmaiTelCorreo  = async (req, res, next) => {
+    try {
+      let correoBody = req.body.correo.length
+      let nombreBody = req.body.nombre.length
+
+      if (nombreBody > 0) {
+
+      let coincidencias =  await contactoService.coincidenciasNombre(req.body.nombre);
+      // let coincidenciasclinte =  await contactoService.coincidenciasNombreCliete(req.body.nombre);
+      res.status(406).json({
+        succes: true,
+        bodyContactos: coincidencias,
+        // bodyClientes: coincidenciasclinte,
+      });
+
+      } else if(correoBody > 0) {
+        
+      let coincidencias =  await contactoService.coincidenciasCorreo(req.body.correo);
+      res.status(406).json({
+        succes: true,
+        body: coincidencias,
+      });
+
+      } else if (req.body.telefono > 0) {
+        let coincidencias =  await contactoService.coincidenciasTelefono(req.body.telefono);
+        res.status(406).json({
+          succes: true,
+          body: coincidencias,
+        });
+      }else  {
+        res.status(406).json({
+          succes: true,
+          message: "Necesitas un parametro valido",
+        });
+      }
+    } catch (error) {
+      res.status(406).json({
+        succes: false,
+        message: "Problemas vuelva a intentarlo",
       });
     }
   };
