@@ -108,3 +108,4 @@ dist
 
 temps/
 example/
+.env*
