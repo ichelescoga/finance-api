@@ -136,25 +136,28 @@ exports.updateContacto = async (req, res, next) => {
 
   exports.revicionCredenciales  = async (req, res, next) => {
     try {
+      const authorizationHeader = req.headers.authorization
+      const valuesFromToken = await security.decodeToken(authorizationHeader)
+      let params = {
+        telefono: req.body.telefono,
+        correo: req.body.correo,
+        nombre: req.body.nombre,
+        userInfo: valuesFromToken
+      };
 
-        let params = {
-          telefono: req.body.telefono,
-          correo: req.body.correo,
-        };
-    
-        let contacto = await contactoService.revisionCredenciales(params);
-        if (contacto) {
-          res.status(200).json({
-            succes: true,
-            message: "Credenciales ya existentes",
-            body: contacto,
-          });
-        } else {
-          res.status(200).json({
-            succes: true,
-            message: "Credenciales no existentes",
-          });
-        }
+      let contacto = await contactoService.revisionCredenciales(params);
+      if (contacto) {
+        res.status(200).json({
+          success: true,
+          message: "Credenciales ya existentes",
+          body: contacto,
+        });
+      } else {
+        res.status(201).json({
+          success: true,
+          message: "Credenciales no existentes",
+        });
+      }
         
     } catch (error) {
       res.status(406).json({
@@ -225,7 +228,7 @@ exports.updateContacto = async (req, res, next) => {
 
       let coincidencias =  await contactoService.coincidenciasNombre(req.body.nombre);
       // let coincidenciasclinte =  await contactoService.coincidenciasNombreCliete(req.body.nombre);
-      res.status(406).json({
+      res.status(200).json({
         succes: true,
         bodyContactos: coincidencias,
         // bodyClientes: coincidenciasclinte,
@@ -234,14 +237,14 @@ exports.updateContacto = async (req, res, next) => {
       } else if(correoBody > 0) {
         
       let coincidencias =  await contactoService.coincidenciasCorreo(req.body.correo);
-      res.status(406).json({
+      res.status(200).json({
         succes: true,
         body: coincidencias,
       });
 
       } else if (req.body.telefono > 0) {
         let coincidencias =  await contactoService.coincidenciasTelefono(req.body.telefono);
-        res.status(406).json({
+        res.status(200).json({
           succes: true,
           body: coincidencias,
         });
