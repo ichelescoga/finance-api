@@ -24,19 +24,21 @@ module.exports = function(sequelize, DataTypes) {
         model: 'EMPRESA',
         key: 'Id_empresa'
       }
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'EMPLEADO_EMPRESA',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -49,14 +51,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_EMPLEADO_EMPRESA_EMPLEADO_ASESOR1_idx",
+        name: "Id_empleado",
         using: "BTREE",
         fields: [
           { name: "Id_empleado" },
         ]
       },
       {
-        name: "fk_EMPLEADO_EMPRESA_EMPRESA1_idx",
+        name: "Id_empresa",
         using: "BTREE",
         fields: [
           { name: "Id_empresa" },

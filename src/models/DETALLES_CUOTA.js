@@ -1,5 +1,12 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
+
+  function initModels(sequelize) {
+    // Coloca tu lógica de inicialización de modelos aquí
+  }
+
+  initModels(sequelize);
+
   return sequelize.define('DETALLES_CUOTA', {
     Id_pago: {
       autoIncrement: true,

@@ -1,51 +1,61 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('UNIDAD', {
-    Id_unidad: {
+  return sequelize.define('MODIFICADOR_ENTIDAD', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_estado: {
+    Id_modificador: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
-        model: 'ESTADO',
-        key: 'Id_estado'
+        model: 'MODIFICADOR',
+        key: 'Id'
       }
     },
-    Id_proyecto: {
+    Id_entidad: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
-        model: 'PROYECTO',
-        key: 'Id_proyecto'
+        model: 'ENTIDAD',
+        key: 'Id'
       }
     },
-    Nombre_unidad: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+    Created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    Precio_Venta: {
-      type: DataTypes.DECIMAL(10,2),
+    Updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Estado: {
+      type: DataTypes.BOOLEAN,
       allowNull: true
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
-    tableName: 'UNIDAD',
+    tableName: 'MODIFICADOR_ENTIDAD',
     timestamps: false,
     indexes: [
       {
@@ -53,31 +63,35 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_unidad" },
-          { name: "Id_estado" },
-          { name: "Id_proyecto" },
+          { name: "Id" },
         ]
       },
       {
-        name: "Id_sub_proyecto_UNIQUE",
-        unique: true,
+        name: "Id_modificador",
         using: "BTREE",
         fields: [
-          { name: "Id_unidad" },
+          { name: "Id_modificador" },
         ]
       },
       {
-        name: "fk_UNIDAD_PROYECTO1_idx",
+        name: "Id_entidad",
         using: "BTREE",
         fields: [
-          { name: "Id_proyecto" },
+          { name: "Id_entidad" },
         ]
       },
       {
-        name: "fk_UNIDAD_ESTADO1_idx",
+        name: "Createdby",
         using: "BTREE",
         fields: [
-          { name: "Id_estado" },
+          { name: "Createdby" },
+        ]
+      },
+      {
+        name: "Updatedby",
+        using: "BTREE",
+        fields: [
+          { name: "Updatedby" },
         ]
       },
     ]

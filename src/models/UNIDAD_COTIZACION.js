@@ -24,19 +24,21 @@ module.exports = function(sequelize, DataTypes) {
         model: 'UNIDAD',
         key: 'Id_unidad'
       }
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'UNIDAD_COTIZACION',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

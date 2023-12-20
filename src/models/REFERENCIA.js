@@ -26,19 +26,21 @@ module.exports = function(sequelize, DataTypes) {
     Telefono: {
       type: DataTypes.STRING(20),
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'REFERENCIA',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -49,7 +51,7 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_Referencias_COMPRA_VENTA1_idx",
+        name: "Id_compraventa",
         using: "BTREE",
         fields: [
           { name: "Id_compraventa" },

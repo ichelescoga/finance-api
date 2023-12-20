@@ -2,14 +2,17 @@ var DataTypes = require("sequelize").DataTypes;
 var _ALBUN = require("./ALBUN");
 var _APLICACION = require("./APLICACION");
 var _ASESOR_DETALLE = require("./ASESOR_DETALLE");
+var _CARACTERISTICA_BOOLEAN = require("./CARACTERISTICA_BOOLEAN");
+var _CARACTERISTICA_DATE = require("./CARACTERISTICA_DATE");
+var _CARACTERISTICA_DOUBLE = require("./CARACTERISTICA_DOUBLE");
+var _CARACTERISTICA_INT = require("./CARACTERISTICA_INT");
+var _CARACTERISTICA_STRING = require("./CARACTERISTICA_STRING");
 var _CLIENTE = require("./CLIENTE");
-var _CLIENTE_HAS_CONTACTO = require("./CLIENTE_HAS_CONTACTO");
 var _COMPRA_VENTA = require("./COMPRA_VENTA");
 var _CONFIGURACION_DESCUENTO = require("./CONFIGURACION_DESCUENTO");
 var _CONTACTO = require("./CONTACTO");
 var _COTIZACION = require("./COTIZACION");
 var _DEPARTAMENTO = require("./DEPARTAMENTO");
-var _DETALLES_CUOTA = require("./DETALLES_CUOTA");
 var _DETALLE_COTIZACION = require("./DETALLE_COTIZACION");
 var _DETALLE_EJECUTIVO = require("./DETALLE_EJECUTIVO");
 var _DETALLE_FIADOR = require("./DETALLE_FIADOR");
@@ -17,11 +20,19 @@ var _EJECUTIVO = require("./EJECUTIVO");
 var _EMPLEADO_ASESOR = require("./EMPLEADO_ASESOR");
 var _EMPLEADO_EMPRESA = require("./EMPLEADO_EMPRESA");
 var _EMPRESA = require("./EMPRESA");
+var _ENTIDAD = require("./ENTIDAD");
+var _ENTIDAD_CARACTERISTICA_BOOLEAN = require("./ENTIDAD_CARACTERISTICA_BOOLEAN");
+var _ENTIDAD_CARACTERISTICA_DATE = require("./ENTIDAD_CARACTERISTICA_DATE");
+var _ENTIDAD_CARACTERISTICA_DOUBLE = require("./ENTIDAD_CARACTERISTICA_DOUBLE");
+var _ENTIDAD_CARACTERISTICA_INT = require("./ENTIDAD_CARACTERISTICA_INT");
+var _ENTIDAD_CARACTERISTICA_STRING = require("./ENTIDAD_CARACTERISTICA_STRING");
 var _ENTIDAD_FINANCIERA = require("./ENTIDAD_FINANCIERA");
 var _ESTADO = require("./ESTADO");
-var _ESTADO_CUENTA = require("./ESTADO_CUENTA");
 var _FAMILIA = require("./FAMILIA");
 var _GENERO = require("./GENERO");
+var _GRUPO_MODIFICADOR_ENTIDAD = require("./GRUPO_MODIFICADOR_ENTIDAD");
+var _MODIFICADOR = require("./MODIFICADOR");
+var _MODIFICADOR_ENTIDAD = require("./MODIFICADOR_ENTIDAD");
 var _MUNICIPIO = require("./MUNICIPIO");
 var _PAIS = require("./PAIS");
 var _PARENTESCO = require("./PARENTESCO");
@@ -33,6 +44,7 @@ var _REFERENCIA = require("./REFERENCIA");
 var _ROL = require("./ROL");
 var _TEMPORADA_DESCUENTO = require("./TEMPORADA_DESCUENTO");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
+var _TIPO_ENTIDAD = require("./TIPO_ENTIDAD");
 var _TIPO_PROYECTO = require("./TIPO_PROYECTO");
 var _TIPO_RECURSO = require("./TIPO_RECURSO");
 var _UNIDAD = require("./UNIDAD");
@@ -44,14 +56,17 @@ function initModels(sequelize) {
   var ALBUN = _ALBUN(sequelize, DataTypes);
   var APLICACION = _APLICACION(sequelize, DataTypes);
   var ASESOR_DETALLE = _ASESOR_DETALLE(sequelize, DataTypes);
+  var CARACTERISTICA_BOOLEAN = _CARACTERISTICA_BOOLEAN(sequelize, DataTypes);
+  var CARACTERISTICA_DATE = _CARACTERISTICA_DATE(sequelize, DataTypes);
+  var CARACTERISTICA_DOUBLE = _CARACTERISTICA_DOUBLE(sequelize, DataTypes);
+  var CARACTERISTICA_INT = _CARACTERISTICA_INT(sequelize, DataTypes);
+  var CARACTERISTICA_STRING = _CARACTERISTICA_STRING(sequelize, DataTypes);
   var CLIENTE = _CLIENTE(sequelize, DataTypes);
-  var CLIENTE_HAS_CONTACTO = _CLIENTE_HAS_CONTACTO(sequelize, DataTypes);
   var COMPRA_VENTA = _COMPRA_VENTA(sequelize, DataTypes);
   var CONFIGURACION_DESCUENTO = _CONFIGURACION_DESCUENTO(sequelize, DataTypes);
   var CONTACTO = _CONTACTO(sequelize, DataTypes);
   var COTIZACION = _COTIZACION(sequelize, DataTypes);
   var DEPARTAMENTO = _DEPARTAMENTO(sequelize, DataTypes);
-  var DETALLES_CUOTA = _DETALLES_CUOTA(sequelize, DataTypes);
   var DETALLE_COTIZACION = _DETALLE_COTIZACION(sequelize, DataTypes);
   var DETALLE_EJECUTIVO = _DETALLE_EJECUTIVO(sequelize, DataTypes);
   var DETALLE_FIADOR = _DETALLE_FIADOR(sequelize, DataTypes);
@@ -59,11 +74,19 @@ function initModels(sequelize) {
   var EMPLEADO_ASESOR = _EMPLEADO_ASESOR(sequelize, DataTypes);
   var EMPLEADO_EMPRESA = _EMPLEADO_EMPRESA(sequelize, DataTypes);
   var EMPRESA = _EMPRESA(sequelize, DataTypes);
+  var ENTIDAD = _ENTIDAD(sequelize, DataTypes);
+  var ENTIDAD_CARACTERISTICA_BOOLEAN = _ENTIDAD_CARACTERISTICA_BOOLEAN(sequelize, DataTypes);
+  var ENTIDAD_CARACTERISTICA_DATE = _ENTIDAD_CARACTERISTICA_DATE(sequelize, DataTypes);
+  var ENTIDAD_CARACTERISTICA_DOUBLE = _ENTIDAD_CARACTERISTICA_DOUBLE(sequelize, DataTypes);
+  var ENTIDAD_CARACTERISTICA_INT = _ENTIDAD_CARACTERISTICA_INT(sequelize, DataTypes);
+  var ENTIDAD_CARACTERISTICA_STRING = _ENTIDAD_CARACTERISTICA_STRING(sequelize, DataTypes);
   var ENTIDAD_FINANCIERA = _ENTIDAD_FINANCIERA(sequelize, DataTypes);
   var ESTADO = _ESTADO(sequelize, DataTypes);
-  var ESTADO_CUENTA = _ESTADO_CUENTA(sequelize, DataTypes);
   var FAMILIA = _FAMILIA(sequelize, DataTypes);
   var GENERO = _GENERO(sequelize, DataTypes);
+  var GRUPO_MODIFICADOR_ENTIDAD = _GRUPO_MODIFICADOR_ENTIDAD(sequelize, DataTypes);
+  var MODIFICADOR = _MODIFICADOR(sequelize, DataTypes);
+  var MODIFICADOR_ENTIDAD = _MODIFICADOR_ENTIDAD(sequelize, DataTypes);
   var MUNICIPIO = _MUNICIPIO(sequelize, DataTypes);
   var PAIS = _PAIS(sequelize, DataTypes);
   var PARENTESCO = _PARENTESCO(sequelize, DataTypes);
@@ -75,6 +98,7 @@ function initModels(sequelize) {
   var ROL = _ROL(sequelize, DataTypes);
   var TEMPORADA_DESCUENTO = _TEMPORADA_DESCUENTO(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
+  var TIPO_ENTIDAD = _TIPO_ENTIDAD(sequelize, DataTypes);
   var TIPO_PROYECTO = _TIPO_PROYECTO(sequelize, DataTypes);
   var TIPO_RECURSO = _TIPO_RECURSO(sequelize, DataTypes);
   var UNIDAD = _UNIDAD(sequelize, DataTypes);
@@ -100,10 +124,18 @@ function initModels(sequelize) {
   APLICACION.hasMany(DETALLE_FIADOR, { as: "DETALLE_FIADORs", foreignKey: "Id_aplicacion"});
   COTIZACION.belongsTo(ASESOR_DETALLE, { as: "Id_detalle_asesor_ASESOR_DETALLE", foreignKey: "Id_detalle_asesor"});
   ASESOR_DETALLE.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_detalle_asesor"});
+  ENTIDAD_CARACTERISTICA_BOOLEAN.belongsTo(CARACTERISTICA_BOOLEAN, { as: "Id_caracteristica_CARACTERISTICA_BOOLEAN", foreignKey: "Id_caracteristica"});
+  CARACTERISTICA_BOOLEAN.hasMany(ENTIDAD_CARACTERISTICA_BOOLEAN, { as: "ENTIDAD_CARACTERISTICA_BOOLEANs", foreignKey: "Id_caracteristica"});
+  ENTIDAD_CARACTERISTICA_DATE.belongsTo(CARACTERISTICA_DATE, { as: "Id_caracteristica_CARACTERISTICA_DATE", foreignKey: "Id_caracteristica"});
+  CARACTERISTICA_DATE.hasMany(ENTIDAD_CARACTERISTICA_DATE, { as: "ENTIDAD_CARACTERISTICA_DATEs", foreignKey: "Id_caracteristica"});
+  ENTIDAD_CARACTERISTICA_DOUBLE.belongsTo(CARACTERISTICA_DOUBLE, { as: "Id_caracteristica_CARACTERISTICA_DOUBLE", foreignKey: "Id_caracteristica"});
+  CARACTERISTICA_DOUBLE.hasMany(ENTIDAD_CARACTERISTICA_DOUBLE, { as: "ENTIDAD_CARACTERISTICA_DOUBLEs", foreignKey: "Id_caracteristica"});
+  ENTIDAD_CARACTERISTICA_INT.belongsTo(CARACTERISTICA_INT, { as: "Id_caracteristica_CARACTERISTICA_INT", foreignKey: "Id_caracteristica"});
+  CARACTERISTICA_INT.hasMany(ENTIDAD_CARACTERISTICA_INT, { as: "ENTIDAD_CARACTERISTICA_INTs", foreignKey: "Id_caracteristica"});
+  ENTIDAD_CARACTERISTICA_STRING.belongsTo(CARACTERISTICA_STRING, { as: "Id_caracteristica_CARACTERISTICA_STRING", foreignKey: "Id_caracteristica"});
+  CARACTERISTICA_STRING.hasMany(ENTIDAD_CARACTERISTICA_STRING, { as: "ENTIDAD_CARACTERISTICA_STRINGs", foreignKey: "Id_caracteristica"});
   APLICACION.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cliente"});
-  CLIENTE_HAS_CONTACTO.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
-  CLIENTE.hasMany(CLIENTE_HAS_CONTACTO, { as: "CLIENTE_HAS_CONTACTOs", foreignKey: "Id_cliente"});
   COTIZACION.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_cliente"});
   DETALLE_FIADOR.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
@@ -112,12 +144,8 @@ function initModels(sequelize) {
   CLIENTE.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_clinete"});
   USER_PROFILE.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_cliente"});
-  ESTADO_CUENTA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
-  COMPRA_VENTA.hasMany(ESTADO_CUENTA, { as: "ESTADO_CUENTa", foreignKey: "Id_compraventa"});
   REFERENCIA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
   COMPRA_VENTA.hasMany(REFERENCIA, { as: "REFERENCIa", foreignKey: "Id_compraventa"});
-  CLIENTE_HAS_CONTACTO.belongsTo(CONTACTO, { as: "Id_contacto_CONTACTO", foreignKey: "Id_contacto"});
-  CONTACTO.hasMany(CLIENTE_HAS_CONTACTO, { as: "CLIENTE_HAS_CONTACTOs", foreignKey: "Id_contacto"});
   APLICACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cotizacion"});
   COMPRA_VENTA.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
@@ -146,6 +174,20 @@ function initModels(sequelize) {
   EMPRESA.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_empresa"});
   PROYECTO.belongsTo(EMPRESA, { as: "Id_empresa_EMPRESA", foreignKey: "Id_empresa"});
   EMPRESA.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_empresa"});
+  ENTIDAD_CARACTERISTICA_BOOLEAN.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(ENTIDAD_CARACTERISTICA_BOOLEAN, { as: "ENTIDAD_CARACTERISTICA_BOOLEANs", foreignKey: "Id_entidad"});
+  ENTIDAD_CARACTERISTICA_DATE.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(ENTIDAD_CARACTERISTICA_DATE, { as: "ENTIDAD_CARACTERISTICA_DATEs", foreignKey: "Id_entidad"});
+  ENTIDAD_CARACTERISTICA_DOUBLE.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(ENTIDAD_CARACTERISTICA_DOUBLE, { as: "ENTIDAD_CARACTERISTICA_DOUBLEs", foreignKey: "Id_entidad"});
+  ENTIDAD_CARACTERISTICA_INT.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(ENTIDAD_CARACTERISTICA_INT, { as: "ENTIDAD_CARACTERISTICA_INTs", foreignKey: "Id_entidad"});
+  ENTIDAD_CARACTERISTICA_STRING.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(ENTIDAD_CARACTERISTICA_STRING, { as: "ENTIDAD_CARACTERISTICA_STRINGs", foreignKey: "Id_entidad"});
+  GRUPO_MODIFICADOR_ENTIDAD.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Id_entidad"});
+  MODIFICADOR_ENTIDAD.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Id_entidad"});
   EJECUTIVO.belongsTo(ENTIDAD_FINANCIERA, { as: "Id_ent_financiera_ENTIDAD_FINANCIERA", foreignKey: "Id_ent_financiera"});
   ENTIDAD_FINANCIERA.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_ent_financiera"});
   PLAN_FINANCIERO_PROY.belongsTo(ENTIDAD_FINANCIERA, { as: "Id_ent_financiera_ENTIDAD_FINANCIERA", foreignKey: "Id_ent_financiera"});
@@ -154,10 +196,14 @@ function initModels(sequelize) {
   ESTADO.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_estado"});
   UNIDAD.belongsTo(ESTADO, { as: "Id_estado_ESTADO", foreignKey: "Id_estado"});
   ESTADO.hasMany(UNIDAD, { as: "UNIDADs", foreignKey: "Id_estado"});
-  DETALLES_CUOTA.belongsTo(ESTADO_CUENTA, { as: "Idestado_cuenta_ESTADO_CUENTum", foreignKey: "Idestado_cuenta"});
-  ESTADO_CUENTA.hasMany(DETALLES_CUOTA, { as: "DETALLES_CUOTa", foreignKey: "Idestado_cuenta"});
   CLIENTE.belongsTo(GENERO, { as: "Id_genero_GENERO", foreignKey: "Id_genero"});
   GENERO.hasMany(CLIENTE, { as: "CLIENTEs", foreignKey: "Id_genero"});
+  GRUPO_MODIFICADOR_ENTIDAD.belongsTo(GRUPO_MODIFICADOR_ENTIDAD, { as: "Padre_GRUPO_MODIFICADOR_ENTIDAD", foreignKey: "Padre"});
+  GRUPO_MODIFICADOR_ENTIDAD.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Padre"});
+  MODIFICADOR_ENTIDAD.belongsTo(MODIFICADOR, { as: "Id_modificador_MODIFICADOR", foreignKey: "Id_modificador"});
+  MODIFICADOR.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Id_modificador"});
+  GRUPO_MODIFICADOR_ENTIDAD.belongsTo(MODIFICADOR_ENTIDAD, { as: "Id_modificador_entidad_MODIFICADOR_ENTIDAD", foreignKey: "Id_modificador_entidad"});
+  MODIFICADOR_ENTIDAD.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Id_modificador_entidad"});
   EMPRESA.belongsTo(MUNICIPIO, { as: "Id_municipio_MUNICIPIO", foreignKey: "Id_municipio"});
   MUNICIPIO.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_municipio"});
   CLIENTE.belongsTo(PAIS, { as: "Id_nacionalidad_PAI", foreignKey: "Id_nacionalidad"});
@@ -194,6 +240,8 @@ function initModels(sequelize) {
   TEMPORADA_DESCUENTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_temporada_descuento"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
+  ENTIDAD.belongsTo(TIPO_ENTIDAD, { as: "Tipo_TIPO_ENTIDAD", foreignKey: "Tipo"});
+  TIPO_ENTIDAD.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Tipo"});
   PROYECTO.belongsTo(TIPO_PROYECTO, { as: "Id_tipo_proyecto_TIPO_PROYECTO", foreignKey: "Id_tipo_proyecto"});
   TIPO_PROYECTO.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_tipo_proyecto"});
   RECURSO.belongsTo(TIPO_RECURSO, { as: "Id_tipo_recurso_TIPO_RECURSO", foreignKey: "Id_tipo_recurso"});
@@ -202,6 +250,66 @@ function initModels(sequelize) {
   UNIDAD.hasMany(UNIDAD_COTIZACION, { as: "UNIDAD_COTIZACIONs", foreignKey: "Id_unidad"});
   CONTACTO.belongsTo(USER_PROFILE, { as: "Id_user_profile_USER_PROFILE", foreignKey: "Id_user_profile"});
   USER_PROFILE.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_user_profile"});
+  CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CARACTERISTICA_BOOLEAN, { as: "CARACTERISTICA_BOOLEANs", foreignKey: "Createdby"});
+  CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CARACTERISTICA_BOOLEAN, { as: "Updatedby_CARACTERISTICA_BOOLEANs", foreignKey: "Updatedby"});
+  CARACTERISTICA_DATE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CARACTERISTICA_DATE, { as: "CARACTERISTICA_DATEs", foreignKey: "Createdby"});
+  CARACTERISTICA_DATE.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CARACTERISTICA_DATE, { as: "Updatedby_CARACTERISTICA_DATEs", foreignKey: "Updatedby"});
+  CARACTERISTICA_DOUBLE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CARACTERISTICA_DOUBLE, { as: "CARACTERISTICA_DOUBLEs", foreignKey: "Createdby"});
+  CARACTERISTICA_DOUBLE.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CARACTERISTICA_DOUBLE, { as: "Updatedby_CARACTERISTICA_DOUBLEs", foreignKey: "Updatedby"});
+  CARACTERISTICA_INT.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CARACTERISTICA_INT, { as: "CARACTERISTICA_INTs", foreignKey: "Createdby"});
+  CARACTERISTICA_INT.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CARACTERISTICA_INT, { as: "Updatedby_CARACTERISTICA_INTs", foreignKey: "Updatedby"});
+  CARACTERISTICA_STRING.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CARACTERISTICA_STRING, { as: "CARACTERISTICA_STRINGs", foreignKey: "Createdby"});
+  CARACTERISTICA_STRING.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CARACTERISTICA_STRING, { as: "Updatedby_CARACTERISTICA_STRINGs", foreignKey: "Updatedby"});
+  ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Createdby"});
+  ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD, { as: "Updatedby_ENTIDADs", foreignKey: "Updatedby"});
+  ENTIDAD_CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_BOOLEAN, { as: "ENTIDAD_CARACTERISTICA_BOOLEANs", foreignKey: "Createdby"});
+  ENTIDAD_CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_BOOLEAN, { as: "Updatedby_ENTIDAD_CARACTERISTICA_BOOLEANs", foreignKey: "Updatedby"});
+  ENTIDAD_CARACTERISTICA_DATE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_DATE, { as: "ENTIDAD_CARACTERISTICA_DATEs", foreignKey: "Createdby"});
+  ENTIDAD_CARACTERISTICA_DATE.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_DATE, { as: "Updatedby_ENTIDAD_CARACTERISTICA_DATEs", foreignKey: "Updatedby"});
+  ENTIDAD_CARACTERISTICA_DOUBLE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_DOUBLE, { as: "ENTIDAD_CARACTERISTICA_DOUBLEs", foreignKey: "Createdby"});
+  ENTIDAD_CARACTERISTICA_DOUBLE.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_DOUBLE, { as: "Updatedby_ENTIDAD_CARACTERISTICA_DOUBLEs", foreignKey: "Updatedby"});
+  ENTIDAD_CARACTERISTICA_INT.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_INT, { as: "ENTIDAD_CARACTERISTICA_INTs", foreignKey: "Createdby"});
+  ENTIDAD_CARACTERISTICA_INT.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_INT, { as: "Updatedby_ENTIDAD_CARACTERISTICA_INTs", foreignKey: "Updatedby"});
+  ENTIDAD_CARACTERISTICA_STRING.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_STRING, { as: "ENTIDAD_CARACTERISTICA_STRINGs", foreignKey: "Createdby"});
+  ENTIDAD_CARACTERISTICA_STRING.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(ENTIDAD_CARACTERISTICA_STRING, { as: "Updatedby_ENTIDAD_CARACTERISTICA_STRINGs", foreignKey: "Updatedby"});
+  GRUPO_MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Createdby"});
+  GRUPO_MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "Updatedby_GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Updatedby"});
+  MODIFICADOR.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(MODIFICADOR, { as: "MODIFICADORs", foreignKey: "Createdby"});
+  MODIFICADOR.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(MODIFICADOR, { as: "Updatedby_MODIFICADORs", foreignKey: "Updatedby"});
+  MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Createdby"});
+  MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(MODIFICADOR_ENTIDAD, { as: "Updatedby_MODIFICADOR_ENTIDADs", foreignKey: "Updatedby"});
+  TIPO_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(TIPO_ENTIDAD, { as: "TIPO_ENTIDADs", foreignKey: "Createdby"});
+  TIPO_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(TIPO_ENTIDAD, { as: "Updatedby_TIPO_ENTIDADs", foreignKey: "Updatedby"});
   USER_PROFILE.belongsTo(User, { as: "Id_user_User", foreignKey: "Id_user"});
   User.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_user"});
 
@@ -209,14 +317,17 @@ function initModels(sequelize) {
     ALBUN,
     APLICACION,
     ASESOR_DETALLE,
+    CARACTERISTICA_BOOLEAN,
+    CARACTERISTICA_DATE,
+    CARACTERISTICA_DOUBLE,
+    CARACTERISTICA_INT,
+    CARACTERISTICA_STRING,
     CLIENTE,
-    CLIENTE_HAS_CONTACTO,
     COMPRA_VENTA,
     CONFIGURACION_DESCUENTO,
     CONTACTO,
     COTIZACION,
     DEPARTAMENTO,
-    DETALLES_CUOTA,
     DETALLE_COTIZACION,
     DETALLE_EJECUTIVO,
     DETALLE_FIADOR,
@@ -224,11 +335,19 @@ function initModels(sequelize) {
     EMPLEADO_ASESOR,
     EMPLEADO_EMPRESA,
     EMPRESA,
+    ENTIDAD,
+    ENTIDAD_CARACTERISTICA_BOOLEAN,
+    ENTIDAD_CARACTERISTICA_DATE,
+    ENTIDAD_CARACTERISTICA_DOUBLE,
+    ENTIDAD_CARACTERISTICA_INT,
+    ENTIDAD_CARACTERISTICA_STRING,
     ENTIDAD_FINANCIERA,
     ESTADO,
-    ESTADO_CUENTA,
     FAMILIA,
     GENERO,
+    GRUPO_MODIFICADOR_ENTIDAD,
+    MODIFICADOR,
+    MODIFICADOR_ENTIDAD,
     MUNICIPIO,
     PAIS,
     PARENTESCO,
@@ -240,6 +359,7 @@ function initModels(sequelize) {
     ROL,
     TEMPORADA_DESCUENTO,
     TIPO_CREDITO,
+    TIPO_ENTIDAD,
     TIPO_PROYECTO,
     TIPO_RECURSO,
     UNIDAD,

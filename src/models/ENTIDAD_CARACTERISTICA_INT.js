@@ -1,49 +1,65 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('DETALLE_FIADOR', {
-    Id_detalle_fiador: {
+  return sequelize.define('ENTIDAD_CARACTERISTICA_INT', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_aplicacion: {
+    Id_caracteristica: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'APLICACION',
-        key: 'Id_aplicacion'
+        model: 'CARACTERISTICA_INT',
+        key: 'Id'
       }
     },
-    Id_cliente: {
+    Id_entidad: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'CLIENTE',
-        key: 'Id_cliente'
+        model: 'ENTIDAD',
+        key: 'Id'
       }
     },
-    Id_parentesco: {
+    Valor: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'PARENTESCO',
-        key: 'Id_parentesco'
-      }
+      allowNull: true
     },
-    created_at: {
+    Created_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    updated_at: {
+    Updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'DETALLE_FIADOR',
+    tableName: 'ENTIDAD_CARACTERISTICA_INT',
     timestamps: false,
     indexes: [
       {
@@ -51,36 +67,35 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_detalle_fiador" },
+          { name: "Id" },
         ]
       },
       {
-        name: "Id_detalle_fiador_UNIQUE",
-        unique: true,
+        name: "Createdby",
         using: "BTREE",
         fields: [
-          { name: "Id_detalle_fiador" },
+          { name: "Createdby" },
         ]
       },
       {
-        name: "Aplicacion_idx",
+        name: "Updatedby",
         using: "BTREE",
         fields: [
-          { name: "Id_aplicacion" },
+          { name: "Updatedby" },
         ]
       },
       {
-        name: "Cliente_idx",
+        name: "Id_caracteristica",
         using: "BTREE",
         fields: [
-          { name: "Id_cliente" },
+          { name: "Id_caracteristica" },
         ]
       },
       {
-        name: "Parentesco_idx",
+        name: "Id_entidad",
         using: "BTREE",
         fields: [
-          { name: "Id_parentesco" },
+          { name: "Id_entidad" },
         ]
       },
     ]
