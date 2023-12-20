@@ -14,19 +14,21 @@ module.exports = function(sequelize, DataTypes) {
     Es_familia: {
       type: DataTypes.INTEGER,
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'PARENTESCO',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

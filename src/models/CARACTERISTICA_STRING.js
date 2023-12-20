@@ -1,33 +1,53 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('PUESTO', {
-    Id_puesto: {
+  return sequelize.define('CARACTERISTICA_STRING', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Nombre_puesto: {
+    Nombre: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: false
     },
     Descripcion: {
       type: DataTypes.STRING(250),
       allowNull: true
     },
-    created_at: {
+    Created_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    updated_at: {
+    Updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'PUESTO',
+    tableName: 'CARACTERISTICA_STRING',
     timestamps: false,
     indexes: [
       {
@@ -35,15 +55,21 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_puesto" },
+          { name: "Id" },
         ]
       },
       {
-        name: "Id_puesto_UNIQUE",
-        unique: true,
+        name: "Createdby",
         using: "BTREE",
         fields: [
-          { name: "Id_puesto" },
+          { name: "Createdby" },
+        ]
+      },
+      {
+        name: "Updatedby",
+        using: "BTREE",
+        fields: [
+          { name: "Updatedby" },
         ]
       },
     ]

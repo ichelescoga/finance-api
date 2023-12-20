@@ -22,19 +22,21 @@ module.exports = function(sequelize, DataTypes) {
     Meta_vental: {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'ASESOR_DETALLE',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

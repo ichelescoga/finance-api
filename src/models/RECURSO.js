@@ -38,19 +38,21 @@ module.exports = function(sequelize, DataTypes) {
     Favorito: {
       type: DataTypes.TINYINT,
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'RECURSO',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -61,17 +63,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_Recurso_TIPO_RECURSO1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_tipo_recurso" },
-        ]
-      },
-      {
-        name: "fk_Recurso_ALBUN1_idx",
+        name: "Id_albun",
         using: "BTREE",
         fields: [
           { name: "Id_albun" },
+        ]
+      },
+      {
+        name: "Id_tipo_recurso",
+        using: "BTREE",
+        fields: [
+          { name: "Id_tipo_recurso" },
         ]
       },
     ]

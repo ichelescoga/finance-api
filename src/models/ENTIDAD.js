@@ -1,51 +1,61 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('UNIDAD', {
-    Id_unidad: {
+  return sequelize.define('ENTIDAD', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_estado: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'ESTADO',
-        key: 'Id_estado'
-      }
-    },
-    Id_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'PROYECTO',
-        key: 'Id_proyecto'
-      }
-    },
-    Nombre_unidad: {
+    Nombre: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    Precio_Venta: {
-      type: DataTypes.DECIMAL(10,2),
+    Descripcion: {
+      type: DataTypes.STRING(250),
       allowNull: true
     },
-    created_at: {
+    Created_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    updated_at: {
+    Updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    },
+    Tipo: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'TIPO_ENTIDAD',
+        key: 'Id'
+      }
     }
   }, {
     sequelize,
-    tableName: 'UNIDAD',
+    tableName: 'ENTIDAD',
     timestamps: false,
     indexes: [
       {
@@ -53,31 +63,28 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_unidad" },
-          { name: "Id_estado" },
-          { name: "Id_proyecto" },
+          { name: "Id" },
         ]
       },
       {
-        name: "Id_sub_proyecto_UNIQUE",
-        unique: true,
+        name: "Createdby",
         using: "BTREE",
         fields: [
-          { name: "Id_unidad" },
+          { name: "Createdby" },
         ]
       },
       {
-        name: "fk_UNIDAD_PROYECTO1_idx",
+        name: "Updatedby",
         using: "BTREE",
         fields: [
-          { name: "Id_proyecto" },
+          { name: "Updatedby" },
         ]
       },
       {
-        name: "fk_UNIDAD_ESTADO1_idx",
+        name: "ENTIDAD_FK",
         using: "BTREE",
         fields: [
-          { name: "Id_estado" },
+          { name: "Tipo" },
         ]
       },
     ]

@@ -44,19 +44,21 @@ module.exports = function(sequelize, DataTypes) {
     Direccion: {
       type: DataTypes.STRING(150),
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'CONTACTO',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -69,14 +71,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_CONTACTO_PROYECTO1_idx",
+        name: "Id_proyecto",
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },
         ]
       },
       {
-        name: "fk_CONTACTO_USER_PROFILE1_idx",
+        name: "Id_user_profile",
         using: "BTREE",
         fields: [
           { name: "Id_user_profile" },

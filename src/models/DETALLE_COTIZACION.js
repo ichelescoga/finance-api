@@ -26,19 +26,21 @@ module.exports = function(sequelize, DataTypes) {
     Suma_intereses: {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'DETALLE_COTIZACION',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

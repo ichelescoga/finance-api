@@ -1,5 +1,12 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
+
+  function initModels(sequelize) {
+    // Coloca tu lógica de inicialización de modelos aquí
+  }
+
+  initModels(sequelize);
+
   return sequelize.define('CLIENTE_HAS_CONTACTO', {
     Idcliente_has_contacto: {
       autoIncrement: true,

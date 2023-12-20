@@ -20,7 +20,11 @@ const aplicarCreditoCortroller = require('../controller/creditoController')
 const albumController = require('../controller/albunController')
 const contactController = require('../controller/contactoController')
 const temporadaDescuentoController = require('../controller/descuentoController')
+
+const companyController = require('../controller/companyController')
+const proyectController = require('../controller/proyectController')
 const auth = require("./../services/auth-middleware")
+
 
 
 router.get('/healthcheck', (req, res) => {
@@ -200,4 +204,11 @@ router.post("/correoCelExistente",  auth.verifyToken, contactController.revicion
 router.post("/createCliente",  auth.verifyToken, contactController.createClienteController),
 //Coincidencias Nombre, Email , Telefono  de contacto contacto 
 router.post("/coincidenciasCredenciales",  auth.verifyToken, contactController.coincidenciasEmaiTelCorreo),
+
+//Obtener empresas
+router.get("/getCompanies", companyController.getCompanies),
+router.post("/addCompany",  companyController.addCompany),
+router.post("/editCompany",  companyController.editCompany),
+router.post("/deleteCompany",  companyController.deleteCompany),
+router.get("/getProyectsbyCompany", proyectController.getProyectsByCompany),
 module.exports = router
