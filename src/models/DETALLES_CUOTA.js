@@ -1,12 +1,5 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-
-  function initModels(sequelize) {
-    // Coloca tu lógica de inicialización de modelos aquí
-  }
-
-  initModels(sequelize);
-
   return sequelize.define('DETALLES_CUOTA', {
     Id_pago: {
       autoIncrement: true,
@@ -50,19 +43,21 @@ module.exports = function(sequelize, DataTypes) {
     Activo: {
       type: DataTypes.TINYINT,
       allowNull: true
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'DETALLES_CUOTA',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -74,7 +69,7 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_DETALLES_CUOTA_ESTADO_CUENTA1_idx",
+        name: "Idestado_cuenta",
         using: "BTREE",
         fields: [
           { name: "Idestado_cuenta" },

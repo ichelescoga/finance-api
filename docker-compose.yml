@@ -5,9 +5,9 @@ services:
     image: mysql:5.6
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: FinanceApp
-      MYSQL_USER: dbmasteruser
-      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_SCHEMA}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:${DB_PORT}"

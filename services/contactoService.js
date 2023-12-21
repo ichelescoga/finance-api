@@ -95,65 +95,39 @@ const db = require("../src/models");
             },
           ],
         });
+        console.log(contactos?.CLIENTE_HAS_CONTACTOs, '🕴️🕴️🤖🤖🤖🤖')
 
         if (contactos) {
-
-          
-          if (contactos.CLIENTE_HAS_CONTACTOs > 0 ) {
+          if (contactos.CLIENTE_HAS_CONTACTOs.length > 0 ) {
+            console.log("RETURN CONTACT 🍓🍓", contactos)
             return contactos;
           } else {
-            const creatCliente = await db.models.CLIENTE.create({
-              Primer_nombre: contactos.Nombre_completo,
-              Telefono: contactos.Telefono,
-              Correo: contactos.Correo,
-              Direccion_residencia: contactos.Direccion,
-            });
-
-            await db.models.CLIENTE_HAS_CONTACTO.create({
-              Id_cliente: creatCliente.Id_cliente,
-              Id_contacto: contactos.Id_contacto,
-            });
-
-            const cliente = await db.models.CLIENTE.findOne({ 
-              where: {Id_cliente: creatCliente.Id_cliente},
-              include: [
-                {
-                  model: db.models.CLIENTE_HAS_CONTACTO,
-                  as: "CLIENTE_HAS_CONTACTOs",
-                  include: [
-                    {
-                      model: db.models.CONTACTO,
-                      as: "Id_contacto_CONTACTO",
-                    },
-                  ],
-                },
-              ],
-            });
-            return cliente;
+              console.log("CREATE HAS CONTACT CLIENT 🤖🤖🤖🤖")
+              const newClient = 
+                await db.models.CLIENTE.create({
+                  Primer_nombre: contactos.Nombre_completo,
+                  Telefono: contactos.Telefono,
+                  Correo: contactos.Correo,
+                  Direccion_residencia: contactos.Direccion,
+              });
+              await db.models.CLIENTE_HAS_CONTACTO.create({
+                Id_cliente: newClient.Id_cliente,
+                Id_contacto: contactos.Id_contacto,
+              });
+              return await revisionCredenciales(params);
           }
-          
-        }else{
-          const cliente = await db.models.CLIENTE.findOne({ 
-            where: {
-              [Op.or]: [
-                { Correo: params.correo},
-                { Telefono: params.telefono },
-              ]
-            },
-            include: [
-              {
-                model: db.models.CLIENTE_HAS_CONTACTO,
-                as: "CLIENTE_HAS_CONTACTOs",
-                include: [
-                  {
-                    model: db.models.CONTACTO,
-                    as: "Id_contacto_CONTACTO",
-                  },
-                ],
-              },
-            ],
-          });
-          return cliente;
+        } else {
+          console.log("CREATE CONTACT 🤖🤖🤖")
+          await createContacto({
+            idProyecto: params.userInfo.projectId,
+            state: 1,
+            nombreCompleto: params.nombre,
+            telefono: params.telefono,
+            correo: params.correo,
+            direccion: "",
+            userProfile: params.userInfo.userProfileId
+          })
+          return await revisionCredenciales(params);
         }
       };
 

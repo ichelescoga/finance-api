@@ -1,12 +1,5 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-
-  function initModels(sequelize) {
-    // Coloca tu lógica de inicialización de modelos aquí
-  }
-
-  initModels(sequelize);
-
   return sequelize.define('CLIENTE_HAS_CONTACTO', {
     Idcliente_has_contacto: {
       autoIncrement: true,
@@ -29,19 +22,21 @@ module.exports = function(sequelize, DataTypes) {
         model: 'CONTACTO',
         key: 'Id_contacto'
       }
-    },     
-    createdAt: {          
-      field: 'created_at',          
-      type: Sequelize.DATE,      
-    },      
-    updatedAt: {          
-      field: 'updated_at',          
-      type: Sequelize.DATE 
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
     tableName: 'CLIENTE_HAS_CONTACTO',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -52,14 +47,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_Cliente_has_contacto_CLIENTE1_idx",
+        name: "Id_cliente",
         using: "BTREE",
         fields: [
           { name: "Id_cliente" },
         ]
       },
       {
-        name: "fk_Cliente_has_contacto_CONTACTO1_idx",
+        name: "Id_contacto",
         using: "BTREE",
         fields: [
           { name: "Id_contacto" },
