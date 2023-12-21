@@ -1,6 +1,39 @@
 # finance-api
 
 
+## Clean ports
+
+If the PORT is used.
+
+```
+netstat -aon | findstr PORT_YOU_WANT_TO_KILL
+```
+
+Kill the zombie process:
+```
+taskkill /f /pid 1234
+```
+
+connect to the database 
+
+First run in terminal 
+```
+docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED        STATUS                    PORTS                    NAMES
+a7777e4f7f4f   mysql:5.6              "docker-entrypoint.s…"   11 days ago    Up 19 minutes             0.0.0.0:3306->3306/tcp   finance-api-mysql-1
+```
+Use the name to connect to the database
+
+normal user
+```
+ docker exec -it finance-api-mysql-1 mysql -u dbmasteruser -p
+```
+root user
+```
+ docker exec -it finance-api-mysql-1 mysql -u root -p
+```
+
+
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
