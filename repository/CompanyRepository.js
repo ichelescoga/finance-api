@@ -47,8 +47,17 @@ let CompanyRepository = function () {
         })
     }
     let addCompanyDetails = async(params) => {
-        //agregando Desarrollador
+        /*agregando Desarrollador
         await db.models.ENTIDAD_CARACTERISTICA_INT.create({
+            Id_caracteristica: 1,
+            Id_entidad: params.entity,
+            Valor: params.desarrollador,
+            Createdby: params.createdby,
+            Estado: 1
+        }) */
+
+        //agregando Desarrollador
+        await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
             Id_caracteristica: 1,
             Id_entidad: params.entity,
             Valor: params.desarrollador,
@@ -57,7 +66,7 @@ let CompanyRepository = function () {
         })
         // agregando NIT
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 1,
+            Id_caracteristica: 2,
             Id_entidad: params.entity,
             Valor: params.nit,
             Createdby: params.createdby,
@@ -65,7 +74,7 @@ let CompanyRepository = function () {
         })
         //agregando DIRECCION
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 2,
+            Id_caracteristica: 3,
             Id_entidad: params.entity,
             Valor: params.direccion,
             Createdby: params.createdby,
@@ -73,7 +82,7 @@ let CompanyRepository = function () {
         })
         //agregando CONTACTO
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 3,
+            Id_caracteristica: 4,
             Id_entidad: params.entity,
             Valor: params.contacto,
             Createdby: params.createdby,
@@ -81,7 +90,7 @@ let CompanyRepository = function () {
         })
         //agregando TELEFONO CONTACTO
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 4,
+            Id_caracteristica: 5,
             Id_entidad: params.entity,
             Valor: params.telefonocontacto,
             Createdby: params.createdby,
@@ -89,7 +98,7 @@ let CompanyRepository = function () {
         })
          //agregando GERENTE VENTAS
          await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 5,
+            Id_caracteristica: 6,
             Id_entidad: params.entity,
             Valor: params.gerenteventas,
             Createdby: params.createdby,
@@ -97,7 +106,7 @@ let CompanyRepository = function () {
         })
         //agregando TELEFONO GERENTE VENTAS
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 6,
+            Id_caracteristica: 7,
             Id_entidad: params.entity,
             Valor: params.telefonogerenteventas,
             Createdby: params.createdby,
@@ -105,7 +114,7 @@ let CompanyRepository = function () {
         })
         //agregando LOGO
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 7,
+            Id_caracteristica: 8,
             Id_entidad: params.entity,
             Valor: params.logo,
             Createdby: params.createdby,
@@ -114,7 +123,7 @@ let CompanyRepository = function () {
     }
 
     let editCompanyDetails = async(params) => {
-        //editando desarrollador
+        /*editando desarrollador
         await db.models.ENTIDAD_CARACTERISTICA_INT.update({
             Valor: params.desarrollador,
             Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
@@ -125,8 +134,19 @@ let CompanyRepository = function () {
                 Id_caracteristica: 1,
                 Id_entidad: params.entity,
             }
+        })*/
+        // editando desarrollador
+        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
+            Valor: params.desarrollador,
+            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
+            Updatedby: params.updatedby
+        },{
+            where: {
+                Estado: 1,
+                Id_caracteristica: 1,
+                Id_entidad: params.entity,
+            }
         })
-
         // editando NIT
         await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
             Valor: params.nit,
@@ -135,7 +155,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 1,
+                Id_caracteristica: 2,
                 Id_entidad: params.entity,
             }
         })
@@ -147,7 +167,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 2,
+                Id_caracteristica: 3,
                 Id_entidad: params.entity,
             }
         })
@@ -159,7 +179,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 3,
+                Id_caracteristica: 4,
                 Id_entidad: params.entity,
             }
         })
@@ -171,7 +191,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 4 ,
+                Id_caracteristica: 5 ,
                 Id_entidad: params.entity,
             }
         })
@@ -183,7 +203,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 5,
+                Id_caracteristica: 6,
                 Id_entidad: params.entity,
             }
         })
@@ -195,7 +215,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 6,
+                Id_caracteristica: 7,
                 Id_entidad: params.entity,
             }
         })
@@ -207,7 +227,7 @@ let CompanyRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 7,
+                Id_caracteristica: 8,
                 Id_entidad: params.entity,
             }
         })
@@ -240,7 +260,7 @@ let CompanyRepository = function () {
        })
    }
    let deleteCompanyDetails = async(params) => {
-    //eliminando desarrollador
+    /*eliminando desarrollador
     await db.models.ENTIDAD_CARACTERISTICA_INT.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
@@ -250,9 +270,7 @@ let CompanyRepository = function () {
             Id_caracteristica: 1,
             Id_entidad: params.entity,
         }
-    })
-
-    // eliminando NIT
+    })*/
     await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
@@ -260,6 +278,17 @@ let CompanyRepository = function () {
     },{
         where: {
             Id_caracteristica: 1,
+            Id_entidad: params.entity,
+        }
+    })
+    // eliminando NIT
+    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
+        Estado: 0,
+        Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
+        Updatedby: params.updatedby
+    },{
+        where: {
+            Id_caracteristica:2,
             Id_entidad: params.entity,
         }
     })
@@ -270,7 +299,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 2,
+            Id_caracteristica: 3,
             Id_entidad: params.entity,
         }
     })
@@ -281,7 +310,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 3,
+            Id_caracteristica: 4,
             Id_entidad: params.entity,
         }
     })
@@ -292,7 +321,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 4 ,
+            Id_caracteristica: 5 ,
             Id_entidad: params.entity,
         }
     })
@@ -303,7 +332,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 5,
+            Id_caracteristica: 6,
             Id_entidad: params.entity,
         }
     })
@@ -314,7 +343,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 6,
+            Id_caracteristica: 7,
             Id_entidad: params.entity,
         }
     })
@@ -325,7 +354,7 @@ let CompanyRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 7,
+            Id_caracteristica: 8,
             Id_entidad: params.entity,
         }
     })

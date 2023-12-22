@@ -20,31 +20,24 @@ let ProyectRepository = function () {
             },
         });
     }
-    let getCompanyDetailsINT = async (entity) => {
-        return await  db.models.ENTIDAD_CARACTERISTICA_INT.findAll({
-            attributes: [
-                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_INT as c WHERE c.Id = ENTIDAD_CARACTERISTICA_INT.Id_caracteristica )"), 'Caracteristica'],
-                "Valor"
-            ],
-            where: {
-                Id_entidad: entity,
-                Estado: 1
-            },
-        });
+
+    let addModif_Entidad = async(params) => {
+        return await db.models.MODIFICADOR_ENTIDAD.create({
+            Id_modificador: 1,
+            Id_entidad: params.entity,
+            Estado: 1
+        })
+    }
+    let addGroupModif_Entidad = async(params) => {
+        return await db.models.MODIFICADOR_ENTIDAD.create({
+            Id_modificador: 1,
+            Id_entidad: params.entity,
+            Estado: 1
+        })
     }
 
-    let getCompanyDetailsSTRING = async (entity) => {
-        return await  db.models.ENTIDAD_CARACTERISTICA_STRING.findAll({
-            attributes: [
-                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_STRING as c WHERE c.Id = ENTIDAD_CARACTERISTICA_STRING.Id_caracteristica )"), 'Caracteristica'],
-                "Valor"
-            ],
-            where: {
-                Id_entidad: entity,
-                Estado: 1
-            },
-        });
-    }
+
+
 
     let addCompanyEntity = async(params) => {
         return await db.models.ENTIDAD.create({
@@ -341,7 +334,8 @@ let ProyectRepository = function () {
 }
     return {
         getProyectModificadorbyCompany,
-        getGroupModificador
+        getGroupModificador,
+        addModif_Entidad
     }
 
 }
