@@ -29,96 +29,120 @@ let ProyectRepository = function () {
         })
     }
     let addGroupModif_Entidad = async(params) => {
-        return await db.models.MODIFICADOR_ENTIDAD.create({
-            Id_modificador: 1,
+        return await db.models.GRUPO_MODIFICADOR_ENTIDAD.create({
+            Id_modificador_entidad: params.mod_entity,
             Id_entidad: params.entity,
-            Estado: 1
+            Nivel: 1,
+            Estado: 1,
+            Cretaddby: params.createdby
         })
     }
-
-
-
-
-    let addCompanyEntity = async(params) => {
+    let addProyectEntity = async(params) => {
         return await db.models.ENTIDAD.create({
             Nombre: params.nombre,
             Descripcion: params.descripcion,
             Createdby: params.createdby,
             Estado: 1,
-            Tipo: 1
+            Tipo: params.tipo
         })
     }
-    let addCompanyDetails = async(params) => {
-        //agregando Desarrollador
+    let addProyectDetails = async(params) => {
+        //agregando Departamento
         await db.models.ENTIDAD_CARACTERISTICA_INT.create({
             Id_caracteristica: 1,
             Id_entidad: params.entity,
-            Valor: params.desarrollador,
+            Valor: params.departamento,
             Createdby: params.createdby,
             Estado: 1
-        })
-        // agregando NIT
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 1,
+        }) 
+         //agregando Municipio
+         await db.models.ENTIDAD_CARACTERISTICA_INT.create({
+            Id_caracteristica: 2,
             Id_entidad: params.entity,
-            Valor: params.nit,
+            Valor: params.departamento,
             Createdby: params.createdby,
-            Estado:1
-        })
+            Estado: 1
+        }) 
         //agregando DIRECCION
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 2,
+            Id_caracteristica: 3,
             Id_entidad: params.entity,
             Valor: params.direccion,
             Createdby: params.createdby,
             Estado:1
         })
-        //agregando CONTACTO
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
+        //agregando unidades en venta
+        await db.models.ENTIDAD_CARACTERISTICA_INT.create({
             Id_caracteristica: 3,
             Id_entidad: params.entity,
-            Valor: params.contacto,
+            Valor: params.unidades,
             Createdby: params.createdby,
-            Estado:1
-        })
-        //agregando TELEFONO CONTACTO
+            Estado: 1
+        }) 
         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 4,
-            Id_entidad: params.entity,
-            Valor: params.telefonocontacto,
-            Createdby: params.createdby,
-            Estado:1
-        })
-         //agregando GERENTE VENTAS
-         await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 5,
-            Id_entidad: params.entity,
-            Valor: params.gerenteventas,
-            Createdby: params.createdby,
-            Estado:1
-        })
-        //agregando TELEFONO GERENTE VENTAS
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 6,
-            Id_entidad: params.entity,
-            Valor: params.telefonogerenteventas,
-            Createdby: params.createdby,
-            Estado:1
-        })
-        //agregando LOGO
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.create({
-            Id_caracteristica: 7,
+            Id_caracteristica: 8,
             Id_entidad: params.entity,
             Valor: params.logo,
             Createdby: params.createdby,
             Estado:1
         })
     }
+    let getProyect = async (entity) => {
+        return await  db.models.ENTIDAD.findOne({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM TIPO_ENTIDAD as t WHERE t.Id = ENTIDAD.Tipo )"), 'Tipo'],
+                "Nombre",
+                "Descripcion"
+            ],
+            where: {
+                Id: entity,
+                Estado: 1
+            },
+        });
+    }
+    let getProyectDetailsINT = async (entity) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_INT.findAll({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_INT as c WHERE c.Id = ENTIDAD_CARACTERISTICA_INT.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: entity,
+                Estado: 1
+            },
+        });
+    }
+    let getProyectDetailsSTRING = async (entity) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_STRING.findAll({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_STRING as c WHERE c.Id = ENTIDAD_CARACTERISTICA_STRING.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: entity,
+                Estado: 1
+            },
+        });
+    }
 
-    let editCompanyDetails = async(params) => {
-        //editando desarrollador
+    let editProyectEntity = async(params) => {
+        await db.models.ENTIDAD.update({
+           Nombre: params.nombre,
+           Descripcion: params.descripcion,
+           Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
+           Updatedby: params.updatedby,
+           Tipo: params.tipo
+       },{
+           where: {
+               Estado: 1,
+               Id: params.entity
+           }
+       })
+   }
+   let editCompanyDetails = async(params) => {
+        //editando DEPARTAMENTO
         await db.models.ENTIDAD_CARACTERISTICA_INT.update({
-            Valor: params.desarrollador,
+            Valor: params.departamento,
             Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
             Updatedby: params.updatedby
         },{
@@ -128,16 +152,15 @@ let ProyectRepository = function () {
                 Id_entidad: params.entity,
             }
         })
-
-        // editando NIT
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-            Valor: params.nit,
+        //editando MUNICIPIO
+        await db.models.ENTIDAD_CARACTERISTICA_INT.update({
+            Valor: params.municipio,
             Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
             Updatedby: params.updatedby
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 1,
+                Id_caracteristica: 2,
                 Id_entidad: params.entity,
             }
         })
@@ -149,13 +172,13 @@ let ProyectRepository = function () {
         },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 2,
+                Id_caracteristica: 3,
                 Id_entidad: params.entity,
             }
         })
-        //editando CONTACTO
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-            Valor: params.contacto,
+        //editando CANTIDAD DE UNIDADES
+        await db.models.ENTIDAD_CARACTERISTICA_INT.update({
+            Valor: params.unidades,
             Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
             Updatedby: params.updatedby
         },{
@@ -165,84 +188,33 @@ let ProyectRepository = function () {
                 Id_entidad: params.entity,
             }
         })
-        //editando TELEFONO CONTACTO
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-            Valor: params.telefonocontacto,
-            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-            Updatedby: params.updatedby
-        },{
-            where: {
-                Estado: 1,
-                Id_caracteristica: 4 ,
-                Id_entidad: params.entity,
-            }
-        })
-         //editando GERENTE VENTAS
+         //editando LOGO
          await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-            Valor: params.gerenteventas,
-            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-            Updatedby: params.updatedby
-        },{
-            where: {
-                Estado: 1,
-                Id_caracteristica: 5,
-                Id_entidad: params.entity,
-            }
-        })
-        //editando TELEFONO GERENTE VENTAS
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-            Valor: params.telefonogerenteventas,
-            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-            Updatedby: params.updatedby
-        },{
-            where: {
-                Estado: 1,
-                Id_caracteristica: 6,
-                Id_entidad: params.entity,
-            }
-        })
-        //editando LOGO
-        await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
             Valor: params.logo,
             Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
             Updatedby: params.updatedby
-        },{
+            },{
             where: {
                 Estado: 1,
-                Id_caracteristica: 7,
+                Id_caracteristica: 8,
                 Id_entidad: params.entity,
             }
         })
     }
-
-    let editCompanyEntity = async(params) => {
-         await db.models.ENTIDAD.update({
-            Nombre: params.nombre,
-            Descripcion: params.descripcion,
-            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-            Updatedby: params.updatedby
-        },{
-            where: {
-                Estado: 1,
-                Tipo: 1,
-                Id: params.entity
-            }
-        })
-    }
-    let deleteCompanyEntity = async(params) => {
+    let deleteProyectEntity = async(params) => {
         await db.models.ENTIDAD.update({
         Estado:0,
            Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
            Updatedby: params.updatedby
        },{
            where: {
-               Tipo: 1,
                Id: params.entity
            }
        })
    }
-   let deleteCompanyDetails = async(params) => {
-    //eliminando desarrollador
+
+   let deleteProyectDetails = async(params) => {
+    //eliminando DEPARTAMENTO
     await db.models.ENTIDAD_CARACTERISTICA_INT.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
@@ -253,15 +225,14 @@ let ProyectRepository = function () {
             Id_entidad: params.entity,
         }
     })
-
-    // eliminando NIT
-    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
+    //eliminando MUNICIPIO
+    await db.models.ENTIDAD_CARACTERISTICA_INT.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 1,
+            Id_caracteristica: 2,
             Id_entidad: params.entity,
         }
     })
@@ -272,12 +243,12 @@ let ProyectRepository = function () {
         Updatedby: params.updatedby
     },{
         where: {
-            Id_caracteristica: 2,
+            Id_caracteristica: 3,
             Id_entidad: params.entity,
         }
     })
-    //eliminando CONTACTO
-    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
+    //eliminando CANTIDAD DE UNIDADES
+    await db.models.ENTIDAD_CARACTERISTICA_INT.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
         Updatedby: params.updatedby
@@ -287,55 +258,49 @@ let ProyectRepository = function () {
             Id_entidad: params.entity,
         }
     })
-    //eeliminando TELEFONO CONTACTO
-    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-        Estado: 0,
-        Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-        Updatedby: params.updatedby
-    },{
-        where: {
-            Id_caracteristica: 4 ,
-            Id_entidad: params.entity,
-        }
-    })
-     //eliminando GERENTE VENTAS
+     //eliminando LOGO
      await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
         Estado: 0,
         Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
         Updatedby: params.updatedby
-    },{
+        },{
         where: {
-            Id_caracteristica: 5,
+            Id_caracteristica: 8,
             Id_entidad: params.entity,
         }
     })
-    //eliminando TELEFONO GERENTE VENTAS
-    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-        Estado: 0,
-        Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-        Updatedby: params.updatedby
-    },{
-        where: {
-            Id_caracteristica: 6,
-            Id_entidad: params.entity,
-        }
-    })
-    //eliminando LOGO
-    await db.models.ENTIDAD_CARACTERISTICA_STRING.update({
-        Estado: 0,
-        Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
-        Updatedby: params.updatedby
-    },{
-        where: {
-            Id_caracteristica: 7,
-            Id_entidad: params.entity,
-        }
-    })
-}
+    }
+    
+    let deleteGroupMod_entity = async(params) => {
+        await db.models.GRUPO_MODIFICADOR_ENTIDAD.update({
+            Estado:0,
+           Updated_at: sequelize.literal('CURRENT_TIMESTAMP'),
+           Updatedby: params.updatedby
+       },{
+           where: {
+               Id_entidad: params.entity
+           }
+       })
+   }
+
+
+
+
     return {
         getProyectModificadorbyCompany,
         getGroupModificador,
-        addModif_Entidad
+        addModif_Entidad,
+        addGroupModif_Entidad,
+        addProyectEntity,
+        addProyectDetails,
+        getProyect,
+        getProyectDetailsINT,
+        getProyectDetailsSTRING,
+        editProyectEntity,
+        editCompanyDetails,
+        deleteProyectEntity,
+        deleteProyectDetails,
+        deleteGroupMod_entity
     }
 
 }

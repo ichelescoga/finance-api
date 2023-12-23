@@ -211,4 +211,8 @@ router.post("/addCompany",  companyController.addCompany),
 router.post("/editCompany",  companyController.editCompany),
 router.post("/deleteCompany",  companyController.deleteCompany),
 router.get("/getProyectsbyCompany", proyectController.getProyectsByCompany),
+router.post("/addProyect",  proyectController.addProyectsByCompany),
+router.post("/editProyect",  proyectController.editProyect),
+router.post("/deleteProyect",  proyectController.deleteProyect),
+router.post("/editCompanyinProyect",  proyectController.editCompanyinProyect),
 module.exports = router
