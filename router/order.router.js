@@ -20,9 +20,15 @@ const aplicarCreditoCortroller = require('../controller/creditoController')
 const albumController = require('../controller/albunController')
 const contactController = require('../controller/contactoController')
 const temporadaDescuentoController = require('../controller/descuentoController')
+const reservaController = require('../controller/reservaController')
+const engancheController = require('../controller/engancheController')
+
+
 
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
+
+
 const auth = require("./../services/auth-middleware")
 
 
@@ -215,4 +221,24 @@ router.post("/addProyect",  proyectController.addProyectsByCompany),
 router.post("/editProyect",  proyectController.editProyect),
 router.post("/deleteProyect",  proyectController.deleteProyect),
 router.post("/editCompanyinProyect",  proyectController.editCompanyinProyect),
+
+
+//Detalle porcentaje Reserva
+router.get("/valorTotalReserva/:id", auth.verifyToken,  reservaController.valorTotalReserva),
+router.post("/createDetallePorcentajeReserva",  auth.verifyToken, reservaController.createDetallePorcentajeReserva),
+router.put("/actualizacionDetallePorcentajeReserva/:id",  auth.verifyToken, reservaController.updatePorcentajeReserva),
+router.get("/detallePorcentajeReserva/:id", auth.verifyToken,  reservaController.listPorcentajesReserva),
+
+router.post("/createPagoReserva/:id",  auth.verifyToken, reservaController.createReserva),
+
+
+
+//Detalle porcentaje enganche 
+router.get("/valorTotalEnganche/:id", auth.verifyToken,  engancheController.valorTotalEnganche),
+router.post("/createDetallePorcentajeEnganche",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
+router.put("/actualizacionDetallePorcentajeEnganche/:id",  auth.verifyToken, engancheController.updatePorcentajeEnganche),
+router.get("/detallePorcentajeEnganche/:id", auth.verifyToken,  engancheController.listPorcentajesEnganche),
+
+router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.createEnganche),
+
 module.exports = router

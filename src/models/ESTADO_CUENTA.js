@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Id_compraventa",
+        name: "fk_ESTADO_CUENTA_COMPRA_VENTA1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_compraventa" },

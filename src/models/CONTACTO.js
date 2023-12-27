@@ -71,14 +71,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Id_proyecto",
+        name: "fk_CONTACTO_PROYECTO1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },
         ]
       },
       {
-        name: "Id_user_profile",
+        name: "fk_CONTACTO_USER_PROFILE1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_user_profile" },

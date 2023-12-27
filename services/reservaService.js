@@ -1,0 +1,194 @@
+const db = require("../src/models");
+
+let userRepository = function () {
+
+  let findOneProyectoDetallePorcentajeReserva = async (params) => {
+    const cotizacion = await db.models.COTIZACION.findOne({
+      where: { Id_cotizacion: params },
+      include: [
+        {
+          model: db.models.UNIDAD_COTIZACION,
+          as: "UNIDAD_COTIZACIONs",
+          attributes: ["Id_unidad_cotizacion"],
+          required: true,
+          include: [
+            {
+              model: db.models.UNIDAD,
+              as: "Id_unidad_UNIDAD",
+              attributes: ["Id_unidad"],
+              required: true,
+              include: [
+                {
+                  model: db.models.PROYECTO,
+                  as: "Id_proyecto_PROYECTO",
+                  attributes: ["Id_proyecto"],
+                  required: true,
+                  include: [
+                    {
+                      model: db.models.DETALLE_PORCENTAJE_RESERVA,
+                      as: "DETALLE_PORCENTAJE_RESERVAs",
+                      where: { Status: 1 },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    return cotizacion;
+  };
+
+
+  let createDetallReserva = async (params) => {
+    const newPorcentajeReserva = await db.models.DETALLE_PORCENTAJE_RESERVA.create({
+      Fecha_inicial: params.fechaInicial,
+      Fecha_final: params.fechaFinal,
+      Id_proyecto: params.idProyecto,
+      Status: params.status,
+      Porcentaje: params.porcentaje,
+    });
+    return newPorcentajeReserva;
+  };
+
+
+  let updatePorcentajeReserva = async (params) => {
+    const porcentajeReserva = await db.models.DETALLE_PORCENTAJE_RESERVA.findOne({ 
+      where: { Id_detalle_porcentaje_reserva: params.idDetallePorcentajeReserva } });
+
+    if(!porcentajeReserva) {
+       return
+    } else {
+        await db.models.DETALLE_PORCENTAJE_RESERVA.update({
+          Fecha_inicial: params.fechaInicial,
+          Fecha_final: params.fechaFinal,
+          Id_proyecto: params.idProyecto,
+          Status: params.status,
+          Porcentaje: params.porcentaje,
+      },{
+        where:{Id_detalle_porcentaje_reserva: params.idDetallePorcentajeReserva}
+    });
+    }
+    const detallePorcentajeActualizado = await db.models.DETALLE_PORCENTAJE_RESERVA.findOne({ 
+      where: { Id_detalle_porcentaje_reserva: params.idDetallePorcentajeReserva } });
+    return detallePorcentajeActualizado
+  };
+
+  let findPorcentajesReserva = async (params) => {
+    const cotizacion = await db.models.DETALLE_PORCENTAJE_RESERVA.findAll({
+      where: { Id_proyecto: params },
+    });
+    return cotizacion;
+  };
+
+  let findCuentaCorriente = async (params) => {
+    const cotizacion = await db.models.COTIZACION.findAll({
+      where: { Id_cotizacion: params },
+      include: [
+        {
+          model: db.models.CUENTA_CORRIENTE,
+          as: "CUENTA_CORRIENTEs",
+          required: true,
+        },
+      ],
+    });
+    return cotizacion;
+  };
+
+  let findOneCotizacion = async (params) => {
+    const cotizacion = await db.models.COTIZACION.findOne({
+      where: { Id_cotizacion: params},
+      include: [
+        {
+          model: db.models.UNIDAD_COTIZACION,
+          as: "UNIDAD_COTIZACIONs",
+          required: true,
+          include: [
+            {
+              model: db.models.UNIDAD,
+              as: "Id_unidad_UNIDAD",
+              required: true,
+            },
+          ],
+        },
+      ],
+    });
+    return cotizacion;
+  };
+
+  let createCuentaCorriente = async (params) => {
+    const cuentaCorriente = await db.models.CUENTA_CORRIENTE.create({
+      Id_cliente: params.idCliente,
+      Id_cotizacion: params.idCotizacion,
+    });
+    return cuentaCorriente;
+  };
+
+  let createReserva = async (params) => {
+    const newPago = await db.models.PAGO.create({
+      Id_cuenta_corriente: params.idCuentaCorriente,
+      Fecha: params.fecha,
+      Monto: params.monto,
+      Saldo: params.saldo,
+      Interes: params.interes,
+      Fecha_limite_pago: params.fechaLimitePago,
+      Pago: params.pago,
+      Referencia: params.referencia,
+      Id_tipo_pago: params.idTipoPago,
+      Id_status_transaccion: params.idStatusTransaccion,
+      Id_status_pago: params.idStatusPago,
+    });
+    return newPago;
+  };
+
+  let updateCotizEstado = async (params) => {
+    const cotizacion = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.id } });
+
+    if(!cotizacion) {
+       return
+    } else {
+        await db.models.COTIZACION.update({
+        Id_estado: params.idEstado,
+      },{
+        where:{
+          Id_cotizacion: params.id
+        }
+    });
+    }
+    const cotizacionActualizada = await db.models.COTIZACION.findOne({ where: { Id_cotizacion: params.id } });
+    return cotizacionActualizada
+  };
+
+  let updatestateUnidad = async (params) => {
+    const getUnidad = await db.models.UNIDAD.findOne({ where: { Id_unidad: params.id } });
+    if(!getUnidad) {
+       return
+    } else {
+        await db.models.UNIDAD.update({
+        Id_estado: params.idEstado,
+      },{
+        where:{
+          Id_unidad: params.id
+        }
+    });
+    }
+    const unidadActualizada = await db.models.UNIDAD.findOne({ where: { Id_unidad: params.id } });
+    return unidadActualizada
+  };
+
+  return {
+    findOneProyectoDetallePorcentajeReserva,
+    createDetallReserva,
+    updatePorcentajeReserva,
+    findPorcentajesReserva,
+    findCuentaCorriente,
+    createCuentaCorriente,
+    findOneCotizacion,
+    createReserva,
+    updateCotizEstado,
+    updatestateUnidad
+  };
+};
+
+module.exports = userRepository();

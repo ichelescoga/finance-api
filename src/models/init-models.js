@@ -13,11 +13,14 @@ var _COMPRA_VENTA = require("./COMPRA_VENTA");
 var _CONFIGURACION_DESCUENTO = require("./CONFIGURACION_DESCUENTO");
 var _CONTACTO = require("./CONTACTO");
 var _COTIZACION = require("./COTIZACION");
+var _CUENTA_CORRIENTE = require("./CUENTA_CORRIENTE");
 var _DEPARTAMENTO = require("./DEPARTAMENTO");
 var _DETALLES_CUOTA = require("./DETALLES_CUOTA");
 var _DETALLE_COTIZACION = require("./DETALLE_COTIZACION");
 var _DETALLE_EJECUTIVO = require("./DETALLE_EJECUTIVO");
 var _DETALLE_FIADOR = require("./DETALLE_FIADOR");
+var _DETALLE_PORCENTAJE_ENGANCHE = require("./DETALLE_PORCENTAJE_ENGANCHE");
+var _DETALLE_PORCENTAJE_RESERVA = require("./DETALLE_PORCENTAJE_RESERVA");
 var _EJECUTIVO = require("./EJECUTIVO");
 var _EMPLEADO_ASESOR = require("./EMPLEADO_ASESOR");
 var _EMPLEADO_EMPRESA = require("./EMPLEADO_EMPRESA");
@@ -37,6 +40,7 @@ var _GRUPO_MODIFICADOR_ENTIDAD = require("./GRUPO_MODIFICADOR_ENTIDAD");
 var _MODIFICADOR = require("./MODIFICADOR");
 var _MODIFICADOR_ENTIDAD = require("./MODIFICADOR_ENTIDAD");
 var _MUNICIPIO = require("./MUNICIPIO");
+var _PAGO = require("./PAGO");
 var _PAIS = require("./PAIS");
 var _PARENTESCO = require("./PARENTESCO");
 var _PLAN_FINANCIERO_PROY = require("./PLAN_FINANCIERO_PROY");
@@ -45,9 +49,12 @@ var _PUESTO = require("./PUESTO");
 var _RECURSO = require("./RECURSO");
 var _REFERENCIA = require("./REFERENCIA");
 var _ROL = require("./ROL");
+var _STATUS_PAGO = require("./STATUS_PAGO");
+var _STATUS_TRANSACCION = require("./STATUS_TRANSACCION");
 var _TEMPORADA_DESCUENTO = require("./TEMPORADA_DESCUENTO");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
 var _TIPO_ENTIDAD = require("./TIPO_ENTIDAD");
+var _TIPO_PAGO = require("./TIPO_PAGO");
 var _TIPO_PROYECTO = require("./TIPO_PROYECTO");
 var _TIPO_RECURSO = require("./TIPO_RECURSO");
 var _UNIDAD = require("./UNIDAD");
@@ -70,11 +77,14 @@ function initModels(sequelize) {
   var CONFIGURACION_DESCUENTO = _CONFIGURACION_DESCUENTO(sequelize, DataTypes);
   var CONTACTO = _CONTACTO(sequelize, DataTypes);
   var COTIZACION = _COTIZACION(sequelize, DataTypes);
+  var CUENTA_CORRIENTE = _CUENTA_CORRIENTE(sequelize, DataTypes);
   var DEPARTAMENTO = _DEPARTAMENTO(sequelize, DataTypes);
   var DETALLES_CUOTA = _DETALLES_CUOTA(sequelize, DataTypes);
   var DETALLE_COTIZACION = _DETALLE_COTIZACION(sequelize, DataTypes);
   var DETALLE_EJECUTIVO = _DETALLE_EJECUTIVO(sequelize, DataTypes);
   var DETALLE_FIADOR = _DETALLE_FIADOR(sequelize, DataTypes);
+  var DETALLE_PORCENTAJE_ENGANCHE = _DETALLE_PORCENTAJE_ENGANCHE(sequelize, DataTypes);
+  var DETALLE_PORCENTAJE_RESERVA = _DETALLE_PORCENTAJE_RESERVA(sequelize, DataTypes);
   var EJECUTIVO = _EJECUTIVO(sequelize, DataTypes);
   var EMPLEADO_ASESOR = _EMPLEADO_ASESOR(sequelize, DataTypes);
   var EMPLEADO_EMPRESA = _EMPLEADO_EMPRESA(sequelize, DataTypes);
@@ -94,6 +104,7 @@ function initModels(sequelize) {
   var MODIFICADOR = _MODIFICADOR(sequelize, DataTypes);
   var MODIFICADOR_ENTIDAD = _MODIFICADOR_ENTIDAD(sequelize, DataTypes);
   var MUNICIPIO = _MUNICIPIO(sequelize, DataTypes);
+  var PAGO = _PAGO(sequelize, DataTypes);
   var PAIS = _PAIS(sequelize, DataTypes);
   var PARENTESCO = _PARENTESCO(sequelize, DataTypes);
   var PLAN_FINANCIERO_PROY = _PLAN_FINANCIERO_PROY(sequelize, DataTypes);
@@ -102,9 +113,12 @@ function initModels(sequelize) {
   var RECURSO = _RECURSO(sequelize, DataTypes);
   var REFERENCIA = _REFERENCIA(sequelize, DataTypes);
   var ROL = _ROL(sequelize, DataTypes);
+  var STATUS_PAGO = _STATUS_PAGO(sequelize, DataTypes);
+  var STATUS_TRANSACCION = _STATUS_TRANSACCION(sequelize, DataTypes);
   var TEMPORADA_DESCUENTO = _TEMPORADA_DESCUENTO(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
   var TIPO_ENTIDAD = _TIPO_ENTIDAD(sequelize, DataTypes);
+  var TIPO_PAGO = _TIPO_PAGO(sequelize, DataTypes);
   var TIPO_PROYECTO = _TIPO_PROYECTO(sequelize, DataTypes);
   var TIPO_RECURSO = _TIPO_RECURSO(sequelize, DataTypes);
   var UNIDAD = _UNIDAD(sequelize, DataTypes);
@@ -162,10 +176,14 @@ function initModels(sequelize) {
   COTIZACION.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cotizacion"});
   COMPRA_VENTA.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(COMPRA_VENTA, { as: "COMPRA_VENTa", foreignKey: "Id_cotizacion"});
+  CUENTA_CORRIENTE.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
+  COTIZACION.hasMany(CUENTA_CORRIENTE, { as: "CUENTA_CORRIENTEs", foreignKey: "Id_cotizacion"});
   DETALLE_COTIZACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(DETALLE_COTIZACION, { as: "DETALLE_COTIZACIONs", foreignKey: "Id_cotizacion"});
   UNIDAD_COTIZACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(UNIDAD_COTIZACION, { as: "UNIDAD_COTIZACIONs", foreignKey: "Id_cotizacion"});
+  PAGO.belongsTo(CUENTA_CORRIENTE, { as: "Id_cuenta_corriente_CUENTA_CORRIENTE", foreignKey: "Id_cuenta_corriente"});
+  CUENTA_CORRIENTE.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_cuenta_corriente"});
   EMPRESA.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});
   DEPARTAMENTO.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_departamento"});
   APLICACION.belongsTo(DETALLE_FIADOR, { as: "Id_dtalle_fiador_DETALLE_FIADOR", foreignKey: "Id_dtalle_fiador"});
@@ -240,6 +258,10 @@ function initModels(sequelize) {
   PROYECTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_proyecto"});
   CONTACTO.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_proyecto"});
+  DETALLE_PORCENTAJE_ENGANCHE.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(DETALLE_PORCENTAJE_ENGANCHE, { as: "DETALLE_PORCENTAJE_ENGANCHEs", foreignKey: "Id_proyecto"});
+  DETALLE_PORCENTAJE_RESERVA.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(DETALLE_PORCENTAJE_RESERVA, { as: "DETALLE_PORCENTAJE_RESERVAs", foreignKey: "Id_proyecto"});
   PLAN_FINANCIERO_PROY.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_proyecto"});
   UNIDAD.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
@@ -250,12 +272,18 @@ function initModels(sequelize) {
   PUESTO.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_puesto"});
   USER_PROFILE.belongsTo(ROL, { as: "Id_rol_ROL", foreignKey: "Id_rol"});
   ROL.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_rol"});
+  PAGO.belongsTo(STATUS_PAGO, { as: "Id_status_pago_STATUS_PAGO", foreignKey: "Id_status_pago"});
+  STATUS_PAGO.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_status_pago"});
+  PAGO.belongsTo(STATUS_TRANSACCION, { as: "Id_status_transaccion_STATUS_TRANSACCION", foreignKey: "Id_status_transaccion"});
+  STATUS_TRANSACCION.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_status_transaccion"});
   CONFIGURACION_DESCUENTO.belongsTo(TEMPORADA_DESCUENTO, { as: "Id_temporada_descuento_TEMPORADA_DESCUENTO", foreignKey: "Id_temporada_descuento"});
   TEMPORADA_DESCUENTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_temporada_descuento"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
   ENTIDAD.belongsTo(TIPO_ENTIDAD, { as: "Tipo_TIPO_ENTIDAD", foreignKey: "Tipo"});
   TIPO_ENTIDAD.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Tipo"});
+  PAGO.belongsTo(TIPO_PAGO, { as: "Id_tipo_pago_TIPO_PAGO", foreignKey: "Id_tipo_pago"});
+  TIPO_PAGO.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_tipo_pago"});
   PROYECTO.belongsTo(TIPO_PROYECTO, { as: "Id_tipo_proyecto_TIPO_PROYECTO", foreignKey: "Id_tipo_proyecto"});
   TIPO_PROYECTO.hasMany(PROYECTO, { as: "PROYECTOs", foreignKey: "Id_tipo_proyecto"});
   RECURSO.belongsTo(TIPO_RECURSO, { as: "Id_tipo_recurso_TIPO_RECURSO", foreignKey: "Id_tipo_recurso"});
@@ -342,11 +370,14 @@ function initModels(sequelize) {
     CONFIGURACION_DESCUENTO,
     CONTACTO,
     COTIZACION,
+    CUENTA_CORRIENTE,
     DEPARTAMENTO,
     DETALLES_CUOTA,
     DETALLE_COTIZACION,
     DETALLE_EJECUTIVO,
     DETALLE_FIADOR,
+    DETALLE_PORCENTAJE_ENGANCHE,
+    DETALLE_PORCENTAJE_RESERVA,
     EJECUTIVO,
     EMPLEADO_ASESOR,
     EMPLEADO_EMPRESA,
@@ -366,6 +397,7 @@ function initModels(sequelize) {
     MODIFICADOR,
     MODIFICADOR_ENTIDAD,
     MUNICIPIO,
+    PAGO,
     PAIS,
     PARENTESCO,
     PLAN_FINANCIERO_PROY,
@@ -374,9 +406,12 @@ function initModels(sequelize) {
     RECURSO,
     REFERENCIA,
     ROL,
+    STATUS_PAGO,
+    STATUS_TRANSACCION,
     TEMPORADA_DESCUENTO,
     TIPO_CREDITO,
     TIPO_ENTIDAD,
+    TIPO_PAGO,
     TIPO_PROYECTO,
     TIPO_RECURSO,
     UNIDAD,
