@@ -1,6 +1,6 @@
 const engancheService = require("../services/engancheService");
 const moment = require('moment')
-const cotizaciones = require("../services/cotizacionesService");
+const accountService = require("../services/accountService");
 exports.valorTotalEnganche = async (req, res, next) => {
   try {
     let valorEnganche = await engancheService.findOneProyectoDetallePorcentajeEnganche(req.params.id)
@@ -221,7 +221,7 @@ exports.createEnganche = async (req, res, next) => {
       let cuentaCorriente = await engancheService.findCuentaCorriente(req.params.id);
 
       if (cuentaCorriente.length > 0) {
-        const fechaFormateada = moment().format('YYYY-MM-DD');
+        var fechaFormateada = moment().format('YYYY-MM-DD');
 
         let cuotaEnganche = await engancheService.findOneProyectoDetallePorcentajeEnganche(req.params.id)
 
@@ -232,12 +232,11 @@ exports.createEnganche = async (req, res, next) => {
           });
 
           if (objetosFiltrados.length > 0) {
-            console.log(objetosFiltrados[0]);
-            let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
-            let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
-            let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
 
 
+          let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
+          let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
+          let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
 
             let paramsPagoReserva = {
               idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
@@ -253,7 +252,7 @@ exports.createEnganche = async (req, res, next) => {
               idStatusPago: 1,
             }
 
-            let createReserva = await engancheService.createEnganche(paramsPagoReserva);
+            let createEnganche =  await engancheService.createEnganche(paramsPagoReserva);
 
             let paramsCotizacion = {
               id: req.params.id,
@@ -272,7 +271,7 @@ exports.createEnganche = async (req, res, next) => {
             res.status(202).json({
               success: true,
               message: "Enganche Creada Con exito",
-              data: createReserva
+              data: createEnganche
             });
           } else {
 
@@ -516,6 +515,7 @@ exports.createEnganche = async (req, res, next) => {
     res.status(406).json({
       succes: false,
       message: "Problemas al crear Unidad, intentelo de nuevo",
+      error:error
     });
   }
 };

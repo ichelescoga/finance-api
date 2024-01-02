@@ -241,4 +241,9 @@ router.get("/detallePorcentajeEnganche/:id", auth.verifyToken,  engancheControll
 
 router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.createEnganche),
 
+
+
+//Pago cuotas
+router.post("/createCuotas/:id",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
+
 module.exports = router

@@ -23,6 +23,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true
     },
+    Pago_capital: {
+      type: DataTypes.DECIMAL(18,8),
+      allowNull: true
+    },
     Saldo: {
       type: DataTypes.DECIMAL(18,8),
       allowNull: true

@@ -56,7 +56,7 @@ exports.pmtCalculate = async (req, res, next) => {
     try {
       
         let params = {}
-        params.annualI = req.body.annualInterest
+        params.annualInterest = req.body.annualInterest
         params.annualPayments = req.body.annualPayments
         params.totalCreditValue = req.body.totalCreditValue
         params.precioContado = req.body.precioContado
@@ -71,7 +71,4 @@ exports.pmtCalculate = async (req, res, next) => {
       });
     }
   };
-
-
-
 
