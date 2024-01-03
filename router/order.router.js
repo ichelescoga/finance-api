@@ -22,7 +22,7 @@ const contactController = require('../controller/contactoController')
 const temporadaDescuentoController = require('../controller/descuentoController')
 const reservaController = require('../controller/reservaController')
 const engancheController = require('../controller/engancheController')
-
+const cuotaController = require('../controller/pagoCuotaController')
 
 
 const companyController = require('../controller/companyController')
@@ -244,6 +244,6 @@ router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.cre
 
 
 //Pago cuotas
-router.post("/createCuotas/:id",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
+router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas),
 
 module.exports = router

@@ -72,3 +72,23 @@ exports.pmtCalculate = async (req, res, next) => {
     }
   };
 
+
+  exports.pmtCalculateWithInterest = async (req, res, next) => {
+    try {
+      
+        let params = {}
+        params.annualInterest = req.body.annualInterest
+        params.annualPayments = req.body.annualPayments
+        params.totalCreditValue = req.body.totalCreditValue
+        params.precioContado = req.body.precioContado
+
+        let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(params);
+
+        res.json(calculatePaymentList)
+    } catch (error) {
+      res.status(406).json({
+        succes: false,
+        message: "Payments list generation error.",
+      });
+    }
+  };

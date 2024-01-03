@@ -34,7 +34,7 @@ exports.createCuotas = async (req, res, next) => {
           saldo: elemento.creditTotalBalance,
           interes: elemento.monthlyInterest,
           fechaLimitePago: fechaFormateada,
-          Pago_capital:  elemento.monthlyCapitalPayment,
+          pagoCapital:  elemento.monthlyCapitalPayment,
           pago: 0,
           referencia: null,
           idTipoPago: 2,
