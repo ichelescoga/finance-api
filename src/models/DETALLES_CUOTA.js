@@ -69,7 +69,7 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Idestado_cuenta",
+        name: "fk_DETALLES_CUOTA_ESTADO_CUENTA1_idx",
         using: "BTREE",
         fields: [
           { name: "Idestado_cuenta" },

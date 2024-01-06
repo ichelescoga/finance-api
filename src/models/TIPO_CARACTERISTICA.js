@@ -1,34 +1,41 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ESTADO_CUENTA', {
-    Idestado_cuenta: {
+  return sequelize.define('TIPO_CARACTERISTICA', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_compraventa: {
+    Nombre: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Created_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Createdby: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'COMPRA_VENTA',
-        key: 'Id_compraventa'
-      }
+      allowNull: true
     },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    Estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'ESTADO_CUENTA',
+    tableName: 'TIPO_CARACTERISTICA',
     timestamps: false,
     indexes: [
       {
@@ -36,15 +43,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Idestado_cuenta" },
-          { name: "Id_compraventa" },
-        ]
-      },
-      {
-        name: "fk_ESTADO_CUENTA_COMPRA_VENTA1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_compraventa" },
+          { name: "Id" },
         ]
       },
     ]

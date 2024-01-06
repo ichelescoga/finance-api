@@ -1,43 +1,56 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('EMPLEADO_EMPRESA', {
-    Id_empleado_empresa: {
+  return sequelize.define('TIPO_ENTIDAD_CARACTERISTICA', {
+    Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_empleado: {
+    Id_tipo_entidad: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    Id_caracteristica: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    Id_tipo_caracteristica: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
-        model: 'EMPLEADO_ASESOR',
-        key: 'Id_empleado'
+        model: 'TIPO_CARACTERISTICA',
+        key: 'Id'
       }
     },
-    Id_empresa: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'EMPRESA',
-        key: 'Id_empresa'
-      }
-    },
-    created_at: {
+    Created_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    updated_at: {
+    Updated_at: {
       type: DataTypes.DATE,
+      allowNull: true
+    },
+    Createdby: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      references: {
+        model: 'User',
+        key: 'Id_user'
+      }
+    },
+    Updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    Estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'EMPLEADO_EMPRESA',
+    tableName: 'TIPO_ENTIDAD_CARACTERISTICA',
     timestamps: false,
     indexes: [
       {
@@ -45,23 +58,21 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_empleado_empresa" },
-          { name: "Id_empleado" },
-          { name: "Id_empresa" },
+          { name: "Id" },
         ]
       },
       {
-        name: "fk_EMPLEADO_EMPRESA_EMPLEADO_ASESOR1_idx",
+        name: "Createdby",
         using: "BTREE",
         fields: [
-          { name: "Id_empleado" },
+          { name: "Createdby" },
         ]
       },
       {
-        name: "fk_EMPLEADO_EMPRESA_EMPRESA1_idx",
+        name: "Id_tipo_caracteristica",
         using: "BTREE",
         fields: [
-          { name: "Id_empresa" },
+          { name: "Id_tipo_caracteristica" },
         ]
       },
     ]
