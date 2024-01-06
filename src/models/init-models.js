@@ -298,6 +298,8 @@ function initModels(sequelize) {
   STATUS_TRANSACCION.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_status_transaccion"});
   CONFIGURACION_DESCUENTO.belongsTo(TEMPORADA_DESCUENTO, { as: "Id_temporada_descuento_TEMPORADA_DESCUENTO", foreignKey: "Id_temporada_descuento"});
   TEMPORADA_DESCUENTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_temporada_descuento"});
+  COMPONENTE.belongsTo(TIPO_CARACTERISTICA, { as: "InputType_TIPO_CARACTERISTICA", foreignKey: "InputType"});
+  TIPO_CARACTERISTICA.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "InputType"});
   COMPONENTE_ENTIDAD.belongsTo(TIPO_CARACTERISTICA, { as: "Id_tipo_caracteristica_TIPO_CARACTERISTICA", foreignKey: "Id_tipo_caracteristica"});
   TIPO_CARACTERISTICA.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_tipo_caracteristica"});
   TIPO_ENTIDAD_CARACTERISTICA.belongsTo(TIPO_CARACTERISTICA, { as: "Id_tipo_caracteristica_TIPO_CARACTERISTICA", foreignKey: "Id_tipo_caracteristica"});
