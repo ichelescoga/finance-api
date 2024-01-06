@@ -59,6 +59,18 @@ module.exports = function(sequelize, DataTypes) {
     Estado: {
       type: DataTypes.BOOLEAN,
       allowNull: true
+    },
+    label: {
+      type: DataTypes.STRING(250),
+      allowNull: true
+    },
+    InputType: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'TIPO_CARACTERISTICA',
+        key: 'Id'
+      }
     }
   }, {
     sequelize,
@@ -92,6 +104,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Type" },
+        ]
+      },
+      {
+        name: "fk_InputType",
+        using: "BTREE",
+        fields: [
+          { name: "InputType" },
         ]
       },
     ]

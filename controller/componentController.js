@@ -10,6 +10,11 @@ exports.getComponentsByEntity = async(req, res, next)=>{
         let componentes = []
         for(let i =0; i < component.length; i++){
             let componente = await ComponentRepository.getComponent(component[i].dataValues.Id_componente)
+            let items = {
+                items:null
+            }
+           
+
             componentes.push(componente)
         }
         res.json(componentes)
