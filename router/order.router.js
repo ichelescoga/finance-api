@@ -209,6 +209,9 @@ router.post("/coincidenciasCredenciales",  auth.verifyToken, contactController.c
 router.get("/getCompanies", companyController.getCompanies),
 router.post("/addCompany",  companyController.addCompany),
 router.post("/editCompany",  companyController.editCompany),
-router.post("/deleteCompany",  companyController.deleteCompany),
+router.put("/deleteCompany",  companyController.deleteCompany),
+router.get("/getCompanyById/:id", companyController.getProjectById),
+
 router.get("/getProyectsbyCompany", proyectController.getProyectsByCompany),
+
 module.exports = router

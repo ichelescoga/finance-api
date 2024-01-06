@@ -11,6 +11,17 @@ let CompanyRepository = function () {
             },
         });
     }
+
+    let getCompanyById = async (id) => {
+        return await db.models.ENTIDAD.findOne({
+            where: {
+                Tipo: 1,
+                Id: id,
+                Estado: 1
+            },
+        })
+    }
+
     let getCompanyDetailsINT = async (entity) => {
         return await  db.models.ENTIDAD_CARACTERISTICA_INT.findAll({
             attributes: [
@@ -368,7 +379,8 @@ let CompanyRepository = function () {
         editCompanyDetails,
         editCompanyEntity,
         deleteCompanyEntity,
-        deleteCompanyDetails
+        deleteCompanyDetails,
+        getCompanyById
     }
 
 }

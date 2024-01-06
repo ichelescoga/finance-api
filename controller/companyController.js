@@ -91,9 +91,10 @@ exports.editCompany = async(req, res, next)=>{
 exports.deleteCompany = async(req, res, next)=>{
     try {
         let params = {
-            entity: req.body.id,
-            updatedby: req.body.updatedby
+            entity: req.body.id
         }
+        params.updatedby = Date.now();
+
         await CompanyRepository.deleteCompanyEntity(params)
         await CompanyRepository.deleteCompanyDetails(params)
         res.json({
@@ -102,6 +103,36 @@ exports.deleteCompany = async(req, res, next)=>{
     } catch (error) {
         console.log(error);
         next(createError(500));
+    }
+}
+
+exports.getProjectById = async(req, res, next) => {
+    try {
+        const params = {companyId: req.params.id};
+
+        let companyInfo = await CompanyRepository.getCompanyById(params.companyId)
+        let detailint = await CompanyRepository.getCompanyDetailsINT(params.companyId)
+        let detailstring = await CompanyRepository.getCompanyDetailsSTRING(params.companyId)
+        let detail = detailint.concat(detailstring)
+
+        if(!detailint || !detailstring) {
+            return res.json({response: false, company: null, message: "The company Id doesn't exist. verify your ID" })
+        }
+
+        let company = {
+            company: companyInfo,
+            details: detail
+        };
+
+        res.json({
+            response: true,
+            message: "",
+            company,
+        })
+
+    } catch (error) {
+        console.log("🤖🤖🤖🤖 ERROR get company by ID",error)
+        next(createError(500))
     }
 }
 
