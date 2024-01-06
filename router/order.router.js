@@ -27,8 +27,7 @@ const cuotaController = require('../controller/pagoCuotaController')
 
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
-
-
+const componentController = require('../controller/componentController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -246,4 +245,6 @@ router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.cre
 //Pago cuotas
 router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas),
 
+
+router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 module.exports = router
