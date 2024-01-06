@@ -23,6 +23,7 @@ const temporadaDescuentoController = require('../controller/descuentoController'
 
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
+const componentController = require('../controller/componentController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -215,4 +216,5 @@ router.post("/addProyect",  proyectController.addProyectsByCompany),
 router.post("/editProyect",  proyectController.editProyect),
 router.post("/deleteProyect",  proyectController.deleteProyect),
 router.post("/editCompanyinProyect",  proyectController.editCompanyinProyect),
+router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 module.exports = router
