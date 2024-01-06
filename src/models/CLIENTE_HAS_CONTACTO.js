@@ -47,14 +47,14 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Id_cliente",
+        name: "fk_Cliente_has_contacto_CLIENTE1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_cliente" },
         ]
       },
       {
-        name: "Id_contacto",
+        name: "fk_Cliente_has_contacto_CONTACTO1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_contacto" },

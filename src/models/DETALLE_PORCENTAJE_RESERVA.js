@@ -1,36 +1,35 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('CONFIGURACION_DESCUENTO', {
-    Id_configuracion_descuento: {
+  return sequelize.define('DETALLE_PORCENTAJE_RESERVA', {
+    Id_detalle_porcentaje_reserva: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Id_temporada_descuento: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'TEMPORADA_DESCUENTO',
-        key: 'Id_temporada_descuento'
-      }
+    Fecha_inicial: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
     },
-    Id_proyecto: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'PROYECTO',
-        key: 'Id_proyecto'
-      }
+    Fecha_final: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
     },
-    Meses: {
-      type: DataTypes.STRING(45),
+    Status: {
+      type: DataTypes.TINYINT,
       allowNull: true
     },
     Porcentaje: {
       type: DataTypes.STRING(45),
       allowNull: true
+    },
+    Id_proyecto: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'PROYECTO',
+        key: 'Id_proyecto'
+      }
     },
     created_at: {
       type: DataTypes.DATE,
@@ -44,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'CONFIGURACION_DESCUENTO',
+    tableName: 'DETALLE_PORCENTAJE_RESERVA',
     timestamps: false,
     indexes: [
       {
@@ -52,19 +51,11 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_configuracion_descuento" },
-          { name: "Id_proyecto" },
+          { name: "Id_detalle_porcentaje_reserva" },
         ]
       },
       {
-        name: "fk_CONFIGURACION_DESCUENTO_TEMPORADA_DESCUENTO1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_temporada_descuento" },
-        ]
-      },
-      {
-        name: "fk_CONFIGURACION_DESCUENTO_PROYECTO1_idx",
+        name: "fk_DETALLE_PORCENTAJE_RESERVA_PROYECTO1_idx",
         using: "BTREE",
         fields: [
           { name: "Id_proyecto" },
