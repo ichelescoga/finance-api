@@ -61,6 +61,7 @@ var _UNIDAD = require("./UNIDAD");
 var _UNIDAD_COTIZACION = require("./UNIDAD_COTIZACION");
 var _USER_PROFILE = require("./USER_PROFILE");
 var _User = require("./User");
+var _VALIDACION = require("./VALIDACION");
 
 function initModels(sequelize) {
   var ALBUN = _ALBUN(sequelize, DataTypes);
@@ -125,6 +126,7 @@ function initModels(sequelize) {
   var UNIDAD_COTIZACION = _UNIDAD_COTIZACION(sequelize, DataTypes);
   var USER_PROFILE = _USER_PROFILE(sequelize, DataTypes);
   var User = _User(sequelize, DataTypes);
+  var VALIDACION = _VALIDACION(sequelize, DataTypes);
 
   COTIZACION.belongsToMany(UNIDAD, { as: 'Id_unidad_UNIDADs', through: UNIDAD_COTIZACION, foreignKey: "Id_cotizacion", otherKey: "Id_unidad" });
   EMPLEADO_ASESOR.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESAs', through: EMPLEADO_EMPRESA, foreignKey: "Id_empleado", otherKey: "Id_empresa" });
@@ -368,6 +370,12 @@ function initModels(sequelize) {
   User.hasMany(TIPO_ENTIDAD_CARACTERISTICA, { as: "TIPO_ENTIDAD_CARACTERISTICAs", foreignKey: "Createdby"});
   USER_PROFILE.belongsTo(User, { as: "Id_user_User", foreignKey: "Id_user"});
   User.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_user"});
+  VALIDACION.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(VALIDACION, { as: "VALIDACIONs", foreignKey: "Createdby"});
+  VALIDACION.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(VALIDACION, { as: "Updatedby_VALIDACIONs", foreignKey: "Updatedby"});
+  COMPONENTE.belongsTo(VALIDACION, { as: "Id_validacion_VALIDACION", foreignKey: "Id_validacion"});
+  VALIDACION.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Id_validacion"});
 
   return {
     ALBUN,
@@ -432,6 +440,7 @@ function initModels(sequelize) {
     UNIDAD_COTIZACION,
     USER_PROFILE,
     User,
+    VALIDACION,
   };
 }
 module.exports = initModels;

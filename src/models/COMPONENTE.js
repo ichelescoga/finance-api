@@ -71,6 +71,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'TIPO_CARACTERISTICA',
         key: 'Id'
       }
+    },
+    Id_validacion: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'VALIDACION',
+        key: 'Id'
+      }
     }
   }, {
     sequelize,
@@ -111,6 +119,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "InputType" },
+        ]
+      },
+      {
+        name: "fk_validacion",
+        using: "BTREE",
+        fields: [
+          { name: "Id_validacion" },
         ]
       },
     ]
