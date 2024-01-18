@@ -18,7 +18,8 @@ let ComponentRepository = function () {
                 [sequelize.literal( "(SELECT Nombre FROM TIPO_CARACTERISTICA as t WHERE t.Id = COMPONENTE.InputType )"), 'InputType'],
                 [sequelize.literal( "(SELECT Name FROM ICON as i WHERE i.Id = COMPONENTE.Id_icon )"), 'Icon'],
                 "HintText",
-                "ShowInList"
+                "ShowInList",
+                [sequelize.literal( "(SELECT Descripcion FROM VALIDACION as v WHERE v.Id = COMPONENTE.Id_validacion )"), 'Validador'],
             ],
             where: {
                 Id: componente,
