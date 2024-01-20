@@ -7,6 +7,7 @@ const app = express()
 const orderRouter = require('./router/order.router')
 const accountRouter = require('./router/account.router')
 const assetsRouter = require('./router/assets.router')
+const beecommRouter = require('./router/beecommRouter')
 const sequelize = require('./components/conn_sqlz')
 
 app.use(cors())
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({
 app.use('/orders/v1',orderRouter)
 app.use('/account/v1',accountRouter)
 app.use('/assets/v1',assetsRouter)
+app.use('/beecomm/v1',beecommRouter)
 app.use(function(req,res,next){
     let json_res = {
         url:req.url,
