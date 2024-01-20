@@ -20,6 +20,8 @@ let ComponentRepository = function () {
                 "HintText",
                 "ShowInList",
                 [sequelize.literal( "(SELECT Descripcion FROM VALIDACION as v WHERE v.Id = COMPONENTE.Id_validacion )"), 'Validador'],
+                "bodyKey",
+                "columnNumber"
             ],
             where: {
                 Id: componente,
