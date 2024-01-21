@@ -34,11 +34,43 @@ let BeecommRepository = function () {
         })
     }
 
+    let createSAC = async(params) => {
+        return await db.models.sac.create({
+            codigo: params.code,
+            descripcion: params.description,
+            tarifa:  params.tariff,
+            seccion: params.section,
+            observacion: params.observation,
+            iva: params.iva
+        })
+    }
+
+    let createSATDai = async(params) => {
+        return await db.models.sac.create({
+            partida: params.codeDai,
+            descripcion: params.description,
+            arancel:  params.tariff            
+        })
+    }
+
+    let createTariffMeasurementUnits = async(params) => {
+        return await db.models.sac.create({
+            inciso: params.codeUnit,
+            descripcion: params.description,
+            unidad_principal:  params.firstUnit,
+            unidad_secundaria: params.secondUnit,
+            unidad_alterna: params.thirdUnit,
+        })
+    }
+
     return {
         getDMSByExp,
         activateDMS,
         deactivateDMS,
-        updateDMSFreeText
+        updateDMSFreeText,
+        createSAC,
+        createSATDai,
+        createTariffMeasurementUnits
     }
 
 }
