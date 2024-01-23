@@ -21,12 +21,17 @@ let ComponentRepository = function () {
                 "ShowInList",
                 [sequelize.literal( "(SELECT Descripcion FROM VALIDACION as v WHERE v.Id = COMPONENTE.Id_validacion )"), 'Validador'],
                 "bodyKey",
-                "columnNumber"
+                "columnNumber",
+                "url",
+                "listKeys"
             ],
             where: {
                 Id: componente,
                 Estado: 1
             },
+            order: [
+                ['columnNumber', 'ASC']
+            ]
         });
     }
     return {

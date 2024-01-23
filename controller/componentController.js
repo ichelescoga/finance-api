@@ -13,11 +13,9 @@ exports.getComponentsByEntity = async(req, res, next)=>{
             let items = {
                 items:null
             }
-           
-
             componentes.push(componente)
         }
-        res.json(componentes)
+        res.json(componentes.sort((a,b) => a[0]["dataValues"]["columnNumber"]-b[0]["dataValues"]["columnNumber"]))
     } catch (error) {
         console.log(error);
         next(createError(500));
