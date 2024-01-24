@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     Fecha: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     },
     Monto: {
@@ -45,6 +45,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     Referencia: {
       type: DataTypes.STRING(150),
+      allowNull: true
+    },
+    Categoria: {
+      type: DataTypes.ENUM('Principal','Secundaria'),
+      allowNull: true
+    },
+    Mora: {
+      type: DataTypes.DECIMAL(18,8),
       allowNull: true
     },
     Id_tipo_pago: {

@@ -25,6 +25,7 @@ let userRepository = function () {
                   required: true,
                   include: [
                     {
+                      required: true,
                       model: db.models.DETALLE_PORCENTAJE_ENGANCHE,
                       as: "DETALLE_PORCENTAJE_ENGANCHEs",
                       where: { Status: 1 },
@@ -170,6 +171,10 @@ let userRepository = function () {
       Id_tipo_pago: params.idTipoPago,
       Id_status_transaccion: params.idStatusTransaccion,
       Id_status_pago: params.idStatusPago,
+      Mora: params.mora,
+      Categoria: params.categoria,
+      Mora: params.mora,
+      Categoria: params.categoria
     });
     return newPago;
   };
@@ -222,6 +227,76 @@ let userRepository = function () {
     });
     return cotizacion;
   };
+
+
+
+
+  let findAllCuotaReserva = async (params) => {
+    const cuotas = await db.models.PAGO.findOne({
+      where: { 
+        Id_cuenta_corriente: params.idCuentaCorriente,
+        Categoria : "Principal",
+        Id_tipo_pago: 1
+        },
+    });
+    return cuotas
+  };
+
+  let findAllCuotaPagoReserva = async (params) => {
+    const cuotas = await db.models.PAGO.findOne({
+      where: { 
+        Referencia: params
+        },
+    });
+    return cuotas
+  };
+
+  let findOneCuota = async (params) => {
+    const cuotas = await db.models.PAGO.findOne({ 
+      where: { Id_pago: params },
+    });
+    return cuotas;
+  };
+
+  let pagoRealizado = async (params) => {
+    const cuotaPago = await db.models.PAGO.findOne({ where: { Id_pago: params.idCuotaPago } });
+    if(!cuotaPago) {
+       return
+    } else {
+        await db.models.PAGO.update({
+        // Pago: params.cuotaPago,
+        Id_status_pago: params.statusPago,
+      },{
+        where:{
+          Id_pago: params.idCuotaPago
+        }
+    });
+    }
+    const cuotaPagoActualizada = await db.models.PAGO.findOne({ where: { Id_pago: params.idCuotaPago } });
+    return cuotaPagoActualizada
+  };
+
+  let createPagoEnganche = async (params) => {
+    const newPago = await db.models.PAGO.create({
+      Id_cuenta_corriente: params.idCuentaCorriente,
+      Fecha: params.fecha,
+      Monto: params.monto,
+      Saldo: params.saldo,
+      Interes: params.interes,
+      Fecha_limite_pago: params.fechaLimitePago,
+      Pago: params.pago,
+      Pago_capital: params.pagoCapital,
+      Referencia: params.referencia,
+      Id_tipo_pago: params.idTipoPago,
+      Id_status_transaccion: params.idStatusTransaccion,
+      Id_status_pago: params.idStatusPago,
+      Mora: params.mora,
+      Categoria: params.categoria,
+      Mora: params.mora,
+      Categoria: params.categoria
+    });
+    return newPago;
+  };
   return {
     findOneProyectoDetallePorcentajeEnganche,
     createDetallEnganche,
@@ -233,7 +308,12 @@ let userRepository = function () {
     updateCotizEstado,
     updatestateUnidad,
     createCuentaCorriente,
-    findCuentaCorriente
+    findCuentaCorriente,
+    findAllCuotaReserva,
+    findAllCuotaPagoReserva,
+    findOneCuota,
+    pagoRealizado,
+    createPagoEnganche
   };
 };
 

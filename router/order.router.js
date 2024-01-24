@@ -228,7 +228,7 @@ router.get("/valorTotalReserva/:id", auth.verifyToken,  reservaController.valorT
 router.post("/createDetallePorcentajeReserva",  auth.verifyToken, reservaController.createDetallePorcentajeReserva),
 router.put("/actualizacionDetallePorcentajeReserva/:id",  auth.verifyToken, reservaController.updatePorcentajeReserva),
 router.get("/detallePorcentajeReserva/:id", auth.verifyToken,  reservaController.listPorcentajesReserva),
-
+router.post("/pagoReserva",  auth.verifyToken, reservaController.pagoReserva),
 router.post("/createPagoReserva/:id",  auth.verifyToken, reservaController.createReserva),
 
 
@@ -238,12 +238,24 @@ router.get("/valorTotalEnganche/:id", auth.verifyToken,  engancheController.valo
 router.post("/createDetallePorcentajeEnganche",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
 router.put("/actualizacionDetallePorcentajeEnganche/:id",  auth.verifyToken, engancheController.updatePorcentajeEnganche),
 router.get("/detallePorcentajeEnganche/:id", auth.verifyToken,  engancheController.listPorcentajesEnganche),
-
+router.post("/pagoEnganche",  auth.verifyToken, engancheController.createEnganche),
 router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.createEnganche),
 
 
 
-//Pago cuotas
+//Cuotas
 router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas),
+router.post("/pagoCuota",  auth.verifyToken, cuotaController.pagoCuota),
+router.post("/pagoCuotaAdelantado",  auth.verifyToken, cuotaController.pagoCuotaAdelantado),
+router.post("/pagoAdelantado",  auth.verifyToken, cuotaController.pagoAdelantado),
+router.post("/pagoParcialCuota",  auth.verifyToken, cuotaController.pagoParcial),
 
+
+
+
+router.post("/cuotasPorPagar",  auth.verifyToken, cuotaController.cuotasPorPagar),
+router.post("/cuotasPagadas",  auth.verifyToken, cuotaController.cuotasPagadas),
+
+
+router.post("/createMora",  auth.verifyToken, cuotaController.CreateMora),
 module.exports = router
