@@ -124,19 +124,57 @@ exports.createTariffItem = async (req, res, next) => {
             params.codeDai = codeDigits[0] + "." + codeDigits[1] + "." + codeDigits[2] + "." + codeDigits[3]
             params.codeUnit = codeDigits[0] + codeDigits[1] + codeDigits[2]
             console.log(params)
+
+            let sac = await BeecommRepository.getSAC(params);
+            let dai = await BeecommRepository.getSATDai(params);
+            let tariffMeasurementUnits = await BeecommRepository.getTariffMeasurementUnits(params);
+
+            if (sac.length > 0){
+                res.status(406).json({
+                    succes: false,
+                    response: "Codigo in sac table is already exist.",
+                    sac: sac
+                });
+                return
+            }
+            else if (dai.length > 0){
+                res.status(406).json({
+                    succes: false,
+                    response: "Partida in sat dai table is already exist.",
+                    dai: dai
+                });
+                return
+            }
+            else if (tariffMeasurementUnits.length > 0){
+                res.status(406).json({
+                    succes: false,
+                    response: "Inciso in sat unidades medida arancel table is already exist.",
+                    tariffMeasurementUnits: tariffMeasurementUnits
+                });
+                return
+            }
+
+
+
+            sac = await BeecommRepository.createSAC(params);
+            dai = await BeecommRepository.createSATDai(params);
+            tariffMeasurementUnits = await BeecommRepository.createTariffMeasurementUnits(params);
+            res.status(200).json({
+                succes: true,
+                response: {
+                    sac: sac,
+                    dai: dai,
+                    tariffMeasurementUnits: tariffMeasurementUnits
+                }
+            });
+            return
         }
 
-        let sac = await BeecommRepository.createSAC(params);
-        let dai = await BeecommRepository.createSATDai(params);
-        let tariffMeasurementUnits = await BeecommRepository.createTariffMeasurementUnits(params);
-        res.status(200).json({
-            succes: true,
-            response: {
-                sac: sac,
-                dai: dai,
-                tariffMeasurementUnits: tariffMeasurementUnits
-            }
+        res.status(406).json({
+            succes: false
         });
+
+        
     } catch (error) {
         console.log(error);
         res.status(406).json({
