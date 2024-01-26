@@ -10,6 +10,15 @@ let BeecommRepository = function () {
         });
     }
 
+    let getDMSDetailByStatus = async (params) => {
+        return await  db.models.DUA_DM_FRACCION.findAll({
+            where: {
+                id: params.detailDMSId,
+                status: params.status
+            },
+        });
+    }
+
     let deactivateDMS = async(detailDMSId) => {
         return await db.models.DUA_DM_FRACCION.update({status: 0}, {
             where: {
@@ -65,6 +74,7 @@ let BeecommRepository = function () {
 
     return {
         getDMSByExp,
+        getDMSDetailByStatus,
         activateDMS,
         deactivateDMS,
         updateDMSFreeText,
