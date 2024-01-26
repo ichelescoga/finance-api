@@ -10,6 +10,7 @@ exports.getDMSByExp = async (req, res, next) => {
             response: dms
         });
     } catch (error) {
+        console.log(error);
         res.status(406).json({
         succes: false
         });
@@ -18,13 +19,26 @@ exports.getDMSByExp = async (req, res, next) => {
 
 exports.deactivateDMS = async (req, res, next) => {
     try {
-        let detailDMSId = req.params.detailDMSId  
-        let dms = await BeecommRepository.deactivateDMS(detailDMSId);
+        let params = {
+            detailDMSId: req.params.detailDMSId,
+            status: 0
+        }
+        let dmsDetail = await BeecommRepository.getDMSDetailByStatus(params);
+        if (dmsDetail.length > 0){
+            res.status(200).json({
+                success: false,
+                response: "DMS Detail id doesn't exist or is already inactive"
+            });
+            return
+        }
+            
+        let dms = await BeecommRepository.deactivateDMS(params.detailDMSId);
         res.status(200).json({
             succes: true,
             response: dms
         });
     } catch (error) {
+        console.log(error);
         res.status(406).json({
         succes: false
         });
@@ -33,13 +47,25 @@ exports.deactivateDMS = async (req, res, next) => {
 
 exports.activateDMS = async (req, res, next) => {
     try {
-        let detailDMSId = req.params.detailDMSId  
-        let dms = await BeecommRepository.activateDMS(detailDMSId);
+        let params = {
+            detailDMSId: req.params.detailDMSId,
+            status: 1
+        }
+        let dmsDetail = await BeecommRepository.getDMSDetailByStatus(params);
+        if (dmsDetail.length > 0){
+            res.status(200).json({
+                succes: false,
+                response: "DMS Detail id doesn't exist or is already active"
+            });
+            return
+        }            
+        let dms = await BeecommRepository.activateDMS(params.detailDMSId);
         res.status(200).json({
             succes: true,
             response: dms
         });
     } catch (error) {
+        console.log(error);
         res.status(406).json({
         succes: false
         });
@@ -58,6 +84,7 @@ exports.updateDMSFreeText = async (req, res, next) => {
             response: dms
         });
     } catch (error) {
+        console.log(error);
         res.status(406).json({
         succes: false
         });
