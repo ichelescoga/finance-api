@@ -1,4 +1,6 @@
-const CompanyRepository = require("../repository/CompanyRepository")
+const CompanyRepository = require("../repository/CompanyRepository");
+const { lowerKeysObject } = require("../src/utils/convertKeysInLowerCase");
+const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
 
@@ -11,9 +13,11 @@ exports.getCompanies = async(req, res, next)=>{
             let detailint = await CompanyRepository.getCompanyDetailsINT(companies[i].dataValues.Id)
             detailstring = await CompanyRepository.getCompanyDetailsSTRING(companies[i].dataValues.Id)
             let detail = detailint.concat(detailstring)
+            const result = convertArrayInObject(detail, "Caracteristica", "Valor");
+            const companyResult = lowerKeysObject(companies[i]["dataValues"])
             let company = {
-                company: companies[i],
-                details: detail
+                ...companyResult,
+                ...result
             }
             companies_.push(company)
         }
@@ -41,8 +45,8 @@ exports.addCompany = async(req, res, next)=>{
                 direccion: req.body.direccion,
                 contacto: req.body.contacto,
                 telefonocontacto: req.body.telefonocontacto,
-                gerenteventas: req.body.gerenteventas,
-                telefonogerenteventas: req.body.telefonogerenteventas,
+                gerenteventas: req.body.gerentedeventas,
+                telefonogerenteventas: req.body.telefonogerente,
                 logo: req.body.logo
             }
             let details = await CompanyRepository.addCompanyDetails(params1)
@@ -73,14 +77,14 @@ exports.editCompany = async(req, res, next)=>{
             direccion: req.body.direccion,
             contacto: req.body.contacto,
             telefonocontacto: req.body.telefonocontacto,
-            gerenteventas: req.body.gerenteventas,
-            telefonogerenteventas: req.body.telefonogerenteventas,
+            gerenteventas: req.body.gerentedeventas,
+            telefonogerenteventas: req.body.telefonogerente,
             logo: req.body.logo
         }
         await CompanyRepository.editCompanyEntity(params)
         await CompanyRepository.editCompanyDetails(params)
         res.json({
-            response: true
+            response: trubrae
         }) 
     } catch (error) {
         console.log(error);

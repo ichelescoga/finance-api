@@ -19,7 +19,7 @@ let ComponentRepository = function () {
                 [sequelize.literal( "(SELECT Name FROM ICON as i WHERE i.Id = COMPONENTE.Id_icon )"), 'Icon'],
                 "HintText",
                 "ShowInList",
-                [sequelize.literal( "(SELECT Descripcion FROM VALIDACION as v WHERE v.Id = COMPONENTE.Id_validacion )"), 'Validador'],
+                [sequelize.literal( "(SELECT nombre FROM VALIDACION as v WHERE v.Id = COMPONENTE.Id_validacion )"), 'Validador'],
                 "bodyKey",
                 "columnNumber",
                 "url",
