@@ -27,15 +27,6 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id'
       }
     },
-    Created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    Updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
     Createdby: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -55,7 +46,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'ITEM',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
