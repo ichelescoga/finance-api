@@ -39,6 +39,10 @@ module.exports = function(sequelize, DataTypes) {
     Estado: {
       type: DataTypes.BOOLEAN,
       allowNull: true
+    },
+    nombre: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,
