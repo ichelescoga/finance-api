@@ -1,7 +1,8 @@
 const municipioService = require("../services/municipioService");
 exports.listMunicipios = async (req, res, next) => {
     try {
-        let results = await municipioService.findMunicipios();
+        let id = req.body.id_departamento
+        let results = await municipioService.findMunicipios(id);
         const longitud = results.length;
     
         if (longitud >= 1) {

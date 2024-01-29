@@ -67,6 +67,13 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
+        name: "Tipo",
+        using: "BTREE",
+        fields: [
+          { name: "Tipo" },
+        ]
+      },
+      {
         name: "Createdby",
         using: "BTREE",
         fields: [
@@ -78,13 +85,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Updatedby" },
-        ]
-      },
-      {
-        name: "ENTIDAD_FK",
-        using: "BTREE",
-        fields: [
-          { name: "Tipo" },
         ]
       },
     ]
