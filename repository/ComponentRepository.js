@@ -23,7 +23,8 @@ let ComponentRepository = function () {
                 "bodyKey",
                 "columnNumber",
                 "url",
-                "listKeys"
+                "listKeys",
+                "show"
             ],
             where: {
                 Id: componente,

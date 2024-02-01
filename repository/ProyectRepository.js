@@ -7,11 +7,22 @@ let ProyectRepository = function () {
         return await  db.models.MODIFICADOR_ENTIDAD.findOne({
             where: {
                 Id_modificador: 1,
+                Id_entidad: params.entity,
+                Estado: 1
+            },
+        });
+    }
+
+    let getProyectModificador = async (params) => {
+        return await  db.models.MODIFICADOR_ENTIDAD.findOne({
+            where: {
+                Id_modificador: 1,
                 // Id_entidad: params.entity,
                 Estado: 1
             },
         });
     }
+
     let getGroupModificador = async (entity) => {
         return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findAll({
             where: {
@@ -24,7 +35,7 @@ let ProyectRepository = function () {
     let getGroupModificadorById = async (params) => {
         return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findOne({
             where: {
-                Id_modificador_entidad: params.id,
+                Id_entidad: params.id,
                 Estado: 1
             },
         });
@@ -101,7 +112,22 @@ let ProyectRepository = function () {
             attributes: [
                 [sequelize.literal( "(SELECT Nombre FROM TIPO_ENTIDAD as t WHERE t.Id = ENTIDAD.Tipo )"), 'Tipo'],
                 "Nombre",
-                "Descripcion"
+                "Descripcion",
+                "Tipo"
+            ],
+            where: {
+                Id: entity,
+                Estado: 1
+            },
+        });
+    }
+
+    let getRawProject = async (entity) => {
+        return await  db.models.ENTIDAD.findOne({
+            attributes: [
+                "Nombre",
+                "Descripcion",
+                "Tipo"
             ],
             where: {
                 Id: entity,
@@ -297,6 +323,7 @@ let ProyectRepository = function () {
 
     return {
         getProyectModificadorbyCompany,
+        getProyectModificador,
         getGroupModificador,
         addModif_Entidad,
         addGroupModif_Entidad,
@@ -310,7 +337,8 @@ let ProyectRepository = function () {
         deleteProyectEntity,
         deleteProyectDetails,
         deleteGroupMod_entity,
-        getGroupModificadorById
+        getGroupModificadorById,
+        getRawProject
     }
 
 }

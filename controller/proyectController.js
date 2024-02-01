@@ -4,6 +4,8 @@ const { lowerKeysObject } = require("../src/utils/convertKeysInLowerCase");
 const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
+const companyRepository = require("../repository/CompanyRepository")
+
 
 
 exports.getProyectsByCompany = async (req, res, next) => {
@@ -11,7 +13,7 @@ exports.getProyectsByCompany = async (req, res, next) => {
         let params = {
             entity: req.params.id
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
+        let modificador = await ProyectRepository.getProyectModificador(params)
         if (!modificador) res.json([]);
         let grupomodificador = await ProyectRepository.getGroupModificador(modificador.dataValues.Id)
         if (!grupomodificador) res.json([]);
@@ -19,7 +21,7 @@ exports.getProyectsByCompany = async (req, res, next) => {
         for (let i = 0; i < grupomodificador.length; i++) {
             let entity = await ProyectRepository.getProyect(grupomodificador[i].dataValues.Id_entidad)
             let detailint = await ProyectRepository.getProyectDetailsINT(grupomodificador[i].dataValues.Id_entidad)
-            let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador[i].dataValues.Id_entidad)
+            let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador[i].dataValues.Id_entidad)            
             let detail = detailint.concat(detailstring)
             const project = convertArrayInObject(detail, "Caracteristica", "Valor");
             const projectValues = lowerKeysObject(grupomodificador[i]["dataValues"])
@@ -50,14 +52,20 @@ exports.getProjectById = async (req, res, next) => {
         let grupomodificador = await ProyectRepository.getGroupModificadorById(params)
         if (!grupomodificador) res.json({});
 
-        let entity = await ProyectRepository.getProyect(grupomodificador.dataValues.Id_entidad)
+        let entity = await ProyectRepository.getRawProject(grupomodificador.dataValues.Id_entidad)
         let detailint = await ProyectRepository.getProyectDetailsINT(grupomodificador.dataValues.Id_entidad)
         let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador.dataValues.Id_entidad)
+        let companyDetail = await companyRepository.getCompanyById(params.id);
+        // console.log("🤖🤖🤖🤖 COMPANY ", companyDetail, params.id);
+
         let detail = detailint.concat(detailstring)
         const project = convertArrayInObject(detail, "Caracteristica", "Valor");
         const projectValues = lowerKeysObject(grupomodificador["dataValues"])
         const entityLowerCase = lowerKeysObject(entity["dataValues"]);
-        
+        projectValues.id = projectValues.id_entidad;
+        delete(projectValues.id_entidad)
+        console.log("🤖🤖🤖", entity)
+
 
         res.json({
             ...entityLowerCase,
