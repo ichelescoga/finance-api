@@ -7,7 +7,7 @@ let ProyectRepository = function () {
         return await  db.models.MODIFICADOR_ENTIDAD.findOne({
             where: {
                 Id_modificador: 1,
-                Id_entidad: params.entity,
+                // Id_entidad: params.entity,
                 Estado: 1
             },
         });
@@ -16,6 +16,15 @@ let ProyectRepository = function () {
         return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findAll({
             where: {
                 Id_modificador_entidad: entity,
+                Estado: 1
+            },
+        });
+    }
+
+    let getGroupModificadorById = async (params) => {
+        return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findOne({
+            where: {
+                Id_modificador_entidad: params.id,
                 Estado: 1
             },
         });
@@ -300,7 +309,8 @@ let ProyectRepository = function () {
         editCompanyDetails,
         deleteProyectEntity,
         deleteProyectDetails,
-        deleteGroupMod_entity
+        deleteGroupMod_entity,
+        getGroupModificadorById
     }
 
 }

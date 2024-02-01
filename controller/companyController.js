@@ -15,11 +15,11 @@ exports.getCompanies = async(req, res, next)=>{
             let detail = detailint.concat(detailstring)
             const result = convertArrayInObject(detail, "Caracteristica", "Valor");
             const companyResult = lowerKeysObject(companies[i]["dataValues"])
-            let company = {
+            
+            companies_.push({
                 ...companyResult,
                 ...result
-            }
-            companies_.push(company)
+            })
         }
         res.json(companies_)
     } catch (error) {
@@ -84,10 +84,10 @@ exports.editCompany = async(req, res, next)=>{
         await CompanyRepository.editCompanyEntity(params)
         await CompanyRepository.editCompanyDetails(params)
         res.json({
-            response: trubrae
+            response: true
         }) 
     } catch (error) {
-        console.log(error);
+        console.log("error +>  🤖🤖🤖 ",error);
         next(createError(500));
     }
 }
@@ -123,15 +123,10 @@ exports.getProjectById = async(req, res, next) => {
             return res.json({response: false, company: null, message: "The company Id doesn't exist. verify your ID" })
         }
 
-        let company = {
-            company: companyInfo,
-            details: detail
-        };
+        const result = convertArrayInObject(detail, "Caracteristica", "Valor");
+        const companyResult = lowerKeysObject(companyInfo["dataValues"])
 
-        res.json({
-            response: true,
-            message: "",
-            company,
+        res.json({...result, ...companyResult
         })
 
     } catch (error) {

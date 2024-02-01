@@ -217,11 +217,12 @@ router.post("/editCompany",  companyController.editCompany),
 router.put("/deleteCompany",  companyController.deleteCompany),
 router.get("/getCompanyById/:id", companyController.getProjectById),
 
-router.get("/getProyectsbyCompany", proyectController.getProyectsByCompany),
+router.get("/getProjectsByCompany", proyectController.getProyectsByCompany),
 router.post("/addProyect",  proyectController.addProyectsByCompany),
 router.post("/editProyect",  proyectController.editProyect),
 router.post("/deleteProyect",  proyectController.deleteProyect),
 router.post("/editCompanyinProyect",  proyectController.editCompanyinProyect),
+router.get("/getProjectById/:id", proyectController.getProjectById)
 
 
 //Detalle porcentaje Reserva
