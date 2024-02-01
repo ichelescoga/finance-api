@@ -250,4 +250,7 @@ router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas
 
 
 router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
+
+router.get("/getDepartaments", departamentoController.listDepartamentos),
+router.get("/getMunicipios", municipioController.listMunicipios),
 module.exports = router

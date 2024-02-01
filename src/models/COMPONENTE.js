@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'TIPO_ENTIDAD',
+        model: 'TIPO_COMPONENTE',
         key: 'Id'
       }
     },
@@ -72,6 +72,10 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id'
       }
     },
+    bodyKey: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     Id_validacion: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -79,6 +83,19 @@ module.exports = function(sequelize, DataTypes) {
         model: 'VALIDACION',
         key: 'Id'
       }
+    },
+    columnNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    url: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    listKeys: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,
