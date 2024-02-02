@@ -752,3 +752,36 @@ sequelize-auto -o "src/models" -d FinanceApp  -h localhost -u root  -p 3306 -x "
 node add-init-models.js
 
 sequelize-auto -o "src/models" -d FinanceApp -h localhost -u root -p 3306 -x "123" -e mysql -t "APLICACION" "ASESOR_DETALLE" "CLIENTE" "COTIZACION" "DEPARTAMENTO" "DETALLE_COTIZACION" "DETALLE_EJECUTIVO" "DETALLE_FIADOR" "EJECUTIVO" "EMPLEADO_ASESOR" "EMPRESA" "ENTIDAD_FINANCIERA" "ESTADO" "FAMILIA" "GENERO" "MUNICIPIO" "PAIS" "PARENTESCO" "PLAN_FINANCIERO_PROY" "PROYECTO" "PUESTO" "ROL" "TIPO_CREDITO" "TIPO_PROYECTO" "UNIDAD" "UNIDAD_COTIZACION" "User" "USER_PROFILE" "TIPO_ENTIDAD" "ENTIDAD" "CARACTERISTICA_BOOLEAN" "CARACTERISTICA_DATE" "CARACTERISTICA_DOUBLE" "CARACTERISTICA_STRING" "CARACTERISTICA_INT" "ENTIDAD_CARACTERISTICA_BOOLEAN" "ENTIDAD_CARACTERISTICA_DATE" "ENTIDAD_CARACTERISTICA_DOUBLE" "ENTIDAD_CARACTERISTICA_INT" "ENTIDAD_CARACTERISTICA_STRING" "MODIFICADOR" "MODIFICADOR_ENTIDAD" "GRUPO_MODIFICADOR_ENTIDAD"
+
+
+
+
+
+
+## CREAR NUEVOS COMPONENTES EN BASE DE DATOS
+  Aqui se definen las distintas formas de configuar componentes en base de datos para la tabla COMPONENTE;
+
+### QTS_Dropdown
+  Descripcion: Lista desplegable
+  Estructura BD: {
+      listKeys = Estrutura json que deve tener en formato string  {"key1": "ID_VALUE1", "key2": "ID_VALUE2"} 
+      bodyKey = usada para manejar en las peticiones, GET, POS, PUT, DELETE, PATCH
+      placeholder
+      hintText
+      keyboardType
+      type
+  }
+
+
+### QTS_TwoCascadeDropdown
+  Descripcion: Lista desplegable que despliega otra lista desplegable segun el ID del dropdown_padre
+ Estructura BD: {
+      listKeys = Estrutura json que deve tener en formato string  {"id": "1","level": "children", "key1": "Id_municipio", "key2": "Nombre_municipio"}
+      bodyKey = usada para manejar en las peticiones, GET, POS, PUT, DELETE, PATCH
+      placeholder
+      hintText
+      keyboardType
+      type
+  }
+
+USADO EN LIST KEYS PARA QTS_TwoCascadeDropdown = {"id": "1","level": "children", "key1": "Id_municipio", "key2": "Nombre_municipio"}
