@@ -226,3 +226,64 @@ exports.editCompanyinProyect = async (req, res, next) => {
         next(createError(500));
     }
 }
+
+exports.addType = async(req, res, next)=>{
+    try {
+        let params = {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion,
+            createdby: req.body.createdby
+        }
+        let type = await ProyectRepository.addType(params)
+        if(type){
+            res.json({
+                response: true
+            }) 
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypes = async(req, res, next)=>{
+    try {
+        let types = await ProyectRepository.getTypes()
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypesbyEntity = async(req, res, next)=>{
+    try {
+        let params = {
+            entity: req.body.id_empresa
+        }
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
+        let types = await ProyectRepository.getTypesByEntity(modificador)
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+

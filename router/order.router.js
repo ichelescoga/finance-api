@@ -247,10 +247,11 @@ router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.cre
 
 //Pago cuotas
 router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas),
-
-
 router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
 router.get("/getDepartaments", departamentoController.listDepartamentos),
 router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios),
+router.post("/addType",  proyectController.addType),
+router.post("/getTypes",  proyectController.getTypes),
+router.post("/getTypesByProyect",  proyectController.getProyectsByCompany),
 module.exports = router

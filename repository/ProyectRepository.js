@@ -318,7 +318,40 @@ let ProyectRepository = function () {
        })
    }
 
+   let addType = async(params) =>{
+    return await db.models.TIPO_ENTIDAD.create({
+        Nombre: params.nombre,
+        Descripcion: params.descripcion,
+        Createdby: params.createdby,
+        Estado: 1
+    })
+   }
+   let getTypes = async (entity) => {
+    return await  db.models.TIPO_ENTIDAD.findAll({
+        attributes: [
+            "Nombre",
+            "Descripcion"
+        ],
+        where: {
+            Estado: 1
+        },
+    });
+}
 
+let getTypesByEntity = async (modificador) => {
+    return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findAll({
+        attributes: [
+            "Id"
+            [sequelize.literal( "(SELECT Nombre FROM ENTIDAD as e WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad )"), 'Nombre'],
+            [sequelize.literal( "(SELECT Descripcion FROM ENTIDAD as e WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad )"), 'Descripcion'],
+            [sequelize.literal("(SELECT te.Nombre FROM ENTIDAD as e INNER JOIN TIPO_ENTIDAD as te ON e.Tipo = te.Id WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad)"), 'tipo unidad']
+        ],
+        where: {
+            Id_modificador_entidad: modificador ,
+            Estado: 1
+        },
+    });
+}
 
 
     return {
@@ -338,7 +371,10 @@ let ProyectRepository = function () {
         deleteProyectDetails,
         deleteGroupMod_entity,
         getGroupModificadorById,
-        getRawProject
+        getRawProject,
+        addType,
+        getTypes,
+        getTypesByEntity
     }
 
 }
