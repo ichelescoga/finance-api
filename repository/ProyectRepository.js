@@ -3,10 +3,10 @@ const sequelize = require('../components/conn_sqlz');
 let ProyectRepository = function () {
 
 
-    let getProyectModificadorbyCompany = async (params) => {
+    let getProyectModificadorbyCompany = async (params,mod) => {
         return await  db.models.MODIFICADOR_ENTIDAD.findOne({
             where: {
-                Id_modificador: 1,
+                Id_modificador: mod,
                 Id_entidad: params.entity,
                 Estado: 1
             },
@@ -21,9 +21,9 @@ let ProyectRepository = function () {
         });
     }
 
-    let addModif_Entidad = async(params) => {
+    let addModif_Entidad = async(params,mod) => {
         return await db.models.MODIFICADOR_ENTIDAD.create({
-            Id_modificador: 1,
+            Id_modificador: mod,
             Id_entidad: params.entity,
             Estado: 1
         })
@@ -294,6 +294,7 @@ let ProyectRepository = function () {
    let getTypes = async (entity) => {
     return await  db.models.TIPO_ENTIDAD.findAll({
         attributes: [
+            "Id",
             "Nombre",
             "Descripcion"
         ],

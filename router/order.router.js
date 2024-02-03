@@ -28,6 +28,7 @@ const cuotaController = require('../controller/pagoCuotaController')
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
 const componentController = require('../controller/componentController')
+const unityController = require('../controller/unityController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -251,4 +252,6 @@ router.get("/getMunicipios", municipioController.listMunicipios),
 router.post("/addType",  proyectController.addType),
 router.post("/getTypes",  proyectController.getTypes),
 router.post("/getTypesByProyect",  proyectController.getProyectsByCompany),
+router.post("/addUnity",  unityController.addUnityByCompany),
+router.post("/getUnityByProyect",  unityController.getUnitsByCompany),
 module.exports = router
