@@ -251,7 +251,9 @@ router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
 router.get("/getDepartaments", departamentoController.listDepartamentos),
 router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios),
+
+// UNIDADES 🏢 🏢 🏢
 router.post("/addType",  proyectController.addType),
-router.post("/getTypes",  proyectController.getTypes),
-router.post("/getTypesByProyect",  proyectController.getProyectsByCompany),
+router.get("/getTypes",  proyectController.getTypes),
+router.get("/getTypesByProyect/:id_empresa",  proyectController.getTypesbyEntity),
 module.exports = router
