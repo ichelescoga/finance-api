@@ -84,13 +84,13 @@ exports.addProyectsByCompany = async (req, res, next) => {
         let params = {
             entity: req.body.id_empresa
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
-        if (modificador) {//la empresa ya tiene asociacion con el modificador procyecto
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
+        if(modificador){//la empresa ya tiene asociacion con el modificador procyecto
             //NO SE CREA LA ASOCIACION CON EL MODIFICADOR PROYECTO
         }
         else {//la empresa no tiene asociacion con el modificador proyecto
             //crear asociacion con el modificador proyecto
-            modificador = await ProyectRepository.addModif_Entidad(params)
+            modificador = await ProyectRepository.addModif_Entidad(params,1)
         }
         //crear entidad proyecto 
         let params1 = {
@@ -197,12 +197,12 @@ exports.editCompanyinProyect = async (req, res, next) => {
             proyect: req.body.id,
             updatedby: req.body.updatedby
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
-        if (modificador) {
-
-        } else { //empresa aun no tiene modificador
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
+        if(modificador){
+           
+        }else{ //empresa aun no tiene modificador
             //creamos el modificador
-            modificador = await ProyectRepository.addModif_Entidad(params)
+            modificador = await ProyectRepository.addModif_Entidad(params,1)
         }
         params = {
             mod_entity: modificador.dataValues.Id,
@@ -226,3 +226,64 @@ exports.editCompanyinProyect = async (req, res, next) => {
         next(createError(500));
     }
 }
+
+exports.addType = async(req, res, next)=>{
+    try {
+        let params = {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion,
+            createdby: req.body.createdby
+        }
+        let type = await ProyectRepository.addType(params)
+        if(type){
+            res.json({
+                response: true
+            }) 
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypes = async(req, res, next)=>{
+    try {
+        let types = await ProyectRepository.getTypes()
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypesbyEntity = async(req, res, next)=>{
+    try {
+        let params = {
+            entity: req.body.id_empresa
+        }
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
+        let types = await ProyectRepository.getTypesByEntity(modificador)
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+

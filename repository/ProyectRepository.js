@@ -3,10 +3,10 @@ const sequelize = require('../components/conn_sqlz');
 let ProyectRepository = function () {
 
 
-    let getProyectModificadorbyCompany = async (params) => {
+    let getProyectModificadorbyCompany = async (params,mod) => {
         return await  db.models.MODIFICADOR_ENTIDAD.findOne({
             where: {
-                Id_modificador: 1,
+                Id_modificador: mod,
                 Id_entidad: params.entity,
                 Estado: 1
             },
@@ -32,18 +32,9 @@ let ProyectRepository = function () {
         });
     }
 
-    let getGroupModificadorById = async (params) => {
-        return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findOne({
-            where: {
-                Id_entidad: params.id,
-                Estado: 1
-            },
-        });
-    }
-
-    let addModif_Entidad = async(params) => {
+    let addModif_Entidad = async(params,mod) => {
         return await db.models.MODIFICADOR_ENTIDAD.create({
-            Id_modificador: 1,
+            Id_modificador: mod,
             Id_entidad: params.entity,
             Estado: 1
         })
@@ -318,7 +309,41 @@ let ProyectRepository = function () {
        })
    }
 
+   let addType = async(params) =>{
+    return await db.models.TIPO_ENTIDAD.create({
+        Nombre: params.nombre,
+        Descripcion: params.descripcion,
+        Createdby: params.createdby,
+        Estado: 1
+    })
+   }
+   let getTypes = async (entity) => {
+    return await  db.models.TIPO_ENTIDAD.findAll({
+        attributes: [
+            "Id",
+            "Nombre",
+            "Descripcion"
+        ],
+        where: {
+            Estado: 1
+        },
+    });
+}
 
+let getTypesByEntity = async (modificador) => {
+    return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findAll({
+        attributes: [
+            "Id"
+            [sequelize.literal( "(SELECT Nombre FROM ENTIDAD as e WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad )"), 'Nombre'],
+            [sequelize.literal( "(SELECT Descripcion FROM ENTIDAD as e WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad )"), 'Descripcion'],
+            [sequelize.literal("(SELECT te.Nombre FROM ENTIDAD as e INNER JOIN TIPO_ENTIDAD as te ON e.Tipo = te.Id WHERE e.Id = GRUPO_MODIFICADOR_ENTIDAD.Id_entidad)"), 'tipo unidad']
+        ],
+        where: {
+            Id_modificador_entidad: modificador ,
+            Estado: 1
+        },
+    });
+}
 
 
     return {
@@ -338,7 +363,10 @@ let ProyectRepository = function () {
         deleteProyectDetails,
         deleteGroupMod_entity,
         getGroupModificadorById,
-        getRawProject
+        getRawProject,
+        addType,
+        getTypes,
+        getTypesByEntity
     }
 
 }
