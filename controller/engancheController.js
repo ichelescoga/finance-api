@@ -233,46 +233,163 @@ exports.createEnganche = async (req, res, next) => {
 
           if (objetosFiltrados.length > 0) {
 
+            let paramsReserva = {
+              idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente
+            }
+            let reserva = await engancheService.findAllCuotaReserva(paramsReserva)
 
-          let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
-          let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
-          let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
+            if (reserva) {
 
-            let paramsPagoReserva = {
-              idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
-              fecha: fechaFormateada,
-              monto: valorTotalReserva,
-              saldo: 0,
-              interes: 0,
-              fechaLimitePago: fechaFormateada,
-              pago: 0,
-              referencia: null,
-              idTipoPago: 2,
-              idStatusTransaccion: 1,
-              idStatusPago: 1,
+              let pagosCuotasReserva = await engancheService.findAllCuotaPagoReserva(reserva.Id_pago)
+              if (pagosCuotasReserva) {
+                
+                let pagoReserva = Number(pagosCuotasReserva.Pago) 
+
+
+                var fechaActualDos = moment()
+              var fechaFormateadalIMITE = moment(fechaActualDos).add(1, 'month').endOf('month').format('YYYY-MM-DD');
+              let fechaCreacion = moment().format('YYYY-MM-DD');
+
+              let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
+              let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
+              let valorTotalEnganche = (porcentajeReserva / 100) * valorTotal;
+
+              let totalPagoEnganche = valorTotalEnganche - pagoReserva
+
+              let paramsPagoReserva = {
+                idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
+                fecha: fechaCreacion,
+                monto: valorTotalEnganche,
+                saldo: totalPagoEnganche,
+                interes: 0,
+                fechaLimitePago: fechaFormateada,
+                pago: 0,
+                referencia: null,
+                idTipoPago: 2,
+                idStatusTransaccion: 1,
+                idStatusPago: 1,
+                mora: 0,
+                categoria: 'Principal'
+              }
+
+              let createEnganche = await engancheService.createEnganche(paramsPagoReserva);
+
+              let paramsCotizacion = {
+                id: req.params.id,
+                idEstado: 9,
+              }
+
+              await engancheService.updateCotizEstado(paramsCotizacion);
+
+              let paramsUnidad = {
+                id: cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad,
+                idEstado: 9,
+              }
+
+              await engancheService.updatestateUnidad(paramsUnidad);
+
+              res.status(202).json({
+                success: true,
+                message: "Enganche Creada Con exito",
+                data: createEnganche,
+                pagoReserva: pagoReserva,
+                totalaPagarEnganche: valorTotalEnganche,
+                porcentajeEnganche: objetosFiltrados[0].Porcentaje
+              });
+
+              } else {
+                var fechaActualDos = moment()
+              var fechaFormateadalIMITE = moment(fechaActualDos).add(1, 'month').endOf('month').format('YYYY-MM-DD');
+              let fechaCreacion = moment().format('YYYY-MM-DD');
+
+              let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
+              let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
+              let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
+
+              let paramsPagoReserva = {
+                idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
+                fecha: fechaCreacion,
+                monto: valorTotalReserva,
+                saldo: 0,
+                interes: 0,
+                fechaLimitePago: fechaFormateada,
+                pago: 0,
+                referencia: null,
+                idTipoPago: 2,
+                idStatusTransaccion: 1,
+                idStatusPago: 1,
+              }
+
+              let createEnganche = await engancheService.createEnganche(paramsPagoReserva);
+
+              let paramsCotizacion = {
+                id: req.params.id,
+                idEstado: 9,
+              }
+
+              await engancheService.updateCotizEstado(paramsCotizacion);
+
+              let paramsUnidad = {
+                id: cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad,
+                idEstado: 9,
+              }
+
+              await engancheService.updatestateUnidad(paramsUnidad);
+
+              res.status(202).json({
+                success: true,
+                message: "Enganche Creada Con exito",
+                data: createEnganche
+              });
+              }
+
+            } else {
+              var fechaActualDos = moment()
+              var fechaFormateadalIMITE = moment(fechaActualDos).add(1, 'month').endOf('month').format('YYYY-MM-DD');
+              let fechaCreacion = moment().format('YYYY-MM-DD');
+
+              let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
+              let valorTotal = parseFloat(cuotaEnganche.Venta_descuento);
+              let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
+
+              let paramsPagoReserva = {
+                idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
+                fecha: fechaCreacion,
+                monto: valorTotalReserva,
+                saldo: 0,
+                interes: 0,
+                fechaLimitePago: fechaFormateada,
+                pago: 0,
+                referencia: null,
+                idTipoPago: 2,
+                idStatusTransaccion: 1,
+                idStatusPago: 1,
+              }
+
+              let createEnganche = await engancheService.createEnganche(paramsPagoReserva);
+
+              let paramsCotizacion = {
+                id: req.params.id,
+                idEstado: 9,
+              }
+
+              await engancheService.updateCotizEstado(paramsCotizacion);
+
+              let paramsUnidad = {
+                id: cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad,
+                idEstado: 9,
+              }
+
+              await engancheService.updatestateUnidad(paramsUnidad);
+
+              res.status(202).json({
+                success: true,
+                message: "Enganche Creada Con exito",
+                data: createEnganche
+              });
             }
 
-            let createEnganche =  await engancheService.createEnganche(paramsPagoReserva);
 
-            let paramsCotizacion = {
-              id: req.params.id,
-              idEstado: 9,
-            }
-
-            await engancheService.updateCotizEstado(paramsCotizacion);
-
-            let paramsUnidad = {
-              id: cotizacion.UNIDAD_COTIZACIONs[0].Id_unidad,
-              idEstado: 9,
-            }
-
-            await engancheService.updatestateUnidad(paramsUnidad);
-
-            res.status(202).json({
-              success: true,
-              message: "Enganche Creada Con exito",
-              data: createEnganche
-            });
           } else {
 
             let paramsPagoReserva = {
@@ -312,7 +429,9 @@ exports.createEnganche = async (req, res, next) => {
             });
           }
         } else {
-
+          var fechaActual = moment()
+          var fechaFormateadalIMITE = moment(fechaActual).add(1, 'month').endOf('month').format('YYYY-MM-DD');
+          let fechaCreacion = moment().format('YYYY-MM-DD');
           let paramsCuentaCorriente = {
             idCliente: cotizacion.Id_cliente,
             idCotizacion: req.params.id,
@@ -321,16 +440,18 @@ exports.createEnganche = async (req, res, next) => {
 
           let paramsPagoEnganche = {
             idCuentaCorriente: createCuentaCorriente.Id_cuenta_corriente,
-            fecha: fechaFormateada,
+            fecha: fechaCreacion,
             monto: 0,
             saldo: 0,
             interes: 0,
-            fechaLimitePago: fechaFormateada,
+            fechaLimitePago: fechaFormateadalIMITE,
             pago: 0,
             referencia: null,
             idTipoPago: 2,
             idStatusTransaccion: 1,
             idStatusPago: 1,
+            categoria: "Principal",
+            mora: 0
           }
 
           let createReserva = await engancheService.createEnganche(paramsPagoEnganche);
@@ -391,6 +512,8 @@ exports.createEnganche = async (req, res, next) => {
               idTipoPago: 2,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await engancheService.createEnganche(paramsPagoReserva);
@@ -434,6 +557,8 @@ exports.createEnganche = async (req, res, next) => {
               idTipoPago: 2,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await engancheService.createEnganche(paramsPagoReserva);
@@ -478,6 +603,8 @@ exports.createEnganche = async (req, res, next) => {
             idTipoPago: 2,
             idStatusTransaccion: 1,
             idStatusPago: 1,
+            categoria: "Principal",
+            mora: 0
           }
 
           let createReserva = await engancheService.createEnganche(paramsPagoReserva);
@@ -515,7 +642,85 @@ exports.createEnganche = async (req, res, next) => {
     res.status(406).json({
       succes: false,
       message: "Problemas al crear Unidad, intentelo de nuevo",
-      error:error
+      error: error
+    });
+  }
+};
+
+
+
+
+
+
+exports.pagoEnganche = async (req, res, next) => {
+  try {
+
+
+    let findOneCuota = await engancheService.findOneCuota(req.body.idCuotaPago);
+
+    if (findOneCuota) {
+
+
+      if (req.body.pagoCuota >= findOneCuota.Monto) {
+
+        let paramsCuotaPagada = {
+          statusPago: 3,
+          idCuotaPago: req.body.idCuotaPago
+        };
+
+
+        await engancheService.pagoRealizado(paramsCuotaPagada);
+
+        var fechaFormateada = moment().format('YYYY-MM-DD');
+
+        let paramsCreatePago = {
+          idCuentaCorriente: findOneCuota.Id_cuenta_corriente,
+          fecha: fechaFormateada,
+          monto: 0,
+          saldo: 0,
+          interes: 0,
+          fechaLimitePago: fechaFormateada,
+          pagoCapital: 0,
+          pago: req.body.pagoCuota,
+          referencia: req.body.idCuotaPago,
+          idTipoPago: 2,
+          idStatusTransaccion: 1,
+          idStatusPago: 5,
+          mora: 0,
+          categoria: 'Secundaria'
+        }
+
+        let cuotaPagada = await engancheService.createPagoReserva(paramsCreatePago);
+
+        if (cuotaPagada) {
+          res.status(200).json({
+            succes: true,
+            message: "Enganche Cuota pagada con exito",
+            data: cuotaPagada
+          });
+        } else {
+          res.status(404).json({
+            succes: true,
+            message: "No existe la Cuota de Enganche",
+          });
+        }
+
+      } else {
+        res.status(200).json({
+          succes: true,
+          message: "Cuota pagada no suficiente",
+        });
+      }
+    } else {
+      res.status(200).json({
+        succes: true,
+        message: "Cuota No existente",
+      });
+    }
+  } catch (error) {
+    res.status(406).json({
+      succes: false,
+      message: error,
     });
   }
 };

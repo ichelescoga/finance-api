@@ -2,6 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _ALBUN = require("./ALBUN");
 var _APLICACION = require("./APLICACION");
 var _ASESOR_DETALLE = require("./ASESOR_DETALLE");
+var _BOLETA_PAGO = require("./BOLETA_PAGO");
 var _CARACTERISTICA_BOOLEAN = require("./CARACTERISTICA_BOOLEAN");
 var _CARACTERISTICA_DATE = require("./CARACTERISTICA_DATE");
 var _CARACTERISTICA_DOUBLE = require("./CARACTERISTICA_DOUBLE");
@@ -34,9 +35,11 @@ var _ENTIDAD_CARACTERISTICA_DOUBLE = require("./ENTIDAD_CARACTERISTICA_DOUBLE");
 var _ENTIDAD_CARACTERISTICA_INT = require("./ENTIDAD_CARACTERISTICA_INT");
 var _ENTIDAD_CARACTERISTICA_STRING = require("./ENTIDAD_CARACTERISTICA_STRING");
 var _ENTIDAD_FINANCIERA = require("./ENTIDAD_FINANCIERA");
+var _ESTABLECIMIENTO = require("./ESTABLECIMIENTO");
 var _ESTADO = require("./ESTADO");
 var _ESTADO_CUENTA = require("./ESTADO_CUENTA");
 var _FAMILIA = require("./FAMILIA");
+var _FORMA_PAGO = require("./FORMA_PAGO");
 var _GENERO = require("./GENERO");
 var _GRUPO_MODIFICADOR_ENTIDAD = require("./GRUPO_MODIFICADOR_ENTIDAD");
 var _ICON = require("./ICON");
@@ -72,6 +75,7 @@ function initModels(sequelize) {
   var ALBUN = _ALBUN(sequelize, DataTypes);
   var APLICACION = _APLICACION(sequelize, DataTypes);
   var ASESOR_DETALLE = _ASESOR_DETALLE(sequelize, DataTypes);
+  var BOLETA_PAGO = _BOLETA_PAGO(sequelize, DataTypes);
   var CARACTERISTICA_BOOLEAN = _CARACTERISTICA_BOOLEAN(sequelize, DataTypes);
   var CARACTERISTICA_DATE = _CARACTERISTICA_DATE(sequelize, DataTypes);
   var CARACTERISTICA_DOUBLE = _CARACTERISTICA_DOUBLE(sequelize, DataTypes);
@@ -104,9 +108,11 @@ function initModels(sequelize) {
   var ENTIDAD_CARACTERISTICA_INT = _ENTIDAD_CARACTERISTICA_INT(sequelize, DataTypes);
   var ENTIDAD_CARACTERISTICA_STRING = _ENTIDAD_CARACTERISTICA_STRING(sequelize, DataTypes);
   var ENTIDAD_FINANCIERA = _ENTIDAD_FINANCIERA(sequelize, DataTypes);
+  var ESTABLECIMIENTO = _ESTABLECIMIENTO(sequelize, DataTypes);
   var ESTADO = _ESTADO(sequelize, DataTypes);
   var ESTADO_CUENTA = _ESTADO_CUENTA(sequelize, DataTypes);
   var FAMILIA = _FAMILIA(sequelize, DataTypes);
+  var FORMA_PAGO = _FORMA_PAGO(sequelize, DataTypes);
   var GENERO = _GENERO(sequelize, DataTypes);
   var GRUPO_MODIFICADOR_ENTIDAD = _GRUPO_MODIFICADOR_ENTIDAD(sequelize, DataTypes);
   var ICON = _ICON(sequelize, DataTypes);
@@ -188,6 +194,8 @@ function initModels(sequelize) {
   CONTACTO.hasMany(CLIENTE_HAS_CONTACTO, { as: "CLIENTE_HAS_CONTACTOs", foreignKey: "Id_contacto"});
   APLICACION.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_cotizacion"});
+  BOLETA_PAGO.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
+  COTIZACION.hasMany(BOLETA_PAGO, { as: "BOLETA_PAGOs", foreignKey: "Id_cotizacion"});
   COMPRA_VENTA.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
   COTIZACION.hasMany(COMPRA_VENTA, { as: "COMPRA_VENTa", foreignKey: "Id_cotizacion"});
   CUENTA_CORRIENTE.belongsTo(COTIZACION, { as: "Id_cotizacion_COTIZACION", foreignKey: "Id_cotizacion"});
@@ -236,12 +244,16 @@ function initModels(sequelize) {
   ENTIDAD_FINANCIERA.hasMany(EJECUTIVO, { as: "EJECUTIVOs", foreignKey: "Id_ent_financiera"});
   PLAN_FINANCIERO_PROY.belongsTo(ENTIDAD_FINANCIERA, { as: "Id_ent_financiera_ENTIDAD_FINANCIERA", foreignKey: "Id_ent_financiera"});
   ENTIDAD_FINANCIERA.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_ent_financiera"});
+  BOLETA_PAGO.belongsTo(ESTABLECIMIENTO, { as: "Id_establecimiento_ESTABLECIMIENTO", foreignKey: "Id_establecimiento"});
+  ESTABLECIMIENTO.hasMany(BOLETA_PAGO, { as: "BOLETA_PAGOs", foreignKey: "Id_establecimiento"});
   COTIZACION.belongsTo(ESTADO, { as: "Id_estado_ESTADO", foreignKey: "Id_estado"});
   ESTADO.hasMany(COTIZACION, { as: "COTIZACIONs", foreignKey: "Id_estado"});
   UNIDAD.belongsTo(ESTADO, { as: "Id_estado_ESTADO", foreignKey: "Id_estado"});
   ESTADO.hasMany(UNIDAD, { as: "UNIDADs", foreignKey: "Id_estado"});
   DETALLES_CUOTA.belongsTo(ESTADO_CUENTA, { as: "Idestado_cuenta_ESTADO_CUENTum", foreignKey: "Idestado_cuenta"});
   ESTADO_CUENTA.hasMany(DETALLES_CUOTA, { as: "DETALLES_CUOTa", foreignKey: "Idestado_cuenta"});
+  BOLETA_PAGO.belongsTo(FORMA_PAGO, { as: "Id_forma_pago_FORMA_PAGO", foreignKey: "Id_forma_pago"});
+  FORMA_PAGO.hasMany(BOLETA_PAGO, { as: "BOLETA_PAGOs", foreignKey: "Id_forma_pago"});
   CLIENTE.belongsTo(GENERO, { as: "Id_genero_GENERO", foreignKey: "Id_genero"});
   GENERO.hasMany(CLIENTE, { as: "CLIENTEs", foreignKey: "Id_genero"});
   GRUPO_MODIFICADOR_ENTIDAD.belongsTo(GRUPO_MODIFICADOR_ENTIDAD, { as: "Padre_GRUPO_MODIFICADOR_ENTIDAD", foreignKey: "Padre"});
@@ -288,6 +300,8 @@ function initModels(sequelize) {
   PUESTO.hasMany(EMPLEADO_ASESOR, { as: "EMPLEADO_ASESORs", foreignKey: "Id_puesto"});
   USER_PROFILE.belongsTo(ROL, { as: "Id_rol_ROL", foreignKey: "Id_rol"});
   ROL.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_rol"});
+  BOLETA_PAGO.belongsTo(STATUS_PAGO, { as: "Id_status_pago_STATUS_PAGO", foreignKey: "Id_status_pago"});
+  STATUS_PAGO.hasMany(BOLETA_PAGO, { as: "BOLETA_PAGOs", foreignKey: "Id_status_pago"});
   PAGO.belongsTo(STATUS_PAGO, { as: "Id_status_pago_STATUS_PAGO", foreignKey: "Id_status_pago"});
   STATUS_PAGO.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_status_pago"});
   PAGO.belongsTo(STATUS_TRANSACCION, { as: "Id_status_transaccion_STATUS_TRANSACCION", foreignKey: "Id_status_transaccion"});
@@ -397,6 +411,7 @@ function initModels(sequelize) {
     ALBUN,
     APLICACION,
     ASESOR_DETALLE,
+    BOLETA_PAGO,
     CARACTERISTICA_BOOLEAN,
     CARACTERISTICA_DATE,
     CARACTERISTICA_DOUBLE,
@@ -429,9 +444,11 @@ function initModels(sequelize) {
     ENTIDAD_CARACTERISTICA_INT,
     ENTIDAD_CARACTERISTICA_STRING,
     ENTIDAD_FINANCIERA,
+    ESTABLECIMIENTO,
     ESTADO,
     ESTADO_CUENTA,
     FAMILIA,
+    FORMA_PAGO,
     GENERO,
     GRUPO_MODIFICADOR_ENTIDAD,
     ICON,
