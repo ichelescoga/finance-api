@@ -23,6 +23,10 @@ const temporadaDescuentoController = require('../controller/descuentoController'
 const reservaController = require('../controller/reservaController')
 const engancheController = require('../controller/engancheController')
 const cuotaController = require('../controller/pagoCuotaController')
+const tipoCuota = require('../controller/cuotaController')
+const aprabacionController = require('../controller/aprobacionPago')
+
+
 
 
 const companyController = require('../controller/companyController')
@@ -258,4 +262,30 @@ router.post("/cuotasPagadas",  auth.verifyToken, cuotaController.cuotasPagadas),
 
 
 router.post("/createMora",  auth.verifyToken, cuotaController.CreateMora),
+
+
+
+
+
+// Clientes 
+//TIPO CUOTAS
+router.post("/Tipocuota/:id", auth.verifyToken,  tipoCuota.listcuotasServices),
+//Cuotas pagadas
+router.post("/TipocuotaPagadas/:id", auth.verifyToken,  tipoCuota.listcuotasPagadasServices),
+//Cuotas Pendientes de pago 
+router.post("/TipocuotaPendientes/:id", auth.verifyToken,  tipoCuota.listcuotasPendientesServices),
+//CuotasReferencia
+router.post("/CuotasReferencia/:id", auth.verifyToken,  tipoCuota.cuotasReferencia),
+
+
+
+// Create boletaPago
+router.post("/createBoletaPago", auth.verifyToken,  tipoCuota.createBoletaPagos),
+
+
+
+
+//Aprobacion de pagos
+router.post("/aprobadosBoletaClientes", auth.verifyToken,  aprabacionController.aprobacionPagoClienteProyecto),
+
 module.exports = router
