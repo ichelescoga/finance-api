@@ -1,18 +1,14 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ENTIDAD', {
+  return sequelize.define('VALIDACION', {
     Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
     Descripcion: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING(1000),
       allowNull: true
     },
     Created_at: {
@@ -22,8 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Updated_at: {
       type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      allowNull: true
     },
     Createdby: {
       type: DataTypes.INTEGER,
@@ -45,17 +40,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: true
     },
-    Tipo: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'TIPO_ENTIDAD',
-        key: 'Id'
-      }
+    nombre: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'ENTIDAD',
+    tableName: 'VALIDACION',
     timestamps: false,
     indexes: [
       {
@@ -64,13 +55,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id" },
-        ]
-      },
-      {
-        name: "Tipo",
-        using: "BTREE",
-        fields: [
-          { name: "Tipo" },
         ]
       },
       {

@@ -1,29 +1,27 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ENTIDAD', {
+  return sequelize.define('TIPO_ENTIDAD_CARACTERISTICA', {
     Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Nombre: {
-      type: DataTypes.STRING(100),
+    Id_tipo_entidad: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    Descripcion: {
-      type: DataTypes.STRING(250),
-      allowNull: true
+    Id_caracteristica: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
-    Created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    Updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    Id_tipo_caracteristica: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'TIPO_CARACTERISTICA',
+        key: 'Id'
+      }
     },
     Createdby: {
       type: DataTypes.INTEGER,
@@ -35,28 +33,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     Updatedby: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'User',
-        key: 'Id_user'
-      }
+      allowNull: true
     },
     Estado: {
       type: DataTypes.BOOLEAN,
       allowNull: true
-    },
-    Tipo: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'TIPO_ENTIDAD',
-        key: 'Id'
-      }
     }
   }, {
     sequelize,
-    tableName: 'ENTIDAD',
-    timestamps: false,
+    tableName: 'TIPO_ENTIDAD_CARACTERISTICA',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
@@ -67,13 +53,6 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Tipo",
-        using: "BTREE",
-        fields: [
-          { name: "Tipo" },
-        ]
-      },
-      {
         name: "Createdby",
         using: "BTREE",
         fields: [
@@ -81,10 +60,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Updatedby",
+        name: "Id_tipo_caracteristica",
         using: "BTREE",
         fields: [
-          { name: "Updatedby" },
+          { name: "Id_tipo_caracteristica" },
         ]
       },
     ]

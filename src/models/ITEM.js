@@ -1,29 +1,31 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ENTIDAD', {
+  return sequelize.define('ITEM', {
     Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    Descripcion: {
+    url: {
       type: DataTypes.STRING(250),
       allowNull: true
     },
-    Created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    key: {
+      type: DataTypes.STRING(250),
+      allowNull: true
     },
-    Updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    value: {
+      type: DataTypes.STRING(250),
+      allowNull: true
+    },
+    Id_componente: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'COMPONENTE',
+        key: 'Id'
+      }
     },
     Createdby: {
       type: DataTypes.INTEGER,
@@ -35,28 +37,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     Updatedby: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'User',
-        key: 'Id_user'
-      }
+      allowNull: true
     },
     Estado: {
       type: DataTypes.BOOLEAN,
       allowNull: true
-    },
-    Tipo: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'TIPO_ENTIDAD',
-        key: 'Id'
-      }
     }
   }, {
     sequelize,
-    tableName: 'ENTIDAD',
-    timestamps: false,
+    tableName: 'ITEM',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
@@ -67,13 +57,6 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Tipo",
-        using: "BTREE",
-        fields: [
-          { name: "Tipo" },
-        ]
-      },
-      {
         name: "Createdby",
         using: "BTREE",
         fields: [
@@ -81,10 +64,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Updatedby",
+        name: "Id_componente",
         using: "BTREE",
         fields: [
-          { name: "Updatedby" },
+          { name: "Id_componente" },
         ]
       },
     ]

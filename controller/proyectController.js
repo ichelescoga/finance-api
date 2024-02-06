@@ -1,26 +1,40 @@
 const ProyectRepository = require("../repository/ProyectRepository");
 const proyectoService = require("../services/proyectoService");
+const { lowerKeysObject } = require("../src/utils/convertKeysInLowerCase");
+const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
+const companyRepository = require("../repository/CompanyRepository")
 
 
-exports.getProyectsByCompany = async(req, res, next)=>{
+
+exports.getProyectsByCompany = async (req, res, next) => {
     try {
         let params = {
-            entity: req.body.id
+            entity: req.params.id
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
+        let modificador = await ProyectRepository.getProyectModificador(params)
+        if (!modificador) res.json([]);
         let grupomodificador = await ProyectRepository.getGroupModificador(modificador.dataValues.Id)
+        if (!grupomodificador) res.json([]);
         let proyects = []
-        for(let i =0; i < grupomodificador.length; i++){
+        for (let i = 0; i < grupomodificador.length; i++) {
             let entity = await ProyectRepository.getProyect(grupomodificador[i].dataValues.Id_entidad)
-            let detailint= await ProyectRepository.getProyectDetailsINT(grupomodificador[i].dataValues.Id_entidad)
-            let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador[i].dataValues.Id_entidad)
-            let detail  = detailint.concat(detailstring)
+            let detailint = await ProyectRepository.getProyectDetailsINT(grupomodificador[i].dataValues.Id_entidad)
+            let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador[i].dataValues.Id_entidad)            
+            let detail = detailint.concat(detailstring)
+            const project = convertArrayInObject(detail, "Caracteristica", "Valor");
+            const projectValues = lowerKeysObject(grupomodificador[i]["dataValues"])
+            const entityLowerCase = lowerKeysObject(entity["dataValues"]);
+            projectValues.id = projectValues.id_entidad;
+            delete(projectValues.id_entidad)
+
             let proyect = {
-                proyect : entity,
-                details: detail
+                ...project,
+                ...entityLowerCase,
+                ...projectValues
             }
+
             proyects.push(proyect)
         }
         res.json(proyects)
@@ -30,18 +44,53 @@ exports.getProyectsByCompany = async(req, res, next)=>{
     }
 }
 
-exports.addProyectsByCompany = async(req, res, next)=>{
+exports.getProjectById = async (req, res, next) => {
+    try {
+        let params = {
+            id: req.params.id,
+        }
+        let grupomodificador = await ProyectRepository.getGroupModificadorById(params)
+        if (!grupomodificador) res.json({});
+
+        let entity = await ProyectRepository.getRawProject(grupomodificador.dataValues.Id_entidad)
+        let detailint = await ProyectRepository.getProyectDetailsINT(grupomodificador.dataValues.Id_entidad)
+        let detailstring = await ProyectRepository.getProyectDetailsSTRING(grupomodificador.dataValues.Id_entidad)
+        let companyDetail = await companyRepository.getCompanyById(params.id);
+        // console.log("🤖🤖🤖🤖 COMPANY ", companyDetail, params.id);
+
+        let detail = detailint.concat(detailstring)
+        const project = convertArrayInObject(detail, "Caracteristica", "Valor");
+        const projectValues = lowerKeysObject(grupomodificador["dataValues"])
+        const entityLowerCase = lowerKeysObject(entity["dataValues"]);
+        projectValues.id = projectValues.id_entidad;
+        delete(projectValues.id_entidad)
+        console.log("🤖🤖🤖", entity)
+
+
+        res.json({
+            ...entityLowerCase,
+            ...project,
+            ...projectValues
+        })
+
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.addProyectsByCompany = async (req, res, next) => {
     try {
         let params = {
             entity: req.body.id_empresa
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
         if(modificador){//la empresa ya tiene asociacion con el modificador procyecto
             //NO SE CREA LA ASOCIACION CON EL MODIFICADOR PROYECTO
-        } 
+        }
         else {//la empresa no tiene asociacion con el modificador proyecto
             //crear asociacion con el modificador proyecto
-            modificador = await ProyectRepository.addModif_Entidad(params)
+            modificador = await ProyectRepository.addModif_Entidad(params,1)
         }
         //crear entidad proyecto 
         let params1 = {
@@ -51,7 +100,7 @@ exports.addProyectsByCompany = async(req, res, next)=>{
             tipo: req.body.tipo
         }
         let proyect = await ProyectRepository.addProyectEntity(params1)
-        if(proyect){
+        if (proyect) {
             // ya se creo la entidad proyecto
             let params2 = {
                 entity: proyect.dataValues.Id,
@@ -70,29 +119,29 @@ exports.addProyectsByCompany = async(req, res, next)=>{
             }
             //crear grupo modificador entidad
             let grupomodificador = await ProyectRepository.addGroupModif_Entidad(params3)
-            if(grupomodificador){
+            if (grupomodificador) {
                 res.json({
                     response: true
-                })  
-            }else {
+                })
+            } else {
                 res.json({
                     response: false
-                })  
+                })
             }
-        }else{
+        } else {
             res.json({
                 response: false
-            })  
+            })
         }
-       
-      
+
+
     } catch (error) {
         console.log(error);
         next(createError(500));
     }
 }
 
-exports.editProyect = async(req, res, next)=>{
+exports.editProyect = async (req, res, next) => {
     try {
         let params = {
             entity: req.body.id,
@@ -109,17 +158,17 @@ exports.editProyect = async(req, res, next)=>{
 
         await ProyectRepository.editProyectEntity(params)
         await ProyectRepository.editCompanyDetails(params)
-        
+
         res.json({
             response: true
-        }) 
+        })
     } catch (error) {
         console.log(error);
         next(createError(500));
     }
 }
 
-exports.deleteProyect = async(req, res, next)=>{
+exports.deleteProyect = async (req, res, next) => {
     try {
         let params = {
             entity: req.body.id,
@@ -130,13 +179,13 @@ exports.deleteProyect = async(req, res, next)=>{
         await ProyectRepository.deleteGroupMod_entity(params)
         res.json({
             response: true
-        }) 
+        })
     } catch (error) {
         console.log(error);
         next(createError(500));
     }
 }
-exports.editCompanyinProyect = async(req, res, next)=>{
+exports.editCompanyinProyect = async (req, res, next) => {
     try {
         let params = {
             entity: req.body.id,
@@ -148,12 +197,12 @@ exports.editCompanyinProyect = async(req, res, next)=>{
             proyect: req.body.id,
             updatedby: req.body.updatedby
         }
-        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params)
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
         if(modificador){
            
         }else{ //empresa aun no tiene modificador
             //creamos el modificador
-            modificador = await ProyectRepository.addModif_Entidad(params)
+            modificador = await ProyectRepository.addModif_Entidad(params,1)
         }
         params = {
             mod_entity: modificador.dataValues.Id,
@@ -162,14 +211,14 @@ exports.editCompanyinProyect = async(req, res, next)=>{
         }
         //crear grupo modificador entidad
         let grupomodificador = await ProyectRepository.addGroupModif_Entidad(params)
-        if(grupomodificador){
+        if (grupomodificador) {
             res.json({
                 response: true
-            })  
-        }else{
+            })
+        } else {
             res.json({
                 response: false
-            })  
+            })
         }
 
     } catch (error) {
@@ -177,3 +226,64 @@ exports.editCompanyinProyect = async(req, res, next)=>{
         next(createError(500));
     }
 }
+
+exports.addType = async(req, res, next)=>{
+    try {
+        let params = {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion,
+            createdby: req.body.createdby
+        }
+        let type = await ProyectRepository.addType(params)
+        if(type){
+            res.json({
+                response: true
+            }) 
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypes = async(req, res, next)=>{
+    try {
+        let types = await ProyectRepository.getTypes()
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getTypesbyEntity = async(req, res, next)=>{
+    try {
+        let params = {
+            entity: req.body.id_empresa
+        }
+        let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
+        let types = await ProyectRepository.getTypesByEntity(modificador)
+        if(types){
+            res.json(types)
+        }else{
+            res.json({
+                response: false
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+

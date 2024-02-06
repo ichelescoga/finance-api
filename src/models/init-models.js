@@ -10,6 +10,8 @@ var _CARACTERISTICA_INT = require("./CARACTERISTICA_INT");
 var _CARACTERISTICA_STRING = require("./CARACTERISTICA_STRING");
 var _CLIENTE = require("./CLIENTE");
 var _CLIENTE_HAS_CONTACTO = require("./CLIENTE_HAS_CONTACTO");
+var _COMPONENTE = require("./COMPONENTE");
+var _COMPONENTE_ENTIDAD = require("./COMPONENTE_ENTIDAD");
 var _COMPRA_VENTA = require("./COMPRA_VENTA");
 var _CONFIGURACION_DESCUENTO = require("./CONFIGURACION_DESCUENTO");
 var _CONTACTO = require("./CONTACTO");
@@ -40,6 +42,7 @@ var _FAMILIA = require("./FAMILIA");
 var _FORMA_PAGO = require("./FORMA_PAGO");
 var _GENERO = require("./GENERO");
 var _GRUPO_MODIFICADOR_ENTIDAD = require("./GRUPO_MODIFICADOR_ENTIDAD");
+var _ICON = require("./ICON");
 var _MODIFICADOR = require("./MODIFICADOR");
 var _MODIFICADOR_ENTIDAD = require("./MODIFICADOR_ENTIDAD");
 var _MUNICIPIO = require("./MUNICIPIO");
@@ -55,6 +58,8 @@ var _ROL = require("./ROL");
 var _STATUS_PAGO = require("./STATUS_PAGO");
 var _STATUS_TRANSACCION = require("./STATUS_TRANSACCION");
 var _TEMPORADA_DESCUENTO = require("./TEMPORADA_DESCUENTO");
+var _TIPO_CARACTERISTICA = require("./TIPO_CARACTERISTICA");
+var _TIPO_COMPONENTE = require("./TIPO_COMPONENTE");
 var _TIPO_CREDITO = require("./TIPO_CREDITO");
 var _TIPO_ENTIDAD = require("./TIPO_ENTIDAD");
 var _TIPO_PAGO = require("./TIPO_PAGO");
@@ -64,6 +69,7 @@ var _UNIDAD = require("./UNIDAD");
 var _UNIDAD_COTIZACION = require("./UNIDAD_COTIZACION");
 var _USER_PROFILE = require("./USER_PROFILE");
 var _User = require("./User");
+var _VALIDACION = require("./VALIDACION");
 
 function initModels(sequelize) {
   var ALBUN = _ALBUN(sequelize, DataTypes);
@@ -77,6 +83,8 @@ function initModels(sequelize) {
   var CARACTERISTICA_STRING = _CARACTERISTICA_STRING(sequelize, DataTypes);
   var CLIENTE = _CLIENTE(sequelize, DataTypes);
   var CLIENTE_HAS_CONTACTO = _CLIENTE_HAS_CONTACTO(sequelize, DataTypes);
+  var COMPONENTE = _COMPONENTE(sequelize, DataTypes);
+  var COMPONENTE_ENTIDAD = _COMPONENTE_ENTIDAD(sequelize, DataTypes);
   var COMPRA_VENTA = _COMPRA_VENTA(sequelize, DataTypes);
   var CONFIGURACION_DESCUENTO = _CONFIGURACION_DESCUENTO(sequelize, DataTypes);
   var CONTACTO = _CONTACTO(sequelize, DataTypes);
@@ -107,6 +115,7 @@ function initModels(sequelize) {
   var FORMA_PAGO = _FORMA_PAGO(sequelize, DataTypes);
   var GENERO = _GENERO(sequelize, DataTypes);
   var GRUPO_MODIFICADOR_ENTIDAD = _GRUPO_MODIFICADOR_ENTIDAD(sequelize, DataTypes);
+  var ICON = _ICON(sequelize, DataTypes);
   var MODIFICADOR = _MODIFICADOR(sequelize, DataTypes);
   var MODIFICADOR_ENTIDAD = _MODIFICADOR_ENTIDAD(sequelize, DataTypes);
   var MUNICIPIO = _MUNICIPIO(sequelize, DataTypes);
@@ -122,6 +131,8 @@ function initModels(sequelize) {
   var STATUS_PAGO = _STATUS_PAGO(sequelize, DataTypes);
   var STATUS_TRANSACCION = _STATUS_TRANSACCION(sequelize, DataTypes);
   var TEMPORADA_DESCUENTO = _TEMPORADA_DESCUENTO(sequelize, DataTypes);
+  var TIPO_CARACTERISTICA = _TIPO_CARACTERISTICA(sequelize, DataTypes);
+  var TIPO_COMPONENTE = _TIPO_COMPONENTE(sequelize, DataTypes);
   var TIPO_CREDITO = _TIPO_CREDITO(sequelize, DataTypes);
   var TIPO_ENTIDAD = _TIPO_ENTIDAD(sequelize, DataTypes);
   var TIPO_PAGO = _TIPO_PAGO(sequelize, DataTypes);
@@ -131,6 +142,7 @@ function initModels(sequelize) {
   var UNIDAD_COTIZACION = _UNIDAD_COTIZACION(sequelize, DataTypes);
   var USER_PROFILE = _USER_PROFILE(sequelize, DataTypes);
   var User = _User(sequelize, DataTypes);
+  var VALIDACION = _VALIDACION(sequelize, DataTypes);
 
   COTIZACION.belongsToMany(UNIDAD, { as: 'Id_unidad_UNIDADs', through: UNIDAD_COTIZACION, foreignKey: "Id_cotizacion", otherKey: "Id_unidad" });
   EMPLEADO_ASESOR.belongsToMany(EMPRESA, { as: 'Id_empresa_EMPRESAs', through: EMPLEADO_EMPRESA, foreignKey: "Id_empleado", otherKey: "Id_empresa" });
@@ -172,6 +184,8 @@ function initModels(sequelize) {
   CLIENTE.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_clinete"});
   USER_PROFILE.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
   CLIENTE.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_cliente"});
+  COMPONENTE_ENTIDAD.belongsTo(COMPONENTE, { as: "Id_componente_COMPONENTE", foreignKey: "Id_componente"});
+  COMPONENTE.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_componente"});
   ESTADO_CUENTA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
   COMPRA_VENTA.hasMany(ESTADO_CUENTA, { as: "ESTADO_CUENTa", foreignKey: "Id_compraventa"});
   REFERENCIA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
@@ -244,6 +258,8 @@ function initModels(sequelize) {
   GENERO.hasMany(CLIENTE, { as: "CLIENTEs", foreignKey: "Id_genero"});
   GRUPO_MODIFICADOR_ENTIDAD.belongsTo(GRUPO_MODIFICADOR_ENTIDAD, { as: "Padre_GRUPO_MODIFICADOR_ENTIDAD", foreignKey: "Padre"});
   GRUPO_MODIFICADOR_ENTIDAD.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Padre"});
+  COMPONENTE.belongsTo(ICON, { as: "Id_icon_ICON", foreignKey: "Id_icon"});
+  ICON.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Id_icon"});
   MODIFICADOR_ENTIDAD.belongsTo(MODIFICADOR, { as: "Id_modificador_MODIFICADOR", foreignKey: "Id_modificador"});
   MODIFICADOR.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Id_modificador"});
   GRUPO_MODIFICADOR_ENTIDAD.belongsTo(MODIFICADOR_ENTIDAD, { as: "Id_modificador_entidad_MODIFICADOR_ENTIDAD", foreignKey: "Id_modificador_entidad"});
@@ -292,8 +308,16 @@ function initModels(sequelize) {
   STATUS_TRANSACCION.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_status_transaccion"});
   CONFIGURACION_DESCUENTO.belongsTo(TEMPORADA_DESCUENTO, { as: "Id_temporada_descuento_TEMPORADA_DESCUENTO", foreignKey: "Id_temporada_descuento"});
   TEMPORADA_DESCUENTO.hasMany(CONFIGURACION_DESCUENTO, { as: "CONFIGURACION_DESCUENTOs", foreignKey: "Id_temporada_descuento"});
+  COMPONENTE.belongsTo(TIPO_CARACTERISTICA, { as: "InputType_TIPO_CARACTERISTICA", foreignKey: "InputType"});
+  TIPO_CARACTERISTICA.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "InputType"});
+  COMPONENTE_ENTIDAD.belongsTo(TIPO_CARACTERISTICA, { as: "Id_tipo_caracteristica_TIPO_CARACTERISTICA", foreignKey: "Id_tipo_caracteristica"});
+  TIPO_CARACTERISTICA.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_tipo_caracteristica"});
+  COMPONENTE.belongsTo(TIPO_COMPONENTE, { as: "Type_TIPO_COMPONENTE", foreignKey: "Type"});
+  TIPO_COMPONENTE.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Type"});
   PLAN_FINANCIERO_PROY.belongsTo(TIPO_CREDITO, { as: "Id_tipo_credito_TIPO_CREDITO", foreignKey: "Id_tipo_credito"});
   TIPO_CREDITO.hasMany(PLAN_FINANCIERO_PROY, { as: "PLAN_FINANCIERO_PROYs", foreignKey: "Id_tipo_credito"});
+  COMPONENTE_ENTIDAD.belongsTo(TIPO_ENTIDAD, { as: "Id_tipo_entidad_TIPO_ENTIDAD", foreignKey: "Id_tipo_entidad"});
+  TIPO_ENTIDAD.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_tipo_entidad"});
   ENTIDAD.belongsTo(TIPO_ENTIDAD, { as: "Tipo_TIPO_ENTIDAD", foreignKey: "Tipo"});
   TIPO_ENTIDAD.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Tipo"});
   PAGO.belongsTo(TIPO_PAGO, { as: "Id_tipo_pago_TIPO_PAGO", foreignKey: "Id_tipo_pago"});
@@ -326,6 +350,10 @@ function initModels(sequelize) {
   User.hasMany(CARACTERISTICA_STRING, { as: "CARACTERISTICA_STRINGs", foreignKey: "Createdby"});
   CARACTERISTICA_STRING.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(CARACTERISTICA_STRING, { as: "Updatedby_CARACTERISTICA_STRINGs", foreignKey: "Updatedby"});
+  COMPONENTE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Createdby"});
+  COMPONENTE_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Createdby"});
   ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Createdby"});
   ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
@@ -354,6 +382,8 @@ function initModels(sequelize) {
   User.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Createdby"});
   GRUPO_MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "Updatedby_GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Updatedby"});
+  ICON.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(ICON, { as: "ICONs", foreignKey: "Createdby"});
   MODIFICADOR.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(MODIFICADOR, { as: "MODIFICADORs", foreignKey: "Createdby"});
   MODIFICADOR.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
@@ -362,12 +392,20 @@ function initModels(sequelize) {
   User.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Createdby"});
   MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(MODIFICADOR_ENTIDAD, { as: "Updatedby_MODIFICADOR_ENTIDADs", foreignKey: "Updatedby"});
+  TIPO_COMPONENTE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(TIPO_COMPONENTE, { as: "TIPO_COMPONENTEs", foreignKey: "Createdby"});
   TIPO_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(TIPO_ENTIDAD, { as: "TIPO_ENTIDADs", foreignKey: "Createdby"});
   TIPO_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(TIPO_ENTIDAD, { as: "Updatedby_TIPO_ENTIDADs", foreignKey: "Updatedby"});
   USER_PROFILE.belongsTo(User, { as: "Id_user_User", foreignKey: "Id_user"});
   User.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_user"});
+  VALIDACION.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(VALIDACION, { as: "VALIDACIONs", foreignKey: "Createdby"});
+  VALIDACION.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(VALIDACION, { as: "Updatedby_VALIDACIONs", foreignKey: "Updatedby"});
+  COMPONENTE.belongsTo(VALIDACION, { as: "Id_validacion_VALIDACION", foreignKey: "Id_validacion"});
+  VALIDACION.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Id_validacion"});
 
   return {
     ALBUN,
@@ -381,6 +419,8 @@ function initModels(sequelize) {
     CARACTERISTICA_STRING,
     CLIENTE,
     CLIENTE_HAS_CONTACTO,
+    COMPONENTE,
+    COMPONENTE_ENTIDAD,
     COMPRA_VENTA,
     CONFIGURACION_DESCUENTO,
     CONTACTO,
@@ -411,6 +451,7 @@ function initModels(sequelize) {
     FORMA_PAGO,
     GENERO,
     GRUPO_MODIFICADOR_ENTIDAD,
+    ICON,
     MODIFICADOR,
     MODIFICADOR_ENTIDAD,
     MUNICIPIO,
@@ -426,6 +467,8 @@ function initModels(sequelize) {
     STATUS_PAGO,
     STATUS_TRANSACCION,
     TEMPORADA_DESCUENTO,
+    TIPO_CARACTERISTICA,
+    TIPO_COMPONENTE,
     TIPO_CREDITO,
     TIPO_ENTIDAD,
     TIPO_PAGO,
@@ -435,6 +478,7 @@ function initModels(sequelize) {
     UNIDAD_COTIZACION,
     USER_PROFILE,
     User,
+    VALIDACION,
   };
 }
 module.exports = initModels;

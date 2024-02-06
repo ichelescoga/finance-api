@@ -1,4 +1,6 @@
-const CompanyRepository = require("../repository/CompanyRepository")
+const CompanyRepository = require("../repository/CompanyRepository");
+const { lowerKeysObject } = require("../src/utils/convertKeysInLowerCase");
+const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
 
@@ -11,11 +13,13 @@ exports.getCompanies = async(req, res, next)=>{
             let detailint = await CompanyRepository.getCompanyDetailsINT(companies[i].dataValues.Id)
             detailstring = await CompanyRepository.getCompanyDetailsSTRING(companies[i].dataValues.Id)
             let detail = detailint.concat(detailstring)
-            let company = {
-                company: companies[i],
-                details: detail
-            }
-            companies_.push(company)
+            const result = convertArrayInObject(detail, "Caracteristica", "Valor");
+            const companyResult = lowerKeysObject(companies[i]["dataValues"])
+            
+            companies_.push({
+                ...companyResult,
+                ...result
+            })
         }
         res.json(companies_)
     } catch (error) {
@@ -41,8 +45,8 @@ exports.addCompany = async(req, res, next)=>{
                 direccion: req.body.direccion,
                 contacto: req.body.contacto,
                 telefonocontacto: req.body.telefonocontacto,
-                gerenteventas: req.body.gerenteventas,
-                telefonogerenteventas: req.body.telefonogerenteventas,
+                gerenteventas: req.body.gerentedeventas,
+                telefonogerenteventas: req.body.telefonogerente,
                 logo: req.body.logo
             }
             let details = await CompanyRepository.addCompanyDetails(params1)
@@ -73,12 +77,30 @@ exports.editCompany = async(req, res, next)=>{
             direccion: req.body.direccion,
             contacto: req.body.contacto,
             telefonocontacto: req.body.telefonocontacto,
-            gerenteventas: req.body.gerenteventas,
-            telefonogerenteventas: req.body.telefonogerenteventas,
+            gerenteventas: req.body.gerentedeventas,
+            telefonogerenteventas: req.body.telefonogerente,
             logo: req.body.logo
         }
         await CompanyRepository.editCompanyEntity(params)
         await CompanyRepository.editCompanyDetails(params)
+        res.json({
+            response: true
+        }) 
+    } catch (error) {
+        console.log("error +>  🤖🤖🤖 ",error);
+        next(createError(500));
+    }
+}
+
+exports.deleteCompany = async(req, res, next)=>{
+    try {
+        let params = {
+            entity: req.body.id
+        }
+        params.updatedby = Date.now();
+
+        await CompanyRepository.deleteCompanyEntity(params)
+        await CompanyRepository.deleteCompanyDetails(params)
         res.json({
             response: true
         }) 
@@ -88,20 +110,28 @@ exports.editCompany = async(req, res, next)=>{
     }
 }
 
-exports.deleteCompany = async(req, res, next)=>{
+exports.getProjectById = async(req, res, next) => {
     try {
-        let params = {
-            entity: req.body.id,
-            updatedby: req.body.updatedby
+        const params = {companyId: req.params.id};
+
+        let companyInfo = await CompanyRepository.getCompanyById(params.companyId)
+        let detailint = await CompanyRepository.getCompanyDetailsINT(params.companyId)
+        let detailstring = await CompanyRepository.getCompanyDetailsSTRING(params.companyId)
+        let detail = detailint.concat(detailstring)
+
+        if(!detailint || !detailstring) {
+            return res.json({response: false, company: null, message: "The company Id doesn't exist. verify your ID" })
         }
-        await CompanyRepository.deleteCompanyEntity(params)
-        await CompanyRepository.deleteCompanyDetails(params)
-        res.json({
-            response: true
-        }) 
+
+        const result = convertArrayInObject(detail, "Caracteristica", "Valor");
+        const companyResult = lowerKeysObject(companyInfo["dataValues"])
+
+        res.json({...result, ...companyResult
+        })
+
     } catch (error) {
-        console.log(error);
-        next(createError(500));
+        console.log("🤖🤖🤖🤖 ERROR get company by ID",error)
+        next(createError(500))
     }
 }
 

@@ -31,8 +31,8 @@ const aprabacionController = require('../controller/aprobacionPago')
 
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
-
-
+const componentController = require('../controller/componentController')
+const unityController = require('../controller/unityController')
 const auth = require("./../services/auth-middleware")
 
 
@@ -219,12 +219,15 @@ router.post("/coincidenciasCredenciales",  auth.verifyToken, contactController.c
 router.get("/getCompanies", companyController.getCompanies),
 router.post("/addCompany",  companyController.addCompany),
 router.post("/editCompany",  companyController.editCompany),
-router.post("/deleteCompany",  companyController.deleteCompany),
-router.get("/getProyectsbyCompany", proyectController.getProyectsByCompany),
+router.put("/deleteCompany",  companyController.deleteCompany),
+router.get("/getCompanyById/:id", companyController.getProjectById),
+
+router.get("/getProjectsByCompany", proyectController.getProyectsByCompany),
 router.post("/addProyect",  proyectController.addProyectsByCompany),
 router.post("/editProyect",  proyectController.editProyect),
 router.post("/deleteProyect",  proyectController.deleteProyect),
 router.post("/editCompanyinProyect",  proyectController.editCompanyinProyect),
+router.get("/getProjectById/:id", proyectController.getProjectById)
 
 
 //Detalle porcentaje Reserva
@@ -287,5 +290,13 @@ router.post("/createBoletaPago", auth.verifyToken,  tipoCuota.createBoletaPagos)
 
 //Aprobacion de pagos
 router.post("/aprobadosBoletaClientes", auth.verifyToken,  aprabacionController.aprobacionPagoClienteProyecto),
+router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
+router.get("/getDepartaments", departamentoController.listDepartamentos),
+router.get("/getMunicipios", municipioController.listMunicipios),
+router.post("/addType",  proyectController.addType),
+router.post("/getTypes",  proyectController.getTypes),
+router.post("/getTypesByProyect",  proyectController.getProyectsByCompany),
+router.post("/addUnity",  unityController.addUnityByCompany),
+router.post("/getUnityByProyect",  unityController.getUnitsByCompany),
 module.exports = router
