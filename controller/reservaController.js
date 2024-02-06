@@ -158,7 +158,7 @@ exports.createReserva = async (req, res, next) => {
               idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
               fecha: fechaFormateada,
               monto: valorTotalReserva,
-              saldo: 0,
+              saldo: valorTotalReserva,
               interes: 0,
               fechaLimitePago: fechaFormateada,
               pago: 0,
@@ -166,6 +166,8 @@ exports.createReserva = async (req, res, next) => {
               idTipoPago: 1,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -203,6 +205,8 @@ exports.createReserva = async (req, res, next) => {
               idTipoPago: 1,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -247,6 +251,8 @@ exports.createReserva = async (req, res, next) => {
             idTipoPago: 1,
             idStatusTransaccion: 1,
             idStatusPago: 1,
+            categoria: "Principal",
+            mora: 0
           }
 
           let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -308,6 +314,8 @@ exports.createReserva = async (req, res, next) => {
               idTipoPago: 1,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -351,6 +359,8 @@ exports.createReserva = async (req, res, next) => {
               idTipoPago: 1,
               idStatusTransaccion: 1,
               idStatusPago: 1,
+              categoria: "Principal",
+              mora: 0
             }
 
             let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -395,6 +405,8 @@ exports.createReserva = async (req, res, next) => {
             idTipoPago: 1,
             idStatusTransaccion: 1,
             idStatusPago: 1,
+            categoria: "Principal",
+            mora: 0
           }
 
           let createReserva = await reservaService.createReserva(paramsPagoReserva);
@@ -432,6 +444,81 @@ exports.createReserva = async (req, res, next) => {
     res.status(406).json({
       succes: false,
       message: "Problemas al crear Unidad, intentelo de nuevo",
+    });
+  }
+};
+
+
+
+exports.pagoReserva = async (req, res, next) => {
+  try {
+
+
+    let findOneCuota = await reservaService.findOneCuota(req.body.idCuotaPago);
+
+    if (findOneCuota) {
+
+
+      if (findOneCuota.Monto == req.body.pagoCuota) {
+
+        let paramsCuotaPagada = {
+          statusPago: 3,
+          idCuotaPago: req.body.idCuotaPago
+        };
+
+
+        await reservaService.pagoRealizado(paramsCuotaPagada);
+
+        var fechaFormateada = moment().format('YYYY-MM-DD');
+
+        let paramsCreatePago = {
+          idCuentaCorriente: findOneCuota.Id_cuenta_corriente,
+          fecha: fechaFormateada,
+          monto: 0,
+          saldo: 0,
+          interes: 0,
+          fechaLimitePago: fechaFormateada,
+          pagoCapital: 0,
+          pago: req.body.pagoCuota,
+          referencia: req.body.idCuotaPago,
+          idTipoPago: 1,
+          idStatusTransaccion: 1,
+          idStatusPago: 5,
+          mora: 0,
+          categoria: 'Secundaria'
+        }
+
+        let cuotaPagada = await reservaService.createPagoReserva(paramsCreatePago);
+
+        if (cuotaPagada) {
+          res.status(200).json({
+            succes: true,
+            message: "Reserva Cuota pagada con exito",
+            data: cuotaPagada
+          });
+        } else {
+          res.status(404).json({
+            succes: true,
+            message: "No existe la Cuota de reserva",
+          });
+        }
+
+      } else {
+        res.status(200).json({
+          succes: true,
+          message: "Cuota pagada no suficiente",
+        });
+      }
+    } else {
+      res.status(200).json({
+        succes: true,
+        message: "Cuota No existente",
+      });
+    }
+  } catch (error) {
+    res.status(406).json({
+      succes: false,
+      message: error,
     });
   }
 };

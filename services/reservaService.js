@@ -138,6 +138,8 @@ let userRepository = function () {
       Id_tipo_pago: params.idTipoPago,
       Id_status_transaccion: params.idStatusTransaccion,
       Id_status_pago: params.idStatusPago,
+      Mora: params.mora,
+      Categoria: params.categoria
     });
     return newPago;
   };
@@ -177,6 +179,53 @@ let userRepository = function () {
     return unidadActualizada
   };
 
+  let findOneCuota = async (params) => {
+    const cuotas = await db.models.PAGO.findOne({ 
+      where: { Id_pago: params },
+    });
+    return cuotas;
+  };
+
+  let pagoRealizado = async (params) => {
+    const cuotaPago = await db.models.PAGO.findOne({ where: { Id_pago: params.idCuotaPago } });
+    if(!cuotaPago) {
+       return
+    } else {
+        await db.models.PAGO.update({
+        // Pago: params.cuotaPago,
+        Id_status_pago: params.statusPago,
+      },{
+        where:{
+          Id_pago: params.idCuotaPago
+        }
+    });
+    }
+    const cuotaPagoActualizada = await db.models.PAGO.findOne({ where: { Id_pago: params.idCuotaPago } });
+    return cuotaPagoActualizada
+  };
+
+  let createPagoReserva = async (params) => {
+    const newPago = await db.models.PAGO.create({
+      Id_cuenta_corriente: params.idCuentaCorriente,
+      Fecha: params.fecha,
+      Monto: params.monto,
+      Saldo: params.saldo,
+      Interes: params.interes,
+      Fecha_limite_pago: params.fechaLimitePago,
+      Pago: params.pago,
+      Pago_capital: params.pagoCapital,
+      Referencia: params.referencia,
+      Id_tipo_pago: params.idTipoPago,
+      Id_status_transaccion: params.idStatusTransaccion,
+      Id_status_pago: params.idStatusPago,
+      Mora: params.mora,
+      Categoria: params.categoria,
+      Mora: params.mora,
+      Categoria: params.categoria
+    });
+    return newPago;
+  };
+
   return {
     findOneProyectoDetallePorcentajeReserva,
     createDetallReserva,
@@ -187,7 +236,10 @@ let userRepository = function () {
     findOneCotizacion,
     createReserva,
     updateCotizEstado,
-    updatestateUnidad
+    updatestateUnidad,
+    findOneCuota,
+    pagoRealizado,
+    createPagoReserva
   };
 };
 

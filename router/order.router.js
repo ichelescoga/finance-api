@@ -23,6 +23,10 @@ const temporadaDescuentoController = require('../controller/descuentoController'
 const reservaController = require('../controller/reservaController')
 const engancheController = require('../controller/engancheController')
 const cuotaController = require('../controller/pagoCuotaController')
+const tipoCuota = require('../controller/cuotaController')
+const aprabacionController = require('../controller/aprobacionPago')
+
+
 
 
 const companyController = require('../controller/companyController')
@@ -231,7 +235,7 @@ router.get("/valorTotalReserva/:id", auth.verifyToken,  reservaController.valorT
 router.post("/createDetallePorcentajeReserva",  auth.verifyToken, reservaController.createDetallePorcentajeReserva),
 router.put("/actualizacionDetallePorcentajeReserva/:id",  auth.verifyToken, reservaController.updatePorcentajeReserva),
 router.get("/detallePorcentajeReserva/:id", auth.verifyToken,  reservaController.listPorcentajesReserva),
-
+router.post("/pagoReserva",  auth.verifyToken, reservaController.pagoReserva),
 router.post("/createPagoReserva/:id",  auth.verifyToken, reservaController.createReserva),
 
 
@@ -241,13 +245,51 @@ router.get("/valorTotalEnganche/:id", auth.verifyToken,  engancheController.valo
 router.post("/createDetallePorcentajeEnganche",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
 router.put("/actualizacionDetallePorcentajeEnganche/:id",  auth.verifyToken, engancheController.updatePorcentajeEnganche),
 router.get("/detallePorcentajeEnganche/:id", auth.verifyToken,  engancheController.listPorcentajesEnganche),
-
+router.post("/pagoEnganche",  auth.verifyToken, engancheController.createEnganche),
 router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.createEnganche),
 
 
 
-//Pago cuotas
+//Cuotas
 router.post("/createCuotas/:id",  auth.verifyToken, cuotaController.createCuotas),
+router.post("/pagoCuota",  auth.verifyToken, cuotaController.pagoCuota),
+router.post("/pagoCuotaAdelantado",  auth.verifyToken, cuotaController.pagoCuotaAdelantado),
+router.post("/pagoAdelantado",  auth.verifyToken, cuotaController.pagoAdelantado),
+router.post("/pagoParcialCuota",  auth.verifyToken, cuotaController.pagoParcial),
+
+
+
+
+router.post("/cuotasPorPagar",  auth.verifyToken, cuotaController.cuotasPorPagar),
+router.post("/cuotasPagadas",  auth.verifyToken, cuotaController.cuotasPagadas),
+
+
+router.post("/createMora",  auth.verifyToken, cuotaController.CreateMora),
+
+
+
+
+
+// Clientes 
+//TIPO CUOTAS
+router.post("/Tipocuota/:id", auth.verifyToken,  tipoCuota.listcuotasServices),
+//Cuotas pagadas
+router.post("/TipocuotaPagadas/:id", auth.verifyToken,  tipoCuota.listcuotasPagadasServices),
+//Cuotas Pendientes de pago 
+router.post("/TipocuotaPendientes/:id", auth.verifyToken,  tipoCuota.listcuotasPendientesServices),
+//CuotasReferencia
+router.post("/CuotasReferencia/:id", auth.verifyToken,  tipoCuota.cuotasReferencia),
+
+
+
+// Create boletaPago
+router.post("/createBoletaPago", auth.verifyToken,  tipoCuota.createBoletaPagos),
+
+
+
+
+//Aprobacion de pagos
+router.post("/aprobadosBoletaClientes", auth.verifyToken,  aprabacionController.aprobacionPagoClienteProyecto),
 router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
 router.get("/getDepartaments", departamentoController.listDepartamentos),
