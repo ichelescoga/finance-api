@@ -137,3 +137,34 @@ exports.createBoletaPagos = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+
+
+// exports.getReservaEngancheUnidad = async (req, res, next) => {
+//     try {
+
+//         let paramsPagos = {
+//             idCuentaCorriente: req.body.idCuentaCorriente,
+//             idTipoPago: req.params.id,
+//         }
+
+//         let results = await cuotasService.findAllPagos(paramsPagos);
+//         const longitud = results.length;
+
+//         if (longitud >= 1) {
+//             res.status(202).json({
+//                 success: true,
+//                 data: results,
+//             });
+//         } else {
+//             res.status(404).json({
+//                 success: true,
+//                 message: "No hay cuotas con el tipo de cuota",
+//             });
+//         }
+//     } catch (error) {
+//         next(error);
+//     }
+// };

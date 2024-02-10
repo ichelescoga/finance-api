@@ -25,12 +25,13 @@ exports.valorTotalReserva = async (req, res, next) => {
         res.status(202).json({
           success: true,
           message: "Puede reservar sin ningun costo",
+          valor: 0
         });
       }
     } else {
       res.status(202).json({
         success: true,
-        message: "A ocurrido un problema, intentalo de nuevo",
+        message: "Problemas con la cotizacion",
       });
     }
   } catch (error) {
@@ -459,7 +460,7 @@ exports.pagoReserva = async (req, res, next) => {
     if (findOneCuota) {
 
 
-      if (findOneCuota.Monto == req.body.pagoCuota) {
+      if (req.body.pagoCuota >= findOneCuota.Monto) {
 
         let paramsCuotaPagada = {
           statusPago: 3,
@@ -520,5 +521,92 @@ exports.pagoReserva = async (req, res, next) => {
       succes: false,
       message: error,
     });
+  }
+};
+
+
+
+exports.listaReservas = async (req, res, next) => {
+  try {
+    let paramsReservas = {
+      idCotizacion : req.params.id
+    }
+    let results = await reservaService.findReservas(paramsReservas);
+
+
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(202).json({
+        success: true,
+        message: "No hay registros de reserva",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+exports.getReservaEngancheValueTotal = async (req, res, next) => {
+  try {
+    let descuento = await reservaService.findOneValoresTotales(req.params.id);
+
+    if (descuento) {
+      const fechaActual = moment();
+      const objetosFiltrados = descuento.UNIDAD_COTIZACIONs[0].Id_unidad_UNIDAD.Id_proyecto_PROYECTO.DETALLE_PORCENTAJE_RESERVAs.filter(objeto => {
+        return fechaActual.isBetween(objeto.Fecha_inicial, objeto.Fecha_final, null, '[]'); // [] incluye los límites
+
+      });
+
+      const objetosFiltradosEnganche = descuento.UNIDAD_COTIZACIONs[0].Id_unidad_UNIDAD.Id_proyecto_PROYECTO.DETALLE_PORCENTAJE_ENGANCHEs.filter(objeto => {
+        return fechaActual.isBetween(objeto.Fecha_inicial, objeto.Fecha_final, null, '[]'); // [] incluye los límites
+
+      });
+
+      if (objetosFiltrados.length > 0 || objetosFiltradosEnganche.length > 0 ) {
+
+        if (objetosFiltrados.length > 0 && objetosFiltradosEnganche.length > 0 ) {
+
+        let porcentajeReserva = parseFloat(objetosFiltrados[0].Porcentaje);
+        let valorTotal = parseFloat(descuento.Venta_descuento);
+        let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
+
+
+        let porcentajeEnganche = parseFloat(objetosFiltradosEnganche[0].Porcentaje);
+        let valorTotalEnganche = parseFloat(descuento.Venta_descuento);
+          let valorTotalEngancheFinal = (porcentajeEnganche / 100) * valorTotalEnganche;
+
+          let engancheReserva = valorTotalEngancheFinal - valorTotalReserva 
+
+        res.status(202).json({
+          success: true,
+          message: "La cantidad para reservar es y enganche",
+          data: valorTotalReserva,
+          enganche:valorTotalEngancheFinal,
+          engancheMenosReserva: engancheReserva,
+          unidad : descuento.UNIDAD_COTIZACIONs[0]
+        });
+        } else {
+          console.log("pendiente de progra");
+        }
+        
+      } else {
+        res.status(202).json({
+          success: true,
+          message: "Puede reservar sin ningun costo",
+          enganche: 0,
+          reserva: 0
+        });
+      }
+    } else {
+      res.status(202).json({
+        success: true,
+        message: "Problemas con la cotizacion",
+      });
+    }
+  } catch (error) {
+    next(error);
   }
 };

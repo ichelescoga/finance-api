@@ -245,7 +245,7 @@ router.get("/valorTotalEnganche/:id", auth.verifyToken,  engancheController.valo
 router.post("/createDetallePorcentajeEnganche",  auth.verifyToken, engancheController.createDetallePorcentajeEnganche),
 router.put("/actualizacionDetallePorcentajeEnganche/:id",  auth.verifyToken, engancheController.updatePorcentajeEnganche),
 router.get("/detallePorcentajeEnganche/:id", auth.verifyToken,  engancheController.listPorcentajesEnganche),
-router.post("/pagoEnganche",  auth.verifyToken, engancheController.createEnganche),
+router.post("/pagoEnganche",  auth.verifyToken, engancheController.pagoEnganche),
 router.post("/createPagoEnganche/:id",  auth.verifyToken, engancheController.createEnganche),
 
 
@@ -290,6 +290,19 @@ router.post("/createBoletaPago", auth.verifyToken,  tipoCuota.createBoletaPagos)
 
 //Aprobacion de pagos
 router.post("/aprobadosBoletaClientes", auth.verifyToken,  aprabacionController.aprobacionPagoClienteProyecto),
+
+
+//GetTotalReservaEngancheUnidad
+router.get("/valorReservaEngancheUnidad/:id", auth.verifyToken,   tipoCuota.listcuotasServices),
+
+
+//GetReservas
+router.get("/reservasCuentaCorriente/:id", auth.verifyToken,   reservaController.listaReservas),
+// Get valor total Reserva, valor total enganche
+router.get("/valoresTotales/:id", auth.verifyToken,   reservaController.getReservaEngancheValueTotal),
+
+
+
 router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
 router.get("/getDepartaments", departamentoController.listDepartamentos),
