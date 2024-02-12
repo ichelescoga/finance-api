@@ -304,7 +304,8 @@ router.get("/reservasCuentaCorriente/:id", auth.verifyToken,   reservaController
 router.get("/valoresTotales/:id", auth.verifyToken,   reservaController.getReservaEngancheValueTotal),
 //Interese
 router.get("/detallePorcentajeInteres/:id", auth.verifyToken,  interesControllers.listPorcentajesInteres),
-
+router.post("/createDetallePorcentajeInteres",  auth.verifyToken, interesControllers.createDetallePorcentajeInteres),
+router.put("/actualizacionDetallePorcentajeInteres/:id",  auth.verifyToken, interesControllers.updatePorcentajeInteres),
 
 
 
