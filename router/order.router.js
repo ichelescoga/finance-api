@@ -307,9 +307,15 @@ router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 
 router.get("/getDepartaments", departamentoController.listDepartamentos),
 router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios),
-router.post("/addType",  proyectController.addType),
-router.post("/getTypes",  proyectController.getTypes),
-router.post("/getTypesByProyect",  proyectController.getProyectsByCompany),
+
+// AGREGAR UNIDADES POR PROYECTO Y 
+router.get("/getTypesByProyect/:id_empresa",  proyectController.getTypesbyEntity),
 router.post("/addUnity",  unityController.addUnityByCompany),
-router.post("/getUnityByProyect",  unityController.getUnitsByCompany),
+router.get("/getUnityByProyect/:id",  unityController.getUnitsByCompany),
+
+// AGREGAR Y OBTENER TIPOS DE UNIDADES 🚀🚀
+router.get("/getTypes",  proyectController.getTypes),
+router.post("/addType",  proyectController.addType),
+
+router.get("/getStatusOfBookDownPaymentTotalPayment/:quoteId", auth.verifyToken, tipoCuota.getStatusOfBookDownPaymentTotalPayment )
 module.exports = router

@@ -34,7 +34,7 @@ exports.valorTotalEnganche = async (req, res, next) => {
 
             let pagoReserva = parseFloat(valorTotalReservaArray[0].Pago);
             let nuevoValor = valorTotalEnganche - pagoReserva
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "La cantidad para Engancher es",
               data: nuevoValor,
@@ -66,7 +66,7 @@ exports.valorTotalEnganche = async (req, res, next) => {
             let valorTotal = parseFloat(valorEnganche.Venta_descuento);
             let valorTotalEnganche = (porcentajeEnganche / 100) * valorTotal;
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "La cantidad para Engancher es",
               data: valorTotalEnganche,
@@ -102,7 +102,7 @@ exports.valorTotalEnganche = async (req, res, next) => {
           let valorTotal = parseFloat(valorEnganche.Venta_descuento);
           let valorTotalEnganche = (porcentajeEnganche / 100) * valorTotal;
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "La cantidad para Engancher es",
             data: valorTotalEnganche,
@@ -288,7 +288,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche,
@@ -336,7 +336,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche
@@ -382,7 +382,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche
@@ -422,7 +422,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -470,7 +470,7 @@ exports.createEnganche = async (req, res, next) => {
 
           await engancheService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Enganche Creada Con exito",
             data: createReserva
@@ -532,7 +532,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -577,7 +577,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -623,7 +623,7 @@ exports.createEnganche = async (req, res, next) => {
 
           await engancheService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Enganche Creada Con exito",
             data: createReserva

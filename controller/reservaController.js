@@ -16,7 +16,7 @@ exports.valorTotalReserva = async (req, res, next) => {
         let valorTotal = parseFloat(descuento.Venta_descuento);
         let valorTotalReserva = (porcentajeReserva / 100) * valorTotal;
 
-        res.status(202).json({
+        res.status(200).json({
           success: true,
           message: "La cantidad para reservar es",
           data: valorTotalReserva,
@@ -187,7 +187,7 @@ exports.createReserva = async (req, res, next) => {
 
             await reservaService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Reserva Creada Con exito",
               data: createReserva
@@ -226,7 +226,7 @@ exports.createReserva = async (req, res, next) => {
 
             await reservaService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Reserva Creada Con exito",
               data: createReserva
@@ -272,12 +272,12 @@ exports.createReserva = async (req, res, next) => {
 
           await reservaService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Reserva Creada Con exito",
             data: createReserva
           });
-        }
+        } 
 
       } else {
 
@@ -335,7 +335,7 @@ exports.createReserva = async (req, res, next) => {
 
             await reservaService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Reserva Creada Con exito",
               data: createReserva
@@ -380,7 +380,7 @@ exports.createReserva = async (req, res, next) => {
 
             await reservaService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Reserva Creada Con exito",
               data: createReserva
@@ -426,7 +426,7 @@ exports.createReserva = async (req, res, next) => {
 
           await reservaService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Reserva Creada Con exito",
             data: createReserva
@@ -580,7 +580,7 @@ exports.getReservaEngancheValueTotal = async (req, res, next) => {
 
           let engancheReserva = valorTotalEngancheFinal - valorTotalReserva 
 
-        res.status(202).json({
+        res.status(200).json({
           success: true,
           message: "La cantidad para reservar es y enganche",
           data: valorTotalReserva,

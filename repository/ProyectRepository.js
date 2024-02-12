@@ -328,6 +328,8 @@ let ProyectRepository = function () {
     })
    }
    let getTypes = async (entity) => {
+    const Op = db.Sequelize.Op; //TEMP
+
     return await  db.models.TIPO_ENTIDAD.findAll({
         attributes: [
             "Id",
@@ -335,7 +337,8 @@ let ProyectRepository = function () {
             "Descripcion"
         ],
         where: {
-            Estado: 1
+            Estado: 1,
+            id: {[Op.notIn]: [7]}
         },
     });
 }

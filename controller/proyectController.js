@@ -255,7 +255,12 @@ exports.getTypes = async(req, res, next)=>{
     try {
         let types = await ProyectRepository.getTypes()
         if(types){
-            res.json(types)
+            const result = [];
+            types.forEach(element => {
+                const lowerCase = lowerKeysObject(element["dataValues"]);
+                result.push(lowerCase)
+            });
+            res.json(result);
         }else{
             res.json({
                 response: false
@@ -270,7 +275,7 @@ exports.getTypes = async(req, res, next)=>{
 exports.getTypesbyEntity = async(req, res, next)=>{
     try {
         let params = {
-            entity: req.body.id_empresa
+            entity: req.params.id_empresa
         }
         let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,1)
         let types = await ProyectRepository.getTypesByEntity(modificador)

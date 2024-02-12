@@ -80,12 +80,19 @@ let userRepository = function () {
         return newBoletaPago;
     };
 
+    let getPaymentsByCurrentAccount = async (currentAccId) => {
+        return db.models.PAGO.findAll({
+            where: { Id_cuenta_corriente: currentAccId }
+        })
+    }
+
     return {
         findAllPagos,
         cuotasPagadas,
         cuotasPendientes,
         cuotasReferencia,
-        createBoletaPago
+        createBoletaPago,
+        getPaymentsByCurrentAccount
     };
 };
 

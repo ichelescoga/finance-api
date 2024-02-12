@@ -70,7 +70,7 @@ exports.addUnityByCompany = async(req, res, next)=>{
 exports.getUnitsByCompany = async(req, res, next)=>{
     try {
         let params = {
-            entity: req.body.id
+            entity: req.params.id
         }
         let modificador = await ProyectRepository.getProyectModificadorbyCompany(params,2)
         let grupomodificador = await ProyectRepository.getGroupModificador(modificador.dataValues.Id)

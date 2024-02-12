@@ -1,18 +1,20 @@
 const cuotasService = require("../services/cuotaService");
+const currentAccount = require("../services/pagoCuotasService");
 
 exports.listcuotasServices = async (req, res, next) => {
     try {
 
         let paramsPagos = {
             idCuentaCorriente: req.body.idCuentaCorriente,
-            idTipoPago: req.params.id,
+            // idTipoPago: req.params.id,
         }
+        // const currentAccData = await currentAccount.findCurrentAccountByQuoteId(quoteId);
 
         let results = await cuotasService.findAllPagos(paramsPagos);
         const longitud = results.length;
 
         if (longitud >= 1) {
-            res.status(202).json({
+            res.status(200).json({
                 success: true,
                 data: results,
             });
@@ -27,6 +29,46 @@ exports.listcuotasServices = async (req, res, next) => {
     }
 };
 
+exports.getStatusOfBookDownPaymentTotalPayment = async (req, res, next) => {
+    try {
+        let doPayments = {
+            book: false,
+            downPayment: false,
+            totalPayment: false
+        }
+
+        let quoteId = req.params.quoteId;
+        const currentAccData = await currentAccount.findCurrentAccountByQuoteId(quoteId);
+        if (currentAccData?.dataValues) {
+            const payments = await cuotasService.getPaymentsByCurrentAccount(currentAccData?.dataValues?.Id_cuenta_corriente)
+            const BOOK = 1;
+            const DOWN_PAYMENT = 2
+            const PAYMENT = 3;
+            payments
+                .map(e => {
+                    if (e["dataValues"]["Id_tipo_pago"] === BOOK) {
+                        doPayments.book = true;
+                    } else if (e["dataValues"]["Id_tipo_pago"] === DOWN_PAYMENT) {
+                        doPayments.downPayment = true;
+                    } else if (e["dataValues"]["Id_tipo_pago"] === PAYMENT) { 
+                        doPayments.totalPayment = true;
+                    }
+                    return e["dataValues"]
+                })
+        }
+        res.status(200).json({
+            ...doPayments
+        })
+    } catch (error) {
+
+        console.log("ERROR ERROR ", error);
+        res.status(404).json({
+            error: "no found quote id or payments :/"
+        })
+
+    }
+
+}
 
 exports.listcuotasPagadasServices = async (req, res, next) => {
     try {
@@ -132,7 +174,7 @@ exports.createBoletaPagos = async (req, res, next) => {
             succes: true,
             message: "Boleta creada con exito",
             data: results
-          });
+        });
     } catch (error) {
         next(error);
     }
