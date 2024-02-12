@@ -308,6 +308,10 @@ let userRepository = function () {
   };
   
 
+  let findCurrentAccountByQuoteId = async (quoteId) => {
+    return db.models.CUENTA_CORRIENTE.findOne({where: {Id_cotizacion: quoteId}})
+  }
+
    return {
     createCuotas,
     findCuentaCorriente,
@@ -326,7 +330,8 @@ let userRepository = function () {
     findOneMorasVencidas,
     findOneInteresVencidas,
     findCuotasPagadasVerificacion,
-    findOnePagoEnganche
+    findOnePagoEnganche,
+    findCurrentAccountByQuoteId
   };
 };
 

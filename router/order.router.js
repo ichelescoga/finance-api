@@ -316,4 +316,6 @@ router.get("/getUnityByProyect/:id",  unityController.getUnitsByCompany),
 // AGREGAR Y OBTENER TIPOS DE UNIDADES 🚀🚀
 router.get("/getTypes",  proyectController.getTypes),
 router.post("/addType",  proyectController.addType),
+
+router.get("/getStatusOfBookDownPaymentTotalPayment/:quoteId", auth.verifyToken, tipoCuota.getStatusOfBookDownPaymentTotalPayment )
 module.exports = router

@@ -288,7 +288,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche,
@@ -336,7 +336,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche
@@ -382,7 +382,7 @@ exports.createEnganche = async (req, res, next) => {
 
               await engancheService.updatestateUnidad(paramsUnidad);
 
-              res.status(202).json({
+              res.status(200).json({
                 success: true,
                 message: "Enganche Creada Con exito",
                 data: createEnganche
@@ -422,7 +422,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -470,7 +470,7 @@ exports.createEnganche = async (req, res, next) => {
 
           await engancheService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Enganche Creada Con exito",
             data: createReserva
@@ -532,7 +532,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -577,7 +577,7 @@ exports.createEnganche = async (req, res, next) => {
 
             await engancheService.updatestateUnidad(paramsUnidad);
 
-            res.status(202).json({
+            res.status(200).json({
               success: true,
               message: "Enganche Creada Con exito",
               data: createReserva
@@ -623,7 +623,7 @@ exports.createEnganche = async (req, res, next) => {
 
           await engancheService.updatestateUnidad(paramsUnidad);
 
-          res.status(202).json({
+          res.status(200).json({
             success: true,
             message: "Enganche Creada Con exito",
             data: createReserva
