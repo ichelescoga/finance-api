@@ -23,6 +23,7 @@ var _DETALLE_COTIZACION = require("./DETALLE_COTIZACION");
 var _DETALLE_EJECUTIVO = require("./DETALLE_EJECUTIVO");
 var _DETALLE_FIADOR = require("./DETALLE_FIADOR");
 var _DETALLE_PORCENTAJE_ENGANCHE = require("./DETALLE_PORCENTAJE_ENGANCHE");
+var _DETALLE_PORCENTAJE_INTERES = require("./DETALLE_PORCENTAJE_INTERES");
 var _DETALLE_PORCENTAJE_RESERVA = require("./DETALLE_PORCENTAJE_RESERVA");
 var _EJECUTIVO = require("./EJECUTIVO");
 var _EMPLEADO_ASESOR = require("./EMPLEADO_ASESOR");
@@ -96,6 +97,7 @@ function initModels(sequelize) {
   var DETALLE_EJECUTIVO = _DETALLE_EJECUTIVO(sequelize, DataTypes);
   var DETALLE_FIADOR = _DETALLE_FIADOR(sequelize, DataTypes);
   var DETALLE_PORCENTAJE_ENGANCHE = _DETALLE_PORCENTAJE_ENGANCHE(sequelize, DataTypes);
+  var DETALLE_PORCENTAJE_INTERES = _DETALLE_PORCENTAJE_INTERES(sequelize, DataTypes);
   var DETALLE_PORCENTAJE_RESERVA = _DETALLE_PORCENTAJE_RESERVA(sequelize, DataTypes);
   var EJECUTIVO = _EJECUTIVO(sequelize, DataTypes);
   var EMPLEADO_ASESOR = _EMPLEADO_ASESOR(sequelize, DataTypes);
@@ -208,6 +210,8 @@ function initModels(sequelize) {
   CUENTA_CORRIENTE.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_cuenta_corriente"});
   EMPRESA.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});
   DEPARTAMENTO.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_departamento"});
+  MUNICIPIO.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});
+  DEPARTAMENTO.hasMany(MUNICIPIO, { as: "MUNICIPIOs", foreignKey: "Id_departamento"});
   APLICACION.belongsTo(DETALLE_FIADOR, { as: "Id_dtalle_fiador_DETALLE_FIADOR", foreignKey: "Id_dtalle_fiador"});
   DETALLE_FIADOR.hasMany(APLICACION, { as: "APLICACIONs", foreignKey: "Id_dtalle_fiador"});
   APLICACION.belongsTo(EJECUTIVO, { as: "Id_ejecutivo_EJECUTIVO", foreignKey: "Id_ejecutivo"});
@@ -288,6 +292,8 @@ function initModels(sequelize) {
   PROYECTO.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_proyecto"});
   DETALLE_PORCENTAJE_ENGANCHE.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(DETALLE_PORCENTAJE_ENGANCHE, { as: "DETALLE_PORCENTAJE_ENGANCHEs", foreignKey: "Id_proyecto"});
+  DETALLE_PORCENTAJE_INTERES.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
+  PROYECTO.hasMany(DETALLE_PORCENTAJE_INTERES, { as: "DETALLE_PORCENTAJE_INTEREs", foreignKey: "Id_proyecto"});
   DETALLE_PORCENTAJE_RESERVA.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
   PROYECTO.hasMany(DETALLE_PORCENTAJE_RESERVA, { as: "DETALLE_PORCENTAJE_RESERVAs", foreignKey: "Id_proyecto"});
   PLAN_FINANCIERO_PROY.belongsTo(PROYECTO, { as: "Id_proyecto_PROYECTO", foreignKey: "Id_proyecto"});
@@ -432,6 +438,7 @@ function initModels(sequelize) {
     DETALLE_EJECUTIVO,
     DETALLE_FIADOR,
     DETALLE_PORCENTAJE_ENGANCHE,
+    DETALLE_PORCENTAJE_INTERES,
     DETALLE_PORCENTAJE_RESERVA,
     EJECUTIVO,
     EMPLEADO_ASESOR,

@@ -25,6 +25,8 @@ const engancheController = require('../controller/engancheController')
 const cuotaController = require('../controller/pagoCuotaController')
 const tipoCuota = require('../controller/cuotaController')
 const aprabacionController = require('../controller/aprobacionPago')
+const interesControllers = require('../controller/interesesControllers')
+
 
 
 
@@ -300,6 +302,9 @@ router.get("/valorReservaEngancheUnidad/:id", auth.verifyToken,   tipoCuota.list
 router.get("/reservasCuentaCorriente/:id", auth.verifyToken,   reservaController.listaReservas),
 // Get valor total Reserva, valor total enganche
 router.get("/valoresTotales/:id", auth.verifyToken,   reservaController.getReservaEngancheValueTotal),
+//Interese
+router.get("/detallePorcentajeInteres/:id", auth.verifyToken,  interesControllers.listPorcentajesInteres),
+
 
 
 

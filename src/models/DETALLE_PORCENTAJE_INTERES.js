@@ -1,15 +1,35 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('MUNICIPIO', {
-    Id_municipio: {
+  return sequelize.define('DETALLE_PORCENTAJE_INTERES', {
+    Id_detalle_porcentaje_Interes: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Nombre_municipio: {
-      type: DataTypes.STRING(60),
+    Fecha_inicial: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    Fecha_final: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    Status: {
+      type: DataTypes.TINYINT,
       allowNull: true
+    },
+    Porcentaje: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    Id_proyecto: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'PROYECTO',
+        key: 'Id_proyecto'
+      }
     },
     created_at: {
       type: DataTypes.DATE,
@@ -20,18 +40,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    Id_departamento: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'DEPARTAMENTO',
-        key: 'Id_departamento'
-      }
     }
   }, {
     sequelize,
-    tableName: 'MUNICIPIO',
+    tableName: 'DETALLE_PORCENTAJE_INTERES',
     timestamps: false,
     indexes: [
       {
@@ -39,22 +51,14 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Id_municipio" },
+          { name: "Id_detalle_porcentaje_Interes" },
         ]
       },
       {
-        name: "Id_municipio_UNIQUE",
-        unique: true,
+        name: "fk_DETALLE_PORCENTAJE_INTERES_PROYECTO1_idx",
         using: "BTREE",
         fields: [
-          { name: "Id_municipio" },
-        ]
-      },
-      {
-        name: "fk_departamento_municipio",
-        using: "BTREE",
-        fields: [
-          { name: "Id_departamento" },
+          { name: "Id_proyecto" },
         ]
       },
     ]

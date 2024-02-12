@@ -96,6 +96,11 @@ module.exports = function(sequelize, DataTypes) {
     listKeys: {
       type: DataTypes.STRING(100),
       allowNull: true
+    },
+    show: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: 1
     }
   }, {
     sequelize,
