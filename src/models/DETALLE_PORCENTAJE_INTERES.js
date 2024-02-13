@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Id_detalle_porcentaje_Interes', {
-    Id_detalle_porcentaje_enganche: {
+  return sequelize.define('DETALLE_PORCENTAJE_INTERES', {
+    Id_detalle_porcentaje_Interes: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
