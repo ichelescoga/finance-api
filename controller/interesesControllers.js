@@ -6,7 +6,7 @@ exports.listPorcentajesInteres = async (req, res, next) => {
       const longitud = results.length;
   
       if (longitud >= 1) {
-        res.json(results);
+        res.status(200).json(results);
       } else {
         res.status(202).json({
           success: true,
@@ -14,6 +14,7 @@ exports.listPorcentajesInteres = async (req, res, next) => {
         });
       }
     } catch (error) {
+      console.log("EROROR 🤖🤖", error)
       next(error);
     }
   };
