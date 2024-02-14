@@ -47,6 +47,7 @@ let userRepository = function () {
       if (!compare) {
         return null;
       } else {
+
         return usuario;
       }
     }
@@ -56,7 +57,7 @@ let userRepository = function () {
   let listUser = async (useCredential) => {
 
     const usuario = await db.models.User.findOne({
-      attributes: ["Id_user", "Correo", "Nombre"],
+      attributes: ["Id_user", "Correo", "Nombre", "reset_password"],
       where: {
         Correo: useCredential.email,
       },
@@ -189,6 +190,42 @@ let findProyectoEmpresa = async (params) => {
   });
   return Proyecto;
 };
+
+const resetPassword = async (userId, password) => {
+  const needChangePassword = new Date();
+  needChangePassword.setDate(needChangePassword.getDate() + 90);
+
+  const isPasswordUpdated = await db.models.User.update(
+    { Contrasenia: password, reset_password: needChangePassword },
+    {
+    where: {
+      Id_user: userId
+    }
+  })
+  .then(r => true)
+  .catch(e => false)
+
+  return isPasswordUpdated;
+}
+
+const userLogin = async (email, password) => {
+  const user = await db.models.User.findOne({
+    where: {Correo: email}
+  })
+
+  if(!user) return null;
+
+  const compare = await bcrypt.compare(
+    password,
+    user.dataValues.Contrasenia
+  );
+
+  if(!compare) return null
+
+  return user;
+}
+
+
   return {
     listlogin,
     create,
@@ -197,7 +234,9 @@ let findProyectoEmpresa = async (params) => {
     getUserByEmailWithoutPassword,
     getUserByEmailSinPasswordBackend,
     listUser,
-    findProyectoEmpresa
+    findProyectoEmpresa,
+    resetPassword,
+    userLogin
   };
 };
 

@@ -48,6 +48,7 @@ router.post('/signin', authController.signIn)
 // router.post('/fakeToken',authController.fakeToken)
 router.post("/register",   userController.createUser)
 router.get("/user", auth.verifyToken, userController.UserToken)
+router.post("/reset-password", userController.resetPassword)
 
 //Empresa
 router.get("/empresas", auth.verifyToken, empresasController.listEmpresas)

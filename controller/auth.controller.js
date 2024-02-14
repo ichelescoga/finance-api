@@ -58,14 +58,21 @@ exports.signIn = async (req, res, next) => {
       let proyectoId = usuarioLog1 ? await UserService.findProyectoEmpresa(usuarioLog1.Id_empresa) : null;
       let acccesToken = await security.generateToken({
         user: resultsUser,
-        project: proyectoId
+        project: proyectoId,
       });
+
+      const actualDate = new Date();
+      const resetPasswordDate = resultsUser.reset_password;
+
+      const needUpdatePassword = actualDate >= resetPasswordDate;
+      const user = resultsUser.dataValues;
+      delete user.reset_password;
 
       res.json({
         message: "Successful authentication.",
         token: acccesToken,
-        usuario: resultsUser,
-        proyecto: proyectoId
+        usuario: { needUpdatePassword, ...user, },
+        proyecto: proyectoId,
       });
     }
   } catch (error) {
