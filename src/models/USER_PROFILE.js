@@ -39,14 +39,6 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id_ejecutivo'
       }
     },
-    Id_cliente: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'CLIENTE',
-        key: 'Id_cliente'
-      }
-    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -82,13 +74,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_ejecutivo" },
-        ]
-      },
-      {
-        name: "fk_User_profile_CLIENTE1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Id_cliente" },
         ]
       },
       {

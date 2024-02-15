@@ -3,8 +3,6 @@ const db = require("../src/models");
 
 let userRepository = function () {
   let listlogin = async (useCredential) => {
-
-    
     const usuario = await db.models.User.findOne({
       where: {
         Correo: useCredential.email,
@@ -18,10 +16,10 @@ let userRepository = function () {
               model: db.models.EJECUTIVO,
               as: "Id_ejecutivo_EJECUTIVO",
             },
-            {
-              model: db.models.CLIENTE,
-              as: "Id_cliente_CLIENTE",
-            },
+            // {
+            //   model: db.models.CLIENTE,
+            //   as: "Id_cliente_CLIENTE",
+            // },
             {
               model: db.models.EMPLEADO_ASESOR,
               as: "Id_empleado_EMPLEADO_ASESOR",
@@ -70,10 +68,10 @@ let userRepository = function () {
               model: db.models.EJECUTIVO,
               as: "Id_ejecutivo_EJECUTIVO",
             },
-            {
-              model: db.models.CLIENTE,
-              as: "Id_cliente_CLIENTE",
-            },
+            // {
+            //   model: db.models.CLIENTE,
+            //   as: "Id_cliente_CLIENTE",
+            // },
             {
               model: db.models.EMPLEADO_ASESOR,
               as: "Id_empleado_EMPLEADO_ASESOR",

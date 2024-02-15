@@ -315,6 +315,12 @@ router.get("/getComponentsByEntity", componentController.getComponentsByEntity),
 router.get("/getDepartaments", departamentoController.listDepartamentos),
 router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios),
 
+
+
+
+//cuotasUsuario
+router.get("/usuariosCuota", auth.verifyToken,  tipoCuota.usuariosCuota),
+
 // AGREGAR UNIDADES POR PROYECTO Y 
 router.get("/getTypesByProyect/:id_empresa",  proyectController.getTypesbyEntity),
 router.post("/addUnity",  unityController.addUnityByCompany),

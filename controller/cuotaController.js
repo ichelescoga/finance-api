@@ -1,5 +1,6 @@
 const cuotasService = require("../services/cuotaService");
 const currentAccount = require("../services/pagoCuotasService");
+const clientesService = require("../services/clienteService");
 
 exports.listcuotasServices = async (req, res, next) => {
     try {
@@ -210,3 +211,28 @@ exports.createBoletaPagos = async (req, res, next) => {
 //         next(error);
 //     }
 // };
+
+
+
+
+exports.usuariosCuota = async (req, res, next) => {
+    try {
+        let results = await clientesService.usuariosCuentaCorriente();
+
+        const longitud = results.length;
+
+        if (longitud >= 1) {
+            res.status(200).json({
+                success: true,
+                data: results,
+            });
+        } else {
+            res.status(404).json({
+                success: true,
+                message: "No hay cuentas corrientes",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};

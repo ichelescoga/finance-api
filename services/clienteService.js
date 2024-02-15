@@ -78,12 +78,38 @@ const db = require("../src/models");
       const clienteActualizado = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
       return clienteActualizado
     };
+
+
+    let usuariosCuentaCorriente = async () => {
+      const clientes = await db.models.CLIENTE.findAll({
+        include: [
+          {
+            model: db.models.USER_PROFILE,
+            as: "Id_user_profile_USER_PROFILE",
+            requerid: true
+          },{
+            model: db.models.COTIZACION,
+            as: "COTIZACIONs",
+            requerid: true,
+            include: [
+              {
+                model: db.models.CUENTA_CORRIENTE,
+                as: "CUENTA_CORRIENTEs",
+                requerid: true
+              }
+            ], 
+          },
+        ], 
+      });
+      return clientes;
+    };
   
     return {
       updateClienteFotoDpi,
         updateCliente,
         listClientes,
-        createCliente
+        createCliente,
+        usuariosCuentaCorriente
     };
   };
   

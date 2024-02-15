@@ -111,6 +111,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(500),
       allowNull: true
     },
+    Id_user_profile: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'USER_PROFILE',
+        key: 'Id_user_profile'
+      }
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -154,6 +162,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_nacionalidad" },
+        ]
+      },
+      {
+        name: "fk_CLIENTE_USER_PROFILE1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Id_user_profile" },
         ]
       },
     ]

@@ -184,8 +184,6 @@ function initModels(sequelize) {
   CLIENTE.hasMany(DETALLE_FIADOR, { as: "DETALLE_FIADORs", foreignKey: "Id_cliente"});
   FAMILIA.belongsTo(CLIENTE, { as: "Id_clinete_CLIENTE", foreignKey: "Id_clinete"});
   CLIENTE.hasMany(FAMILIA, { as: "FAMILIa", foreignKey: "Id_clinete"});
-  USER_PROFILE.belongsTo(CLIENTE, { as: "Id_cliente_CLIENTE", foreignKey: "Id_cliente"});
-  CLIENTE.hasMany(USER_PROFILE, { as: "USER_PROFILEs", foreignKey: "Id_cliente"});
   COMPONENTE_ENTIDAD.belongsTo(COMPONENTE, { as: "Id_componente_COMPONENTE", foreignKey: "Id_componente"});
   COMPONENTE.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_componente"});
   ESTADO_CUENTA.belongsTo(COMPRA_VENTA, { as: "Id_compraventa_COMPRA_VENTum", foreignKey: "Id_compraventa"});
@@ -334,6 +332,8 @@ function initModels(sequelize) {
   TIPO_RECURSO.hasMany(RECURSO, { as: "RECURSOs", foreignKey: "Id_tipo_recurso"});
   UNIDAD_COTIZACION.belongsTo(UNIDAD, { as: "Id_unidad_UNIDAD", foreignKey: "Id_unidad"});
   UNIDAD.hasMany(UNIDAD_COTIZACION, { as: "UNIDAD_COTIZACIONs", foreignKey: "Id_unidad"});
+  CLIENTE.belongsTo(USER_PROFILE, { as: "Id_user_profile_USER_PROFILE", foreignKey: "Id_user_profile"});
+  USER_PROFILE.hasMany(CLIENTE, { as: "CLIENTEs", foreignKey: "Id_user_profile"});
   CONTACTO.belongsTo(USER_PROFILE, { as: "Id_user_profile_USER_PROFILE", foreignKey: "Id_user_profile"});
   USER_PROFILE.hasMany(CONTACTO, { as: "CONTACTOs", foreignKey: "Id_user_profile"});
   CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
