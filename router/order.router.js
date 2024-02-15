@@ -319,7 +319,11 @@ router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios
 
 
 //cuotasUsuario
-router.get("/usuariosCuota", auth.verifyToken,  tipoCuota.usuariosCuota),
+router.get("/usuariosCuota", auth.verifyToken,   tipoCuota.usuariosCuota),
+//cuentasCorrientesUsuario
+router.get("/cuentasCorrientesUnidad/:id", auth.verifyToken,   tipoCuota.tipoCuotas),
+//tipoCuotas
+router.post("/tiposCuotasCuentasCorriente",  auth.verifyToken,  tipoCuota.tipoCuotasCuentaCorriente),
 
 // AGREGAR UNIDADES POR PROYECTO Y 
 router.get("/getTypesByProyect/:id_empresa",  proyectController.getTypesbyEntity),

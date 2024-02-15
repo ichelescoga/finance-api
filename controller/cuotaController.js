@@ -229,7 +229,59 @@ exports.usuariosCuota = async (req, res, next) => {
         } else {
             res.status(404).json({
                 success: true,
-                message: "No hay cuentas corrientes",
+                message: "No hay cuentas corrientes para el usuario",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+exports.tipoCuotas = async (req, res, next) => {
+    try {
+        let results = await clientesService.tiposCuotas(req.params.id);
+
+
+        if (results) {
+            res.status(200).json({
+                success: true,
+                data: results,
+            });
+        } else {
+            res.status(404).json({
+                success: true,
+                message: "No hay cuentas corrientes ",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+exports.tipoCuotasCuentaCorriente = async (req, res, next) => {
+    try {
+        let paramasCuota = {
+            idCuentaCorriente: req.body.idCuentaCorriente,
+            idTipoCuota: req.body.idTipoCuota
+        }
+        let results = await clientesService.tiposCuotasCuentaCorriente(paramasCuota);
+        const longitud = results.length;
+
+        if (longitud >= 1) {
+            res.status(200).json({
+                success: true,
+                data: results,
+            });
+        } else {
+            res.status(404).json({
+                success: true,
+                message: "No hay cuotas de ese tipo",
             });
         }
     } catch (error) {
