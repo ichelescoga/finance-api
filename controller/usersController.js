@@ -49,29 +49,27 @@ exports.resetPassword = async (req, res, next) => {
     }
 
     if(params.oldPassword == params.newPassword) {
-      return res
-              .status(403)
+      return res.status(202)
               .json({
-                message: "New password should not be the same as old password",
+                message: "New password should not be the same as old password", //PLEASE DON'T CHANGE, FRONTEND IS VALIDATE TEXT
                 success: false
               })}
 
     const user = await UserService.userLogin(params.email, params.oldPassword)
-
-    if(!user) {
-      res.status(404).json({
-        message: "User not found or password invalid",
+    
+    if(user == null) {
+     return res.status(202).json({
+        message: "email or password invalid", //PLEASE DON'T CHANGE, FRONTEND IS VALIDATE TEXT
         success: false
       })
     }
-
-
+    
     const encryptedPassword = await bcrypt.hash(params.newPassword, 10);
     const userId = user.dataValues.Id_user;
     const result = await UserService.resetPassword(userId, encryptedPassword)
     
     if(!result){
-      return res.status(400).json({
+      return res.status(202).json({
         message: "Something went wrong updated user",
         success: false
       })
@@ -83,6 +81,7 @@ exports.resetPassword = async (req, res, next) => {
     });
 
   } catch (error) {
+    console.log('error error 🤖', error)
     res.status(500).json({
       message: "Error updating user",
       success: false
