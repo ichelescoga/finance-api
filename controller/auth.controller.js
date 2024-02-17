@@ -35,7 +35,7 @@ exports.encript = async (req, res, next) => {
 exports.signIn = async (req, res, next) => {
   try {
     let userCredential = {};
-    userCredential.email = req.body.email;
+    userCredential.email = req.body.email.toString().toLowerCase();
     userCredential.password = req.body.password;
 
     let results = await UserService.listlogin(userCredential);

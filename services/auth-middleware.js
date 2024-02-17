@@ -5,7 +5,7 @@ const security = require('../src/utils/security')
 
 exports.verifyToken = async (req, res, next) =>{
     let nonce = req.headers['authorization'];
-  
+    const TOKEN_EXPIRED_OR_INVALID_PASSWORD = "TOKEN_EXPIRED_OR_INVALID_PASSWORD" // USED IN APP.
     if (nonce){
         nonce = nonce.replace("\"", "")
         nonce = nonce.replace("\"", "")
@@ -17,7 +17,7 @@ exports.verifyToken = async (req, res, next) =>{
             if (!user)
             res.status(403).json({
                 success: false,
-                message: "Esta accion esta prohibida, necesitas credenciales validas",
+                message: TOKEN_EXPIRED_OR_INVALID_PASSWORD,
               });
             else
                 next()
@@ -25,7 +25,7 @@ exports.verifyToken = async (req, res, next) =>{
         else
         res.status(403).json({
             success: false,
-            message: "Esta accion esta prohibida, necesitas credenciales validas",
+            message: TOKEN_EXPIRED_OR_INVALID_PASSWORD,
           });
 
     }
