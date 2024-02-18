@@ -18,6 +18,14 @@ let generateToken = async (userCredential) => {
   return tokenGenerate;
 };
 
+let genericToken = async (params) => {
+  const token = await jwt.sign(params, secret, {
+    algorithm: "HS256",
+    expiresIn: "1h",
+  })
+  return token
+}
+
 let decodeToken  = async (tokenGenerate) => {
   let token = tokenGenerate.split(" ");
   const tokenRequest = token[1];
@@ -34,7 +42,8 @@ let decodeToken  = async (tokenGenerate) => {
 
 module.exports = {
   generateToken,
-  decodeToken
+  decodeToken,
+  genericToken
 };
 
 // ? DATA MODEL 

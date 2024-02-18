@@ -217,6 +217,7 @@ router.post("/correoCelExistente",  auth.verifyToken, contactController.revicion
 router.post("/createCliente",  auth.verifyToken, contactController.createClienteController),
 //Coincidencias Nombre, Email , Telefono  de contacto contacto 
 router.post("/coincidenciasCredenciales",  auth.verifyToken, contactController.coincidenciasEmaiTelCorreo),
+router.get("/findClientsByKeyword",  auth.verifyToken, contactController.finClientByKeyword),
 
 //Obtener empresas
 router.get("/getCompanies", companyController.getCompanies),

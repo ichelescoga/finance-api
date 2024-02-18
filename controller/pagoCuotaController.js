@@ -1,6 +1,8 @@
 const cuotaService = require("../services/pagoCuotasService");
 const moment = require('moment')
 const accountService = require("../services/accountService");
+const userService = require("../services/userService");
+const clienteService = require("../services/clienteService");
 
 
 exports.createCuotas = async (req, res, next) => {
@@ -13,111 +15,106 @@ exports.createCuotas = async (req, res, next) => {
 
 
     if (cuentaCorriente.length > 0) {
-
       let pagoEnganche = await cuotaService.findOnePagoEnganche(cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente);
 
       if (pagoEnganche) {
 
-        let pagoEngancheValue =  cotizacion.Venta_descuento -  Number(pagoEnganche.Monto)
+        // let pagoEngancheValue =  cotizacion.Venta_descuento -  Number(pagoEnganche.Monto)
+        // let paramsCuotasCalculate = {
+        //   annualInterest: req.body.interes,
+        //   annualPayments: cotizacion.Meses_plazo,
+        //   totalCreditValue: pagoEngancheValue,
+        //   precioContado: false,
+        // }
+        // let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(paramsCuotasCalculate);
 
+        // for (const elemento of calculatePaymentList) {
+        //   let paramsPagoReserva = {
+        //     idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
+        //     fecha: fechaFormateada,
+        //     monto: elemento.monthlyTotalPayment,
+        //     saldo: elemento.creditTotalBalance,
+        //     interes: elemento.monthlyInterest,
+        //     fechaLimitePago: fechaFormateada,
+        //     pagoCapital: elemento.monthlyCapitalPayment,
+        //     pago: 0,
+        //     referencia: null,
+        //     idTipoPago: 3,
+        //     idStatusTransaccion: 1,
+        //     idStatusPago: 1,
+        //     categoria: "Principal",
+        //     mora: 0
+        //   }
 
-        let paramsCuotasCalculate = {
-          annualInterest: req.body.interes,
-          annualPayments: cotizacion.Meses_plazo,
-          totalCreditValue: pagoEngancheValue,
-          precioContado: false,
-        }
+        //   await cuotaService.createCuotas(paramsPagoReserva);
 
+        //   const fechaInicial = moment(fechaFormateada);
+        //   const fechaSiguienteMes = fechaInicial.add(1, 'month').endOf('month');
+        //   fechaFormateada = fechaSiguienteMes.format('YYYY-MM-DD')
+        // }
 
-        let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(paramsCuotasCalculate);
-
-
-
-        for (const elemento of calculatePaymentList) {
-
-          let paramsPagoReserva = {
-            idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
-            fecha: fechaFormateada,
-            monto: elemento.monthlyTotalPayment,
-            saldo: elemento.creditTotalBalance,
-            interes: elemento.monthlyInterest,
-            fechaLimitePago: fechaFormateada,
-            pagoCapital: elemento.monthlyCapitalPayment,
-            pago: 0,
-            referencia: null,
-            idTipoPago: 3,
-            idStatusTransaccion: 1,
-            idStatusPago: 1,
-            categoria: "Principal",
-            mora: 0
-          }
-
-          await cuotaService.createCuotas(paramsPagoReserva);
-
-          const fechaInicial = moment(fechaFormateada);
-
-          const fechaSiguienteMes = fechaInicial.add(1, 'month').endOf('month');
-          fechaFormateada = fechaSiguienteMes.format('YYYY-MM-DD')
-
-        }
+        const user = await userService.createUserForClientIfNeeded(cuentaCorriente[0]["Id_cliente"])
+        console.log("CREATE CLIENT");
 
         res.status(200).json({
           succes: true,
           message: "Cuotas Creada con Exito",
+          user
         });
 
       } else {
-        let paramsCuotasCalculate = {
-          annualInterest: req.body.interes,
-          annualPayments: cotizacion.Meses_plazo,
-          totalCreditValue: cotizacion.Venta_descuento,
-          precioContado: false,
-        }
+        // let paramsCuotasCalculate = {
+        //   annualInterest: req.body.interes,
+        //   annualPayments: cotizacion.Meses_plazo,
+        //   totalCreditValue: cotizacion.Venta_descuento,
+        //   precioContado: false,
+        // }
 
+        
+        // let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(paramsCuotasCalculate);
 
-        let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(paramsCuotasCalculate);
+        // for (const elemento of calculatePaymentList) {
 
+        //   let paramsPagoReserva = {
+        //     idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
+        //     fecha: fechaFormateada,
+        //     monto: elemento.monthlyTotalPayment,
+        //     saldo: elemento.creditTotalBalance,
+        //     interes: elemento.monthlyInterest,
+        //     fechaLimitePago: fechaFormateada,
+        //     pagoCapital: elemento.monthlyCapitalPayment,
+        //     pago: 0,
+        //     referencia: null,
+        //     idTipoPago: 3,
+        //     idStatusTransaccion: 1,
+        //     idStatusPago: 1,
+        //     categoria: "Principal",
+        //     mora: 0
+        //   }
 
+        //   await cuotaService.createCuotas(paramsPagoReserva);
 
-        for (const elemento of calculatePaymentList) {
+        //   const fechaInicial = moment(fechaFormateada);
 
-          let paramsPagoReserva = {
-            idCuentaCorriente: cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente,
-            fecha: fechaFormateada,
-            monto: elemento.monthlyTotalPayment,
-            saldo: elemento.creditTotalBalance,
-            interes: elemento.monthlyInterest,
-            fechaLimitePago: fechaFormateada,
-            pagoCapital: elemento.monthlyCapitalPayment,
-            pago: 0,
-            referencia: null,
-            idTipoPago: 3,
-            idStatusTransaccion: 1,
-            idStatusPago: 1,
-            categoria: "Principal",
-            mora: 0
-          }
+        //   const fechaSiguienteMes = fechaInicial.add(1, 'month').endOf('month');
+        //   fechaFormateada = fechaSiguienteMes.format('YYYY-MM-DD')
 
-          await cuotaService.createCuotas(paramsPagoReserva);
+        // }
 
-          const fechaInicial = moment(fechaFormateada);
-
-          const fechaSiguienteMes = fechaInicial.add(1, 'month').endOf('month');
-          fechaFormateada = fechaSiguienteMes.format('YYYY-MM-DD')
-
-        }
+        const user = await userService.createUserForClientIfNeeded(cuentaCorriente[0]["Id_cliente"])
 
         res.status(200).json({
           succes: true,
           message: "Cuotas Creada con Exito",
+          user
         });
       }
 
-
     } else {
+      const PAYMENTS_NOT_CREATED = "PAYMENTS_NOT_CREATED";
       res.status(406).json({
         succes: true,
-        message: "No se pueden crear las cuotas",
+        message: PAYMENTS_NOT_CREATED,
       });
     }
 
@@ -129,6 +126,8 @@ exports.createCuotas = async (req, res, next) => {
     });
   }
 };
+
+
 
 
 exports.pagoCuota = async (req, res, next) => {

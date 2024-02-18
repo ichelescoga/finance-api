@@ -5,11 +5,12 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     Primer_nombre: {
       type: DataTypes.STRING(60),
-      allowNull: true
+      allowNull: true,
+      collate: 'utf8_general_ci', // Case-insensitive collation
     },
     Segundo_nombre: {
       type: DataTypes.STRING(60),
@@ -85,11 +86,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     Telefono: {
       type: DataTypes.STRING(20),
-      allowNull: true
+      allowNull: true,
+      collate: 'utf8_general_ci', // Case-insensitive collation
     },
     Correo: {
       type: DataTypes.STRING(150),
-      allowNull: true
+      allowNull: true,
+      collate: 'utf8_general_ci', // Case-insensitive collation
     },
     Id_nacionalidad: {
       type: DataTypes.INTEGER,

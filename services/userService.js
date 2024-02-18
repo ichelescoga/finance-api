@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const db = require("../src/models");
+const clienteService = require("./clienteService");
 
 let userRepository = function () {
   let listlogin = async (useCredential) => {
@@ -126,6 +127,33 @@ let userRepository = function () {
     });
 }
 
+let createUserClientProfile = async (userId) => {
+  db.models.USER_PROFILE.create({
+    Id_rol: 3, //CLIENT_ROLE
+    Id_user: userId,
+    Id_empleado: null
+  })
+}
+
+let createUserForClientIfNeeded = async (clientId) => {
+  let client = await clienteService.getClientById(clientId)
+  const email = client["dataValues"].Correo;
+  let user = await getUserByEmail({username: email})
+  const password = "FinanceApp"
+
+  if(user.length === 0) {
+    let params = {
+      email: email,
+      password: password,
+      nombre: `${client["dataValues"].Primer_nombre} ${client["dataValues"]?.Segundo_nombre || ""}`
+    };
+    const user = await create(params);
+    await createUserClientProfile(user["dataValues"].Id_user)
+  }
+
+  return user.length === 0 ? { email: email, password } : null;
+}
+
 let getUserByEmailSinPasswordBackend = async (params) => {
   return await  db.models.User.findOne({
     attributes: ["Correo", "Nombre", "created_at", "updated_at"],
@@ -234,7 +262,8 @@ const userLogin = async (email, password) => {
     listUser,
     findProyectoEmpresa,
     resetPassword,
-    userLogin
+    userLogin,
+    createUserForClientIfNeeded
   };
 };
 

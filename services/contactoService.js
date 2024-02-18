@@ -1,7 +1,8 @@
 
 
 const db = require("../src/models");
-  
+const { Op } = require('sequelize');
+
   let userRepository = function () {
     
     let createContacto= async (params) => {
@@ -224,6 +225,38 @@ const db = require("../src/models");
     };
 
 
+    let findClientByPhoneEmailNameKeywords = async (searchKeyword = "") => {
+      try {
+        const result =await db.models.CLIENTE.findAll({
+          where: {
+            [Op.or]: [
+              {
+                Primer_nombre: {
+                  [Op.like]: `%${searchKeyword}%`
+                }
+              },
+              {
+                Correo: {
+                  [Op.like]: `%${searchKeyword}%`
+                }
+              },
+              {
+                Telefono: {
+                  [Op.like]: `%${searchKeyword}%`
+                }
+              },
+            ]
+          }
+        })
+        return result;
+
+      } catch (error) {
+        console.log("error error error error", error);
+
+        return error;
+      }
+    }
+
 
     let coincidenciasTelefono = async (params) => {
       const Op = db.Sequelize.Op;
@@ -287,7 +320,8 @@ const db = require("../src/models");
         coincidenciasCorreo,
         coincidenciasNombre,
         coincidenciasTelefono,
-        coincidenciasNombreCliete
+        coincidenciasNombreCliete,
+        findClientByPhoneEmailNameKeywords
     };
   };
   

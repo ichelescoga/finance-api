@@ -217,7 +217,27 @@ exports.updateContacto = async (req, res, next) => {
 
 
 
+  exports.finClientByKeyword = async (req, res, next) => {
+    try {
+      const searchKeyword = req.query.searchKeyword;
+      console.log("searchKeyword searchKeyword searchKeyword", searchKeyword);
 
+      if(!searchKeyword) return res.status(404).json({ success: false, message: "Keyword is required" });
+
+      const result = await contactoService.findClientByPhoneEmailNameKeywords(searchKeyword)
+      console.log(result);
+      res.status(200).json({
+        success: true,
+        result
+      })
+
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: "Something went wrong"
+      })
+    }
+  }
 
   exports.coincidenciasEmaiTelCorreo  = async (req, res, next) => {
     try {

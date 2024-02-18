@@ -54,6 +54,29 @@ exports.signIn = async (req, res, next) => {
     } else {
       let resultsUser = await UserService.listUser(userCredential);
       let usuarioLog = resultsUser.USER_PROFILEs.length > 0 ? resultsUser.USER_PROFILEs[0] : null;
+
+      if(usuarioLog == null) return res.status(404).json("User not has role assigned");
+      const idRole = usuarioLog["dataValues"].Id_rol
+      if( idRole == 3 ) {
+
+        const email = resultsUser["dataValues"].Correo;
+        const name = resultsUser["dataValues"].Nombre;
+
+        let accessTokenClient = await security.genericToken({
+          email,
+          name,
+          roleId: idRole
+        });
+
+        return res.status(200).json({
+          success: true,
+          token: accessTokenClient,
+          roleId: idRole,
+          email,
+          name,
+        })
+      }
+
       let usuarioLog1 = usuarioLog.Id_empleado_EMPLEADO_ASESOR.EMPLEADO_EMPRESAs.length > 0 ? usuarioLog.Id_empleado_EMPLEADO_ASESOR.EMPLEADO_EMPRESAs[0] : null;
       let proyectoId = usuarioLog1 ? await UserService.findProyectoEmpresa(usuarioLog1.Id_empresa) : null;
       let acccesToken = await security.generateToken({
@@ -76,6 +99,7 @@ exports.signIn = async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log("error, createUserClientProfile ", error);
     res.status(400).json({
       success: false,
       error: "Incorrect parameters.",

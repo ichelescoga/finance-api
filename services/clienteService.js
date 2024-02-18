@@ -9,6 +9,13 @@ let userRepository = function () {
     return clientes;
   };
 
+  let getClientById = async (id) => {
+    const client = await db.models.CLIENTE.findOne({
+      where: { Id_cliente: id }
+    })
+    return client;
+  }
+
   let createCliente = async (params) => {
     const creatCliente = await db.models.CLIENTE.create({
       Primer_nombre: params.primerNombre,
@@ -97,7 +104,7 @@ let userRepository = function () {
               model: db.models.CUENTA_CORRIENTE,
               as: "CUENTA_CORRIENTEs",
               required: true,
-            },{
+            }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
               include: [
@@ -143,7 +150,7 @@ let userRepository = function () {
               //     },
               //   }
               // ],
-            },{
+            }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
               include: [
@@ -162,12 +169,12 @@ let userRepository = function () {
 
 
   let tiposCuotasCuentaCorriente = async (params) => {
-    const cuotas = await db.models.PAGO.findAll({ 
+    const cuotas = await db.models.PAGO.findAll({
       where: {
         [Op.and]: [
-          { Id_cuenta_corriente: params.idCuentaCorriente},
-          { Id_tipo_pago: params.idTipoCuota},
-          { Id_status_transaccion: 1},
+          { Id_cuenta_corriente: params.idCuentaCorriente },
+          { Id_tipo_pago: params.idTipoCuota },
+          { Id_status_transaccion: 1 },
         ]
       }
     });
@@ -180,7 +187,8 @@ let userRepository = function () {
     createCliente,
     usuariosCuentaCorriente,
     tiposCuotas,
-    tiposCuotasCuentaCorriente
+    tiposCuotasCuentaCorriente,
+    getClientById
   };
 };
 
