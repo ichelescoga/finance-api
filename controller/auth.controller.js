@@ -56,7 +56,12 @@ exports.signIn = async (req, res, next) => {
       let usuarioLog = resultsUser.USER_PROFILEs.length > 0 ? resultsUser.USER_PROFILEs[0] : null;
 
       if(usuarioLog == null) return res.status(404).json("User not has role assigned");
-      const idRole = usuarioLog["dataValues"].Id_rol
+      const idRole = usuarioLog["dataValues"].Id_rol;
+
+      const actualDate = new Date();
+      const resetPasswordDate = resultsUser.reset_password;
+      const needUpdatePassword = actualDate >= resetPasswordDate;
+      
       if( idRole == 3 ) {
 
         const email = resultsUser["dataValues"].Correo;
@@ -65,15 +70,16 @@ exports.signIn = async (req, res, next) => {
         let accessTokenClient = await security.genericToken({
           email,
           name,
-          roleId: idRole
+          roleId: idRole,
         });
-
+        
         return res.status(200).json({
           success: true,
           token: accessTokenClient,
           roleId: idRole,
           email,
           name,
+          needUpdatePassword
         })
       }
 
@@ -84,10 +90,7 @@ exports.signIn = async (req, res, next) => {
         project: proyectoId,
       });
 
-      const actualDate = new Date();
-      const resetPasswordDate = resultsUser.reset_password;
 
-      const needUpdatePassword = actualDate >= resetPasswordDate;
       const user = resultsUser.dataValues;
       delete user.reset_password;
 
