@@ -187,7 +187,7 @@ exports.getEntities= async(req, res, next)=>{
     try {
         let tipo_entidad= req.body.id
         let entidades = await EntityRepository.getEntities(tipo_entidad)
-        let component = await EntityRepository.getComponentByEntity(tipo_entidad)
+        let component = await EntityRepository.getComponentByEntityNotNull(tipo_entidad)
         let results = []
         for (let y =0; y < entidades.length; y++){
             let param= {}
