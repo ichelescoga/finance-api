@@ -165,6 +165,59 @@ let EntityRepository = function () {
             Estado: 1,
         })
     }
+    let getEntities = async (tipo) => {
+        return await  db.models.ENTIDAD.findAll({
+            where: {
+                Tipo: tipo,
+                Estado: 1
+            },
+        });
+    }
+    let getCaracteristicaString = async (id_caracteristica,id_entidad) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_STRING.findOne({
+            where: {
+                Id_caracteristica: id_caracteristica,
+                Id_entidad: id_entidad,
+                Estado: 1
+            },
+        });
+    }   
+     let getCaracteristicaBoolean = async (id_caracteristica,id_entidad) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_BOOLEAN.findOne({
+            where: {
+                Id_caracteristica: id_caracteristica,
+                Id_entidad: id_entidad,
+                Estado: 1
+            },
+        });
+    }
+    let getCaracteristicaDate = async (id_caracteristica,id_entidad) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_DATE.findOne({
+            where: {
+                Id_caracteristica: id_caracteristica,
+                Id_entidad: id_entidad,
+                Estado: 1
+            },
+        });
+    }
+    let getCaracteristicaDouble = async (id_caracteristica,id_entidad) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_DOUBLE.findOne({
+            where: {
+                Id_caracteristica: id_caracteristica,
+                Id_entidad: id_entidad,
+                Estado: 1
+            },
+        });
+    }
+    let getCaracteristicaInt= async (id_caracteristica,id_entidad) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_INT.findOne({
+            where: {
+                Id_caracteristica: id_caracteristica,
+                Id_entidad: id_entidad,
+                Estado: 1
+            },
+        });
+    }
 return {
     getComponentByEntity,
     getComponent,
@@ -181,7 +234,13 @@ return {
     getMod_Entity,
     addMod_Entity,
     getEntity,
-    addGroupModifEntidad
+    addGroupModifEntidad,
+    getEntities,
+    getCaracteristicaString,
+    getCaracteristicaBoolean,
+    getCaracteristicaDate,
+    getCaracteristicaDouble,
+    getCaracteristicaInt
     }   
 
 }
