@@ -106,8 +106,14 @@ exports.addEntity = async(req, res, next)=>{
                     //obtenemos datos de la entidad padre
                     let entity_father = await EntityRepository.getEntity(req.body.father)
                     if(entity_father){ 
+                        let nombre ;
+                        if(req.body.nombre != ''){
+                           nombre = req.body.nombre
+                        }else {
+                            nombre= entity_father.dataValues.Nombre
+                        }
                         params = {
-                            nombre: entity_father.dataValues.Nombre,
+                            nombre: nombre,
                             descripcion: is_father.dataValues.Nombre + " de " + entity_father.dataValues.Nombre,
                             createdby: req.body.createdby,
                             tipo: tipo_entidad
