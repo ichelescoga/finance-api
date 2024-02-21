@@ -97,7 +97,7 @@ let userRepository = function () {
               model: db.models.CUENTA_CORRIENTE,
               as: "CUENTA_CORRIENTEs",
               required: true,
-            },{
+            }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
               include: [
@@ -143,13 +143,20 @@ let userRepository = function () {
               //     },
               //   }
               // ],
-            },{
+            }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
+              // required: true,
               include: [
                 {
                   model: db.models.UNIDAD,
                   as: "Id_unidad_UNIDAD",
+                  required: true,
+                  where: {
+                    [Op.and]: [
+                      { Id_estado: { [Op.in]: [5, 9] } },
+                    ]
+                  }
                 }
               ],
             }
@@ -162,17 +169,31 @@ let userRepository = function () {
 
 
   let tiposCuotasCuentaCorriente = async (params) => {
-    const cuotas = await db.models.PAGO.findAll({ 
+    const cuotas = await db.models.PAGO.findAll({
       where: {
         [Op.and]: [
-          { Id_cuenta_corriente: params.idCuentaCorriente},
-          { Id_tipo_pago: params.idTipoCuota},
-          { Id_status_transaccion: 1},
+          { Id_cuenta_corriente: params.idCuentaCorriente },
+          { Id_tipo_pago: params.idTipoCuota },
+          { Id_status_transaccion: 1 },
+          { Categoria: "Principal"},
         ]
       }
     });
     return cuotas;
   };
+
+  let pagosReferencia = async (params) => {
+    const cuotas = await db.models.PAGO.findAll({
+      where: {
+        [Op.and]: [
+          { Referencia: params },
+          { Categoria: "Secundaria"},
+        ]
+      }
+    });
+    return cuotas;
+  };
+
   return {
     updateClienteFotoDpi,
     updateCliente,
@@ -180,7 +201,8 @@ let userRepository = function () {
     createCliente,
     usuariosCuentaCorriente,
     tiposCuotas,
-    tiposCuotasCuentaCorriente
+    tiposCuotasCuentaCorriente,
+    pagosReferencia
   };
 };
 

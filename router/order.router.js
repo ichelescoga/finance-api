@@ -26,6 +26,8 @@ const cuotaController = require('../controller/pagoCuotaController')
 const tipoCuota = require('../controller/cuotaController')
 const aprabacionController = require('../controller/aprobacionPago')
 const interesControllers = require('../controller/interesesControllers')
+const establecimientos = require('../controller/establecientoController')
+
 
 
 
@@ -282,7 +284,10 @@ router.post("/TipocuotaPagadas/:id", auth.verifyToken,  tipoCuota.listcuotasPaga
 router.post("/TipocuotaPendientes/:id", auth.verifyToken,  tipoCuota.listcuotasPendientesServices),
 //CuotasReferencia
 router.post("/CuotasReferencia/:id", auth.verifyToken,  tipoCuota.cuotasReferencia),
-
+//Establecimientos
+router.get("/establecimientos",   establecimientos.listEstablecimiento),
+//Forma de Pago
+router.get("/formasPago",    establecimientos.listFormasPago),
 
 
 // Create boletaPago
@@ -319,11 +324,14 @@ router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios
 
 
 //cuotasUsuario
-router.get("/usuariosCuota", auth.verifyToken,   tipoCuota.usuariosCuota),
+router.get("/usuariosCuota",   tipoCuota.usuariosCuota),
 //cuentasCorrientesUsuario
-router.get("/cuentasCorrientesUnidad/:id", auth.verifyToken,   tipoCuota.tipoCuotas),
+router.get("/cuentasCorrientesUnidad/:id",   tipoCuota.tipoCuotas),
 //tipoCuotas
-router.post("/tiposCuotasCuentasCorriente",  auth.verifyToken,  tipoCuota.tipoCuotasCuentaCorriente),
+router.post("/tiposCuotasCuentasCorriente",   tipoCuota.tipoCuotasCuentaCorriente),
+//Pagos referencia
+router.get("/pagoReferencia/:id",   tipoCuota.pagosReferencia),
+
 
 // AGREGAR UNIDADES POR PROYECTO Y 
 router.get("/getTypesByProyect/:id_empresa",  proyectController.getTypesbyEntity),
