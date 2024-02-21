@@ -288,3 +288,27 @@ exports.tipoCuotasCuentaCorriente = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+
+exports.pagosReferencia = async (req, res, next) => {
+    try {
+        let results = await clientesService.pagosReferencia(req.params.id);
+        const longitud = results.length;
+
+        if (longitud >= 1) {
+            res.status(200).json({
+                success: true,
+                data: results,
+            });
+        } else {
+            res.status(404).json({
+                success: true,
+                message: "No hay pagos referenciados a la cuota ",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
