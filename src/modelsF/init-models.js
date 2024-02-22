@@ -4,6 +4,7 @@ var _CARACTERISTICA_DATE = require("./CARACTERISTICA_DATE");
 var _CARACTERISTICA_DOUBLE = require("./CARACTERISTICA_DOUBLE");
 var _CARACTERISTICA_INT = require("./CARACTERISTICA_INT");
 var _CARACTERISTICA_STRING = require("./CARACTERISTICA_STRING");
+var _CLASIFICACION_CLIENTE = require("./CLASIFICACION_CLIENTE");
 var _COMPONENTE = require("./COMPONENTE");
 var _COMPONENTE_ENTIDAD = require("./COMPONENTE_ENTIDAD");
 var _ENTIDAD = require("./ENTIDAD");
@@ -28,6 +29,7 @@ function initModels(sequelize) {
   var CARACTERISTICA_DOUBLE = _CARACTERISTICA_DOUBLE(sequelize, DataTypes);
   var CARACTERISTICA_INT = _CARACTERISTICA_INT(sequelize, DataTypes);
   var CARACTERISTICA_STRING = _CARACTERISTICA_STRING(sequelize, DataTypes);
+  var CLASIFICACION_CLIENTE = _CLASIFICACION_CLIENTE(sequelize, DataTypes);
   var COMPONENTE = _COMPONENTE(sequelize, DataTypes);
   var COMPONENTE_ENTIDAD = _COMPONENTE_ENTIDAD(sequelize, DataTypes);
   var ENTIDAD = _ENTIDAD(sequelize, DataTypes);
@@ -110,6 +112,10 @@ function initModels(sequelize) {
   User.hasMany(CARACTERISTICA_STRING, { as: "CARACTERISTICA_STRINGs", foreignKey: "Createdby"});
   CARACTERISTICA_STRING.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(CARACTERISTICA_STRING, { as: "Updatedby_CARACTERISTICA_STRINGs", foreignKey: "Updatedby"});
+  CLASIFICACION_CLIENTE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(CLASIFICACION_CLIENTE, { as: "CLASIFICACION_CLIENTEs", foreignKey: "Createdby"});
+  CLASIFICACION_CLIENTE.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(CLASIFICACION_CLIENTE, { as: "Updatedby_CLASIFICACION_CLIENTEs", foreignKey: "Updatedby"});
   COMPONENTE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Createdby"});
   COMPONENTE_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
@@ -171,6 +177,7 @@ function initModels(sequelize) {
     CARACTERISTICA_DOUBLE,
     CARACTERISTICA_INT,
     CARACTERISTICA_STRING,
+    CLASIFICACION_CLIENTE,
     COMPONENTE,
     COMPONENTE_ENTIDAD,
     ENTIDAD,
