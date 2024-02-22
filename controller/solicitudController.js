@@ -44,3 +44,57 @@ exports.addSolicitud = async(req, res, next)=>{
         next(createError(500));
     }
 }
+
+exports.getSolicitudesByEstado = async (req, res, next) => {
+    try {
+        let estado = req.params.id
+        let entidad = req.params.entidad
+        let results = await SolicitudRepository.getSolicitudesByEstado(estado,entidad)
+        if (results) {
+          res.json(results);
+        } else {
+          res.status(202).json({
+            success: true,
+            message: "Unidad no existente",
+          });
+        }
+      } catch (error) {
+        next(error);
+      }
+  };
+
+  exports.getSolicitudById = async (req, res, next) => {
+    try {
+        let id = req.params.id
+        let results = await SolicitudRepository.getSolicitudById(id)
+        if (results) {
+          res.json(results);
+        } else {
+          res.status(202).json({
+            success: true,
+            message: "Unidad no existente",
+          });
+        }
+      } catch (error) {
+        next(error);
+      }
+  };
+
+  exports.updateEstadoSolicitud = async (req, res, next) => {
+    try {
+        let params =
+        {
+            id: req.body.id,
+            status: req.body.estado
+        }
+        await SolicitudRepository.updateSolicitudStatus(params)
+      
+            res.status(202).json({
+                success: true,
+                message: "Se ha actualizado correctamente el estado de la solicutd",
+              });
+        
+      } catch (error) {
+        next(error);
+      }
+  };

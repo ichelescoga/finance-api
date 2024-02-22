@@ -1,12 +1,11 @@
 const db = require("../src/modelsF");
 const sequelize = require('../components/conn_sqlz');
 let SolicitudRepository = function () {
-    let getSolicitudesByEstado = async (status) => {
+    let getSolicitudesByEstado = async (status, entidad) => {
         return await  db.models.SOLICITUD_CREDITO.findAll({
             where: {
-                Estado: {
-                    [Op.notIn]: [status] 
-                }
+                Estado: status,
+                Id_entidad: entidad
             },
         });
     }
@@ -40,9 +39,31 @@ let SolicitudRepository = function () {
           Estado: 1
         })
     }
+
+    let getSolicitudById= async (id) => {
+        return await  db.models.SOLICITUD_CREDITO.findOne({
+            where: {
+                Id: id
+            },
+        });
+    }
+
+    let updateSolicitudStatus= async (params) => {
+        await db.models.SOLICITUD_CREDITO.update({
+            Estado: params.status
+        },{
+            where: {
+                Id: params.id
+            }
+        })
+    }
+  
+
     return {
         getSolicitudesByEstado,
-        addSolicitudCredito
+        addSolicitudCredito,
+        getSolicitudById,
+        updateSolicitudStatus
     }
 }
 module.exports = SolicitudRepository();
