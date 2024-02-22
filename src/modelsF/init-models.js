@@ -1,4 +1,5 @@
 var DataTypes = require("sequelize").DataTypes;
+var _BANCO = require("./BANCO");
 var _CARACTERISTICA_BOOLEAN = require("./CARACTERISTICA_BOOLEAN");
 var _CARACTERISTICA_DATE = require("./CARACTERISTICA_DATE");
 var _CARACTERISTICA_DOUBLE = require("./CARACTERISTICA_DOUBLE");
@@ -21,11 +22,13 @@ var _MODIFICADOR_ENTIDAD = require("./MODIFICADOR_ENTIDAD");
 var _SOLICITUD_CREDITO = require("./SOLICITUD_CREDITO");
 var _TIPO_CARACTERISTICA = require("./TIPO_CARACTERISTICA");
 var _TIPO_COMPONENTE = require("./TIPO_COMPONENTE");
+var _TIPO_CUENTA_BANCO = require("./TIPO_CUENTA_BANCO");
 var _TIPO_ENTIDAD = require("./TIPO_ENTIDAD");
 var _User = require("./User");
 var _VALIDACION = require("./VALIDACION");
 
 function initModels(sequelize) {
+  var BANCO = _BANCO(sequelize, DataTypes);
   var CARACTERISTICA_BOOLEAN = _CARACTERISTICA_BOOLEAN(sequelize, DataTypes);
   var CARACTERISTICA_DATE = _CARACTERISTICA_DATE(sequelize, DataTypes);
   var CARACTERISTICA_DOUBLE = _CARACTERISTICA_DOUBLE(sequelize, DataTypes);
@@ -48,6 +51,7 @@ function initModels(sequelize) {
   var SOLICITUD_CREDITO = _SOLICITUD_CREDITO(sequelize, DataTypes);
   var TIPO_CARACTERISTICA = _TIPO_CARACTERISTICA(sequelize, DataTypes);
   var TIPO_COMPONENTE = _TIPO_COMPONENTE(sequelize, DataTypes);
+  var TIPO_CUENTA_BANCO = _TIPO_CUENTA_BANCO(sequelize, DataTypes);
   var TIPO_ENTIDAD = _TIPO_ENTIDAD(sequelize, DataTypes);
   var User = _User(sequelize, DataTypes);
   var VALIDACION = _VALIDACION(sequelize, DataTypes);
@@ -100,6 +104,10 @@ function initModels(sequelize) {
   TIPO_ENTIDAD.hasMany(COMPONENTE_ENTIDAD, { as: "COMPONENTE_ENTIDADs", foreignKey: "Id_tipo_entidad"});
   ENTIDAD.belongsTo(TIPO_ENTIDAD, { as: "Tipo_TIPO_ENTIDAD", foreignKey: "Tipo"});
   TIPO_ENTIDAD.hasMany(ENTIDAD, { as: "ENTIDADs", foreignKey: "Tipo"});
+  BANCO.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(BANCO, { as: "BANCOs", foreignKey: "Createdby"});
+  BANCO.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(BANCO, { as: "Updatedby_BANCOs", foreignKey: "Updatedby"});
   CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(CARACTERISTICA_BOOLEAN, { as: "CARACTERISTICA_BOOLEANs", foreignKey: "Createdby"});
   CARACTERISTICA_BOOLEAN.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
@@ -176,6 +184,10 @@ function initModels(sequelize) {
   User.hasMany(SOLICITUD_CREDITO, { as: "Updatedby_SOLICITUD_CREDITOs", foreignKey: "Updatedby"});
   TIPO_COMPONENTE.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(TIPO_COMPONENTE, { as: "TIPO_COMPONENTEs", foreignKey: "Createdby"});
+  TIPO_CUENTA_BANCO.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(TIPO_CUENTA_BANCO, { as: "TIPO_CUENTA_BANCOs", foreignKey: "Createdby"});
+  TIPO_CUENTA_BANCO.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(TIPO_CUENTA_BANCO, { as: "Updatedby_TIPO_CUENTA_BANCOs", foreignKey: "Updatedby"});
   TIPO_ENTIDAD.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(TIPO_ENTIDAD, { as: "TIPO_ENTIDADs", foreignKey: "Createdby"});
   TIPO_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
@@ -188,6 +200,7 @@ function initModels(sequelize) {
   VALIDACION.hasMany(COMPONENTE, { as: "COMPONENTEs", foreignKey: "Id_validacion"});
 
   return {
+    BANCO,
     CARACTERISTICA_BOOLEAN,
     CARACTERISTICA_DATE,
     CARACTERISTICA_DOUBLE,
@@ -210,6 +223,7 @@ function initModels(sequelize) {
     SOLICITUD_CREDITO,
     TIPO_CARACTERISTICA,
     TIPO_COMPONENTE,
+    TIPO_CUENTA_BANCO,
     TIPO_ENTIDAD,
     User,
     VALIDACION,
