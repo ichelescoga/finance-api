@@ -10,6 +10,7 @@ const assetsRouter = require('./router/assets.router')
 const beecommRouter = require('./router/beecommRouter')
 const entityRouter = require('./router/entity.router')
 const listsRouter = require('./router/lists.router')
+const solicitudRouter = require('./router/solicitud.router')
 const sequelize = require('./components/conn_sqlz')
 
 app.use(cors())
@@ -27,6 +28,7 @@ app.use('/assets/v1',assetsRouter)
 app.use('/beecomm/v1',beecommRouter)
 app.use('/entity/v1',entityRouter)
 app.use('/lists/v1', listsRouter)
+app.use('/solicitud/v1', solicitudRouter)
 app.use(function(req,res,next){
 
     

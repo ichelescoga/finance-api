@@ -108,6 +108,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'ESTADO_SOLICITUD',
         key: 'Id'
       }
+    },
+    Monto_factura: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    Fecha_factura: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
     sequelize,
