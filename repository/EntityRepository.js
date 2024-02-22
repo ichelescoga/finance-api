@@ -218,6 +218,38 @@ let EntityRepository = function () {
             },
         });
     }
+    let getGroupModById= async (id) => {
+        return await  db.models.GRUPO_MODIFICADOR_ENTIDAD.findAll({
+            where: {
+                Id_modificador_entidad: id,
+                Estado: 1
+            },
+        });
+    }
+    let getModById = async (entity) => {
+        return await  db.models.MODIFICADOR.findOne({
+            where: {
+                Id: entity,
+                Estado: 1
+            },
+        });
+    }
+    let getEntityTypeByName = async (entity) => {
+        return await  db.models.TIPO_ENTIDAD.findOne({
+            where: {
+                Nombre: entity,
+                Estado: 1
+            },
+        });
+    }
+    let getEntityDetailsById= async (entity) => {
+        return await  db.models.ENTIDAD.findOne({
+            where: {
+                Id:entity,
+                Estado: 1
+            },
+        });
+    }
 return {
     getComponentByEntity,
     getComponent,
@@ -240,7 +272,11 @@ return {
     getCaracteristicaBoolean,
     getCaracteristicaDate,
     getCaracteristicaDouble,
-    getCaracteristicaInt
+    getCaracteristicaInt,
+    getGroupModById,
+    getModById,
+    getEntityTypeByName,
+    getEntityDetailsById
     }   
 
 }

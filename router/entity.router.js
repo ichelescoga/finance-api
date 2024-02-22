@@ -6,4 +6,6 @@ const entityController = require('../controller/entityController')
 router.get("/getComponents", entityController.getComponentsByEntity)
 router.post("/addEntity", entityController.addEntity)
 router.get("/getEntities", entityController.getEntities)
+router.get("/getModsByEntity/:id_entidad/:id_mod", entityController.getModsByEntity)
+
 module.exports = router
