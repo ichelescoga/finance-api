@@ -7,5 +7,5 @@ router.get("/getComponents", entityController.getComponentsByEntity)
 router.post("/addEntity", entityController.addEntity)
 router.get("/getEntities", entityController.getEntities)
 router.get("/getModsByEntity/:id_entidad/:id_mod", entityController.getModsByEntity)
-
+router.get("/getEntityById/:id", entityController.getEntityById)
 module.exports = router
