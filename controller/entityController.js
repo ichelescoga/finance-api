@@ -274,7 +274,7 @@ exports.getModsByEntity = async(req, res, next)=>{
  
                entidades.push(entity)
             }
-            console.log(entidades)
+        
         for (let y =0; y < entidades.length; y++){
             let param= {}
             param["id"] = entidades[y].dataValues.Id
@@ -326,3 +326,54 @@ exports.getModsByEntity = async(req, res, next)=>{
         next(createError(500));
     }
 }
+exports.getEntityById = async(req, res, next)=>{
+    try {
+        let entity_id= req.params.id
+        //obtenemos la entidad
+        let entity = await EntityRepository.getEntityDetailsById(entity_id)
+        let component = await EntityRepository.getComponentByEntityNotNull(entity.dataValues.Tipo)
+        let param= {}
+            param["id"] = entity.dataValues.Id
+            param["nombre"] = entity.dataValues.Nombre
+            param["descripcion"] = entity.dataValues.Descripcion
+            for(let i =0; i < component.length; i++){
+                let valor
+                let s 
+                switch(component[i].dataValues.Id_tipo_caracteristica){
+                    case 1:
+                        s = await EntityRepository.getCaracteristicaString(component[i].dataValues.Id_caracteristica,entity.Id)
+                        if(s) valor = s.dataValues.Valor
+                        break;
+                    case 2: 
+                        s = await EntityRepository.getCaracteristicaInt(component[i].dataValues.Id_caracteristica,entity.Id)
+                        if(s) valor = s.dataValues.Valor
+                        break;
+                    case 3: 
+                        s = await EntityRepository.getCaracteristicaDate(component[i].dataValues.Id_caracteristica,entity.Id)
+                        if(s) valor = s.dataValues.Valor
+                        break;
+                    case 4: 
+                        s = await EntityRepository.getCaracteristicaDouble(component[i].dataValues.Id_caracteristica,entity.Id)
+                        if(s) valor = s.dataValues.Valor
+                        break;
+                    case 5: 
+                        s = await EntityRepository.getCaracteristicaBoolean(component[i].dataValues.Id_caracteristica,entity.Id)
+                        if(s) valor = s.dataValues.Valor
+                        break;
+                    default:
+                        valor = ''
+                }
+                
+                if(valor!= undefined){
+                  
+                    param[component[i].dataValues.Id_componente] = valor
+                   
+                }
+            }
+        res.json(param)
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
