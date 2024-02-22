@@ -14,6 +14,6 @@ router.post("/activateDMS/:detailDMSId", beecommController.activateDMS)
 router.post("/updateDMSFreeText", beecommController.updateDMSFreeText)
 router.post("/createTariffItem", beecommController.createTariffItem)
 
-router.post("/uploadS3", assetsController.uploadS3)
+router.post("/uploadS3", beecommController.uploadS3)
 
 module.exports = router
