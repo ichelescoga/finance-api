@@ -8,8 +8,24 @@ let ListsRepository = function () {
             },
         });
     }
+    let getBancos = async (entity) => {
+        return await  db.models.BANCO.findAll({
+            where: {
+                Estado: 1
+            },
+        });
+    }
+    let getTipoCuentasBanco = async (entity) => {
+        return await  db.models.TIPO_CUENTA_BANCO.findAll({
+            where: {
+                Estado: 1
+            },
+        });
+    }
 return {
-    getClasificacionClientes
+    getClasificacionClientes,
+    getBancos,
+    getTipoCuentasBanco
 }
 }
 module.exports = ListsRepository();
