@@ -202,7 +202,7 @@ exports.uploadS3 = async (req, res, next) => {
     }
   };
 
-function uploadFileS3(imageBase64, fileName, transactionType){
+function uploadFileS3(fileBuffer, fileName, transactionType){
     try {
         let s3Bucket;
         s3Bucket = new AWS.S3({
@@ -215,18 +215,42 @@ function uploadFileS3(imageBase64, fileName, transactionType){
         });
 
         let filePath = `beeupload/${fileName}`;
+        let buffer = undefined;
+        let fileData = {}
 
-        let buffer = Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), "base64");
-        let imageData = {
-            Key: filePath,
-            Body: buffer,
-            ContentEncoding: "base64",
-            ContentType: "image/jpeg",
-            CacheControl: "max-age=172800"
-        };
+        if (transactionType === 'imagen'){
+            buffer = Buffer.from(fileBuffer.replace(/^data:image\/\w+;base64,/, ""), "base64");
+            fileData = {
+                Key: filePath,
+                Body: buffer,
+                ContentEncoding: "base64",
+                ContentType: "image/jpeg",
+                CacheControl: "max-age=172800"
+            };
+        }
+            
+        if (transactionType === 'pdf'){
+            buffer = fileBuffer
+            fileData = {
+                Key: filePath,
+                Body: pdfBuffer,
+                ContentType: "application/pdf",
+                CacheControl: "max-age=172800"
+            };
+        }
+
+        if (transactionType === 'text' || transactionType === 'xml'){
+            buffer = fileBuffer
+            fileData = {
+                Key: filePath,
+                Body: pdfBuffer,
+                ContentType: "text/xml",
+                CacheControl: "max-age=172800"
+            };
+        }                  
 
         return new Promise((resolve) => {
-            s3Bucket.upload(imageData, function (err, data) {
+            s3Bucket.upload(fileData, function (err, data) {
                 if (err) {
                     console.error(err);
                     reject(false);
