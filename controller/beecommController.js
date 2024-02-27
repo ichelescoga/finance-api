@@ -233,21 +233,41 @@ function uploadFileS3(fileBuffer, fileName, transactionType){
             buffer = fileBuffer
             fileData = {
                 Key: filePath,
-                Body: pdfBuffer,
+                Body: buffer,
                 ContentType: "application/pdf",
                 CacheControl: "max-age=172800"
             };
         }
 
-        if (transactionType === 'text' || transactionType === 'xml'){
-            buffer = fileBuffer
+        if (transactionType === 'csv'){
+            buffer = Buffer.from(fileBuffer.replace(/^data:image\/\w+;base64,/, ""), "base64");
             fileData = {
                 Key: filePath,
-                Body: pdfBuffer,
+                Body: buffer,
+                ContentType: "text/csv",
+                CacheControl: "max-age=172800"
+            };
+        }
+
+        if (transactionType === 'xml'){
+            buffer = Buffer.from(fileBuffer.replace(/^data:image\/\w+;base64,/, ""), "base64");
+            fileData = {
+                Key: filePath,
+                Body: buffer,
                 ContentType: "text/xml",
                 CacheControl: "max-age=172800"
             };
-        }                  
+        }
+
+        if (transactionType === 'text'){
+            buffer = Buffer.from(fileBuffer.replace(/^data:image\/\w+;base64,/, ""), "base64");
+            fileData = {
+                Key: filePath,
+                Body: buffer,
+                ContentType: "text/plain",
+                CacheControl: "max-age=172800"
+            };
+        }
 
         return new Promise((resolve) => {
             s3Bucket.upload(fileData, function (err, data) {
@@ -264,7 +284,7 @@ function uploadFileS3(fileBuffer, fileName, transactionType){
         });
 
     } catch (error) {
-        
+        console.error(error)
     }
     
 
