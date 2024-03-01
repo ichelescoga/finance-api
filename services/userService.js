@@ -115,12 +115,19 @@ let userRepository = function () {
   };
 
 
-    let getUserByEmail = async (params) => {
-      return await  db.models.User.findAll({
-          where: {
-              Correo: params.username
-          },
-      });
+  let getUserByEmail = async (params) => {
+    return await  db.models.User.findAll({
+      where: {
+          Correo: params.username
+      },
+      include: [
+        {
+          model: db.models.USER_PROFILE,
+          as: "USER_PROFILEs",
+          required: true
+        },
+      ],
+    });
   }
   let getUserByEmailSinPassword = async (params) => {
     return await  db.models.User.findAll({
@@ -128,8 +135,10 @@ let userRepository = function () {
 }
 
 let createUserClientProfile = async (userId) => {
-  db.models.USER_PROFILE.create({
-    Id_rol: 3, //CLIENT_ROLE
+  const CLIENT_ROLE = 3;
+
+  return db.models.USER_PROFILE.create({
+    Id_rol: CLIENT_ROLE,
     Id_user: userId,
     Id_empleado: null
   })
@@ -148,7 +157,9 @@ let createUserForClientIfNeeded = async (clientId) => {
       nombre: `${client["dataValues"].Primer_nombre} ${client["dataValues"]?.Segundo_nombre || ""}`
     };
     const user = await create(params);
-    await createUserClientProfile(user["dataValues"].Id_user)
+    const userProfile = await createUserClientProfile(user["dataValues"].Id_user)
+    const idUserProfile = userProfile['dataValues']["Id_user_profile"]
+    clienteService.updateClientUserProfile(clientId, idUserProfile)
   }
 
   return user.length === 0 ? { email: email, password } : null;

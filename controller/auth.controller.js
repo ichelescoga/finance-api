@@ -66,7 +66,7 @@ exports.signIn = async (req, res, next) => {
 
         const email = resultsUser["dataValues"].Correo;
         const name = resultsUser["dataValues"].Nombre;
-
+        //TODO:  ID USER PROFILE IS NEEDED
         let accessTokenClient = await security.genericToken({
           email,
           name,
@@ -79,7 +79,8 @@ exports.signIn = async (req, res, next) => {
           roleId: idRole,
           email,
           name,
-          needUpdatePassword
+          needUpdatePassword,
+          idUserProfile: usuarioLog["Id_user_profile"]
         })
       }
 

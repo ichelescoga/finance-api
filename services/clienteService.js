@@ -66,6 +66,20 @@ let userRepository = function () {
     return clienteActualizado
   };
 
+
+  let updateClientUserProfile = async (idClient, idUserProfile) => {
+    const client = await db.models.CLIENT.update({
+      Id_userProfile: idUserProfile
+    },
+    {
+      where: {
+        Id_cliente: idClient
+      }
+    }
+    )
+    return client;
+  }
+
   let updateClienteFotoDpi = async (params) => {
     const clienteUpdate = await db.models.CLIENTE.findOne({ where: { Id_cliente: params.id } });
 
@@ -210,7 +224,8 @@ let userRepository = function () {
     tiposCuotas,
     tiposCuotasCuentaCorriente,
     getClientById,
-    pagosReferencia
+    pagosReferencia,
+    updateClientUserProfile
   };
 };
 
