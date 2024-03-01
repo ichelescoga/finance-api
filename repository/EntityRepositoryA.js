@@ -1,6 +1,6 @@
-const db = require("../src/modelsF");
+const db = require("../src/modelsA");
 const sequelize = require('../components/conn_sqlz');
-let EntityRepository = function () {
+let EntityRepositoryA = function () {
     let getComponentByEntity = async (entity) => {
         
         return await  db.models.COMPONENTE_ENTIDAD.findAll({
@@ -280,4 +280,4 @@ return {
     }   
 
 }
-module.exports = EntityRepository();
+module.exports = EntityRepositoryA();

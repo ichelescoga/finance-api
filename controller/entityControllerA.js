@@ -1,9 +1,10 @@
-const EntityRepository = require("../repository/EntityRepository");
+const EntityRepository = require("../repository/EntityRepositoryA");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
 
 exports.getComponentsByEntity = async(req, res, next)=>{
     try {
+        console.log("estamos aqui")
         let entity= req.body.id
         let component = await EntityRepository.getComponentByEntity(entity)
         let componentes = []
