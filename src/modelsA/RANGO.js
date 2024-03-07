@@ -1,41 +1,33 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('SOLICITUD_CREDITO', {
+  return sequelize.define('RANGO', {
     Id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
+    Nombre: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    Maximo: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    Tiempo_maximo: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    Tiempo_minimo: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    Empleado: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
     Tasa_comision: {
-      type: DataTypes.DOUBLE,
-      allowNull: false
-    },
-    Codigo_empleado: {
-      type: DataTypes.STRING(10),
-      allowNull: false
-    },
-    Monto: {
-      type: DataTypes.DOUBLE,
-      allowNull: false
-    },
-    Fecha: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    Fecha_desembolso: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    Fecha_pago: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    Comision: {
-      type: DataTypes.DOUBLE,
-      allowNull: false
-    },
-    Monto_a_descontar: {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
@@ -83,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'SOLICITUD_CREDITO',
+    tableName: 'RANGO',
     timestamps: false,
     indexes: [
       {

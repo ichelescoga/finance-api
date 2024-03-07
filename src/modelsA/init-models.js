@@ -18,6 +18,7 @@ var _GRUPO_MODIFICADOR_ENTIDAD = require("./GRUPO_MODIFICADOR_ENTIDAD");
 var _ICON = require("./ICON");
 var _MODIFICADOR = require("./MODIFICADOR");
 var _MODIFICADOR_ENTIDAD = require("./MODIFICADOR_ENTIDAD");
+var _RANGO = require("./RANGO");
 var _SOLICITUD_CREDITO = require("./SOLICITUD_CREDITO");
 var _TIPO_CARACTERISTICA = require("./TIPO_CARACTERISTICA");
 var _TIPO_COMPONENTE = require("./TIPO_COMPONENTE");
@@ -46,6 +47,7 @@ function initModels(sequelize) {
   var ICON = _ICON(sequelize, DataTypes);
   var MODIFICADOR = _MODIFICADOR(sequelize, DataTypes);
   var MODIFICADOR_ENTIDAD = _MODIFICADOR_ENTIDAD(sequelize, DataTypes);
+  var RANGO = _RANGO(sequelize, DataTypes);
   var SOLICITUD_CREDITO = _SOLICITUD_CREDITO(sequelize, DataTypes);
   var TIPO_CARACTERISTICA = _TIPO_CARACTERISTICA(sequelize, DataTypes);
   var TIPO_COMPONENTE = _TIPO_COMPONENTE(sequelize, DataTypes);
@@ -80,8 +82,12 @@ function initModels(sequelize) {
   ENTIDAD.hasMany(GRUPO_MODIFICADOR_ENTIDAD, { as: "GRUPO_MODIFICADOR_ENTIDADs", foreignKey: "Id_entidad"});
   MODIFICADOR_ENTIDAD.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
   ENTIDAD.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Id_entidad"});
+  RANGO.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
+  ENTIDAD.hasMany(RANGO, { as: "RANGOs", foreignKey: "Id_entidad"});
   SOLICITUD_CREDITO.belongsTo(ENTIDAD, { as: "Id_entidad_ENTIDAD", foreignKey: "Id_entidad"});
   ENTIDAD.hasMany(SOLICITUD_CREDITO, { as: "SOLICITUD_CREDITOs", foreignKey: "Id_entidad"});
+  RANGO.belongsTo(ESTADO_SOLICITUD, { as: "Estado_ESTADO_SOLICITUD", foreignKey: "Estado"});
+  ESTADO_SOLICITUD.hasMany(RANGO, { as: "RANGOs", foreignKey: "Estado"});
   SOLICITUD_CREDITO.belongsTo(ESTADO_SOLICITUD, { as: "Estado_ESTADO_SOLICITUD", foreignKey: "Estado"});
   ESTADO_SOLICITUD.hasMany(SOLICITUD_CREDITO, { as: "SOLICITUD_CREDITOs", foreignKey: "Estado"});
   GRUPO_MODIFICADOR_ENTIDAD.belongsTo(GRUPO_MODIFICADOR_ENTIDAD, { as: "Padre_GRUPO_MODIFICADOR_ENTIDAD", foreignKey: "Padre"});
@@ -172,6 +178,10 @@ function initModels(sequelize) {
   User.hasMany(MODIFICADOR_ENTIDAD, { as: "MODIFICADOR_ENTIDADs", foreignKey: "Createdby"});
   MODIFICADOR_ENTIDAD.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
   User.hasMany(MODIFICADOR_ENTIDAD, { as: "Updatedby_MODIFICADOR_ENTIDADs", foreignKey: "Updatedby"});
+  RANGO.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
+  User.hasMany(RANGO, { as: "RANGOs", foreignKey: "Createdby"});
+  RANGO.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
+  User.hasMany(RANGO, { as: "Updatedby_RANGOs", foreignKey: "Updatedby"});
   SOLICITUD_CREDITO.belongsTo(User, { as: "Createdby_User", foreignKey: "Createdby"});
   User.hasMany(SOLICITUD_CREDITO, { as: "SOLICITUD_CREDITOs", foreignKey: "Createdby"});
   SOLICITUD_CREDITO.belongsTo(User, { as: "Updatedby_User", foreignKey: "Updatedby"});
@@ -213,6 +223,7 @@ function initModels(sequelize) {
     ICON,
     MODIFICADOR,
     MODIFICADOR_ENTIDAD,
+    RANGO,
     SOLICITUD_CREDITO,
     TIPO_CARACTERISTICA,
     TIPO_COMPONENTE,
