@@ -156,3 +156,65 @@ exports.getRangoById = async (req, res, next) => {
       next(error);
     }
 };
+
+exports.getEmpleadoEntidadById = async (req, res, next) => {
+  try {
+
+        id= req.params.id
+      
+      let cliente_ = await SolicitudRepository.getEmpleadoEntidadById(id)
+      if(cliente_){
+        let cliente_1 = await SolicitudRepository.getClienteDetailsStringById(id,52)
+        let cliente_3= await SolicitudRepository.getClienteDetailsIntById(id,15)
+        let detail = [cliente_,cliente_1, cliente_3];
+        if(detail){
+          res.json(detail);
+        }else{
+          res.status(202).json({
+            success: true,
+            message: "Error al obtener datos double del empleado",
+          });
+        }
+      }else{
+        res.status(202).json({
+          success: true,
+          message: "Error al obtener el empleado",
+        });
+      }
+      
+    } catch (error) {
+      next(error);
+    }
+};
+
+
+exports.getClientebyId = async (req, res, next) => {
+  try {
+
+        id= req.params.id
+      
+      let cliente_ = await SolicitudRepository.getClienteEntidadById(id)
+      if(cliente_){
+        let cliente_1 = await SolicitudRepository.getClienteDetailsDoubleById(id,1)
+        let cliente_3= await SolicitudRepository.getClienteDetailsDoubleById(id,3)
+        let cliente_4 = await SolicitudRepository.getClienteDetailsDoubleById(id,4)
+        let detail = [cliente_,cliente_1, cliente_3, cliente_4];
+        if(detail){
+          res.json(detail);
+        }else{
+          res.status(202).json({
+            success: true,
+            message: "Error al obtener datos double del cliente",
+          });
+        }
+      }else{
+        res.status(202).json({
+          success: true,
+          message: "Error al obtener el cliente",
+        });
+      }
+      
+    } catch (error) {
+      next(error);
+    }
+};

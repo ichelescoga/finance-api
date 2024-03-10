@@ -14,6 +14,8 @@ const solicitudRouter = require('./router/solicitud.router')
 const sequelize = require('./components/conn_sqlz')
 const entityRouterA = require('./router/entityA.router')
 const solicitudRouterA = require('./router/solicituda.router')
+const rangoRouter = require('./router/rango.router')
+
 app.use(cors())
 app.use(bodyParser.json({limit: process.env.FILE_MAX_LIMIT}))
 app.use(bodyParser.urlencoded({
@@ -32,6 +34,7 @@ app.use('/lists/v1', listsRouter)
 app.use('/solicitud/v1', solicitudRouter)
 app.use('/entitya/v1',entityRouterA)
 app.use('/solicituda/v1', solicitudRouterA)
+app.use('/rango/v1', rangoRouter)
 app.use(function(req,res,next){
 
     

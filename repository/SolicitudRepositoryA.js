@@ -80,6 +80,75 @@ let SolicitudRepositoryA = function () {
             },
         });
     }
+    let getClienteEntidadById= async (id) => {
+        return await  db.models.ENTIDAD.findOne({
+            attributes: [
+                "Id",
+                "Nombre",
+                "Descripcion"
+            ],
+            where: {
+                Id: id,
+                Tipo: 8,
+                Estado: 1
+            },
+        });
+    }
+
+    let getClienteDetailsDoubleById= async (id_entidad,id_caracteristica) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_DOUBLE.findOne({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_DOUBLE as c WHERE c.Id = ENTIDAD_CARACTERISTICA_DOUBLE.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: id_entidad,
+                Id_caracteristica: id_caracteristica,
+                Estado: 1
+            },
+        });
+    }
+    
+    let getEmpleadoEntidadById= async (id) => {
+        return await  db.models.ENTIDAD.findOne({
+            attributes: [
+                "Id",
+                "Nombre"
+            ],
+            where: {
+                Id: id,
+                Tipo: 20,
+                Estado: 1
+            },
+        });
+    }
+
+    let getClienteDetailsStringById= async (id_entidad,id_caracteristica) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_STRING.findOne({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_STRING as c WHERE c.Id = ENTIDAD_CARACTERISTICA_STRING.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: id_entidad,
+                Id_caracteristica: id_caracteristica,
+                Estado: 1
+            },
+        });
+    }
+    let getClienteDetailsIntById= async (id_entidad,id_caracteristica) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_INT.findOne({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_INT as c WHERE c.Id = ENTIDAD_CARACTERISTICA_INT.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: id_entidad,
+                Id_caracteristica: id_caracteristica,
+                Estado: 1
+            },
+        });
+    }
     return {
         getSolicitudesByEstado,
         addSolicitudCredito,
@@ -87,7 +156,12 @@ let SolicitudRepositoryA = function () {
         updateSolicitudStatus,
         addRango,
         getRangosByEntity,
-        getRangoById
+        getRangoById,
+        getClienteEntidadById,
+        getClienteDetailsDoubleById,
+        getEmpleadoEntidadById,
+        getClienteDetailsStringById,
+        getClienteDetailsIntById
     }
 }
 module.exports = SolicitudRepositoryA();

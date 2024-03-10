@@ -11,4 +11,6 @@ router.post("/updateEstadoSolicitud", solicitudController.updateEstadoSolicitud)
 router.post("/addRango", solicitudController.addRango)
 router.get("/getRangosByEntity/:id", solicitudController.getRangosByEntity)
 router.get("/getRangoById/:id", solicitudController.getRangoById)
+router.get("/getClienteById/:id", solicitudController.getClientebyId)
+router.get("/getEmpleadoById/:id", solicitudController.getEmpleadoEntidadById)
 module.exports = router

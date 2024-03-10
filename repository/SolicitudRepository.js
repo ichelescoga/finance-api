@@ -86,6 +86,9 @@ let SolicitudRepository = function () {
             },
         });
     }
+
+
+
     return {
         getSolicitudesByEstado,
         addSolicitudCredito,
