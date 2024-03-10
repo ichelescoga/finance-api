@@ -58,12 +58,41 @@ let SolicitudRepository = function () {
         })
     }
   
+    let getClienteEntidadById= async (id) => {
+        return await  db.models.ENTIDAD.findOne({
+            attributes: [
+                "Id",
+                "Nombre",
+                "Descripcion"
+            ],
+            where: {
+                Id: id,
+                Tipo: 8,
+                Estado: 1
+            },
+        });
+    }
 
+    let getClienteDetailsDoubleById= async (id_entidad,id_caracteristica) => {
+        return await  db.models.ENTIDAD_CARACTERISTICA_DOUBLE.findOne({
+            attributes: [
+                [sequelize.literal( "(SELECT Nombre FROM CARACTERISTICA_DOUBLE as c WHERE c.Id = ENTIDAD_CARACTERISTICA_DOUBLE.Id_caracteristica )"), 'Caracteristica'],
+                "Valor"
+            ],
+            where: {
+                Id_entidad: id_entidad,
+                Id_caracteristica: id_caracteristica,
+                Estado: 1
+            },
+        });
+    }
     return {
         getSolicitudesByEstado,
         addSolicitudCredito,
         getSolicitudById,
-        updateSolicitudStatus
+        updateSolicitudStatus,
+        getClienteEntidadById,
+        getClienteDetailsDoubleById
     }
 }
 module.exports = SolicitudRepository();

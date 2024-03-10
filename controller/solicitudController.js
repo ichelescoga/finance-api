@@ -2,6 +2,7 @@ const SolicitudRepository = require("../repository/SolicitudRepository");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
 const moment = require('moment'); 
+const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 
 exports.addSolicitud = async(req, res, next)=>{
     try {
@@ -93,6 +94,37 @@ exports.getSolicitudesByEstado = async (req, res, next) => {
                 success: true,
                 message: "Se ha actualizado correctamente el estado de la solicutd",
               });
+        
+      } catch (error) {
+        next(error);
+      }
+  };
+
+  exports.getClientebyId = async (req, res, next) => {
+    try {
+
+          id= req.params.id
+        
+        let cliente_ = await SolicitudRepository.getClienteEntidadById(id)
+        if(cliente_){
+          let cliente_1 = await SolicitudRepository.getClienteDetailsDoubleById(id,1)
+          let cliente_3= await SolicitudRepository.getClienteDetailsDoubleById(id,3)
+          let cliente_4 = await SolicitudRepository.getClienteDetailsDoubleById(id,4)
+          let detail = [cliente_,cliente_1, cliente_3, cliente_4];
+          if(detail){
+            res.json(detail);
+          }else{
+            res.status(202).json({
+              success: true,
+              message: "Error al obtener datos double del cliente",
+            });
+          }
+        }else{
+          res.status(202).json({
+            success: true,
+            message: "Error al obtener el cliente",
+          });
+        }
         
       } catch (error) {
         next(error);
