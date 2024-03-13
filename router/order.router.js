@@ -325,12 +325,16 @@ router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios
 
 
 //cuotasUsuario
+// ! ADMIN GET ALL ACCOUNTS 
 router.get("/usuariosCuota",   tipoCuota.usuariosCuota),
 //cuentasCorrientesUsuario
+// ! GET OF CLIENT UNITS BY UserProfileId 
 router.get("/cuentasCorrientesUnidad/:id",   tipoCuota.tipoCuotas),
 //tipoCuotas
+// ! POST  PAYMENTS BY cuentaCorrientById and paymentTypeId
 router.post("/tiposCuotasCuentasCorriente",   tipoCuota.tipoCuotasCuentaCorriente),
 //Pagos referencia
+// ! GET ALL PAYMENTS FOR ONE PAYMENT
 router.get("/pagoReferencia/:id",   tipoCuota.pagosReferencia),
 
 

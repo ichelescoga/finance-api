@@ -54,7 +54,6 @@ exports.createCuotas = async (req, res, next) => {
         // }
 
         const user = await userService.createUserForClientIfNeeded(cuentaCorriente[0]["Id_cliente"])
-        console.log("CREATE CLIENT");
 
         res.status(200).json({
           succes: true,

@@ -51,7 +51,7 @@ exports.getStatusOfBookDownPaymentTotalPayment = async (req, res, next) => {
                         doPayments.book = true;
                     } else if (e["dataValues"]["Id_tipo_pago"] === DOWN_PAYMENT) {
                         doPayments.downPayment = true;
-                    } else if (e["dataValues"]["Id_tipo_pago"] === PAYMENT) { 
+                    } else if (e["dataValues"]["Id_tipo_pago"] === PAYMENT) {
                         doPayments.totalPayment = true;
                     }
                     return e["dataValues"]
@@ -243,12 +243,28 @@ exports.usuariosCuota = async (req, res, next) => {
 exports.tipoCuotas = async (req, res, next) => {
     try {
         let results = await clientesService.tiposCuotas(req.params.id);
+        // console.log("results", results["dataValues"]["COTIZACIONs"]);
+        let unitsList = [];
 
+        for (let i = 0; i < results["dataValues"]["COTIZACIONs"].length; i++) {
+            const detail = results["dataValues"]["COTIZACIONs"][i]["UNIDAD_COTIZACIONs"];
+
+            for (let x = 0; x < detail.length; x++) {
+                const quote = detail[x]["dataValues"]["Id_unidad_UNIDAD"]["dataValues"];
+                console.log(quote);
+                unitsList.push({ 
+                    unitId: quote["Id_unidad"],
+                    projectId: quote["Id_proyecto"],
+                    name: quote["Nombre_unidad"],
+                    sellPrice: quote["Precio_Venta"]
+                })
+            }
+        }
 
         if (results) {
             res.status(200).json({
                 success: true,
-                data: results,
+                data: unitsList,
             });
         } else {
             res.status(404).json({

@@ -1286,6 +1286,7 @@ exports.findOnePrecioVentaPdf = async (req, res, next) => {
     // succes: false,
     // message: results,
     // });
+
     
     let pdfBuffer = await htmlToPdfBuffer(htmlContent);
     let imageUrl = "";
