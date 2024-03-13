@@ -77,7 +77,7 @@ exports.getQuotesRequestClients = async (req, res, next) => {
 
         let results = await SolicitudRepository.getSolicitudesByEstado(status, clientInfo["id"])
         if (results) {
-          quotes.push(results)
+          quotes.push(results.map((e) => ({...e['dataValues'], ...clientInfo})))
         }
       }
 
