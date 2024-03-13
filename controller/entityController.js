@@ -189,54 +189,60 @@ exports.addEntity = async(req, res, next)=>{
 }
 
 
+exports.getEntitiesById = async (tipo_entidad) => {
+    let entidades = await EntityRepository.getEntities(tipo_entidad)
+    let component = await EntityRepository.getComponentByEntityNotNull(tipo_entidad)
+    let results = [];
+
+    for (let y =0; y < entidades.length; y++){
+        let param= {}
+        param["id"] = entidades[y].dataValues.Id
+        param["nombre"] = entidades[y].dataValues.Nombre
+        param["descripcion"] = entidades[y].dataValues.Descripcion
+        for(let i =0; i < component.length; i++){
+            let valor
+            let s 
+            switch(component[i].dataValues.Id_tipo_caracteristica){
+                case 1:
+                    s = await EntityRepository.getCaracteristicaString(component[i].dataValues.Id_caracteristica,entidades[y].Id)
+                    if(s) valor = s.dataValues.Valor
+                    break;
+                case 2: 
+                    s = await EntityRepository.getCaracteristicaInt(component[i].dataValues.Id_caracteristica,entidades[y].Id)
+                    if(s) valor = s.dataValues.Valor
+                    break;
+                case 3: 
+                    s = await EntityRepository.getCaracteristicaDate(component[i].dataValues.Id_caracteristica,entidades[y].Id)
+                    if(s) valor = s.dataValues.Valor
+                    break;
+                case 4: 
+                    s = await EntityRepository.getCaracteristicaDouble(component[i].dataValues.Id_caracteristica,entidades[y].Id)
+                    if(s) valor = s.dataValues.Valor
+                    break;
+                case 5: 
+                    s = await EntityRepository.getCaracteristicaBoolean(component[i].dataValues.Id_caracteristica,entidades[y].Id)
+                    if(s) valor = s.dataValues.Valor
+                    break;
+                default:
+                    valor = ''
+            }
+            
+            if(valor!= undefined){
+                param[component[i].dataValues.Id_componente] = valor
+            }
+        }
+        results.push(param)
+    }   
+    return results;
+}
+
 exports.getEntities= async(req, res, next)=>{
     try {
-        let tipo_entidad= req.params.id
-        let entidades = await EntityRepository.getEntities(tipo_entidad)
-        let component = await EntityRepository.getComponentByEntityNotNull(tipo_entidad)
         let results = []
-        for (let y =0; y < entidades.length; y++){
-            let param= {}
-            param["id"] = entidades[y].dataValues.Id
-            param["nombre"] = entidades[y].dataValues.Nombre
-            param["descripcion"] = entidades[y].dataValues.Descripcion
-            for(let i =0; i < component.length; i++){
-                let valor
-                let s 
-                switch(component[i].dataValues.Id_tipo_caracteristica){
-                    case 1:
-                        s = await EntityRepository.getCaracteristicaString(component[i].dataValues.Id_caracteristica,entidades[y].Id)
-                        if(s) valor = s.dataValues.Valor
-                        break;
-                    case 2: 
-                        s = await EntityRepository.getCaracteristicaInt(component[i].dataValues.Id_caracteristica,entidades[y].Id)
-                        if(s) valor = s.dataValues.Valor
-                        break;
-                    case 3: 
-                        s = await EntityRepository.getCaracteristicaDate(component[i].dataValues.Id_caracteristica,entidades[y].Id)
-                        if(s) valor = s.dataValues.Valor
-                        break;
-                    case 4: 
-                        s = await EntityRepository.getCaracteristicaDouble(component[i].dataValues.Id_caracteristica,entidades[y].Id)
-                        if(s) valor = s.dataValues.Valor
-                        break;
-                    case 5: 
-                        s = await EntityRepository.getCaracteristicaBoolean(component[i].dataValues.Id_caracteristica,entidades[y].Id)
-                        if(s) valor = s.dataValues.Valor
-                        break;
-                    default:
-                        valor = ''
-                }
-                
-                if(valor!= undefined){
-                  
-                    param[component[i].dataValues.Id_componente] = valor
-                   
-                }
-            }
-            results.push(param)
-        }
-       
+        let tipo_entidad= req.params.id
+        results = await this.getEntitiesById(tipo_entidad)
+        console.log(results.length);
+
         res.json(results)
     } catch (error) {
         console.log(error);

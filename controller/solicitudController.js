@@ -2,6 +2,7 @@ const SolicitudRepository = require("../repository/SolicitudRepository");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
 const moment = require('moment'); 
+const { getEntitiesById } = require("./entityController");
 
 exports.addSolicitud = async(req, res, next)=>{
     try {
@@ -58,6 +59,32 @@ exports.getSolicitudesByEstado = async (req, res, next) => {
             message: "Unidad no existente",
           });
         }
+      } catch (error) {
+        next(error);
+      }
+  };
+
+exports.getQuotesRequestClients = async (req, res, next) => {
+    try {
+      let quotes = [];
+      const status = req.params.quoteStatus
+      const CLIENTS_ENTITY = 8;
+      const clients = await getEntitiesById(CLIENTS_ENTITY);
+      
+      for(let index = 0; index < clients.length; index++){
+        const clientInfo = clients[index];
+
+        let results = await SolicitudRepository.getSolicitudesByEstado(status, clientInfo["id"])
+        if (results) {
+          quotes.push(results)
+        } 
+      }
+
+      res.status(200).json({
+        success: true,
+        data: quotes.flat()
+      })
+    
       } catch (error) {
         next(error);
       }
