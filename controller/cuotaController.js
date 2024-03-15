@@ -243,12 +243,11 @@ exports.usuariosCuota = async (req, res, next) => {
 exports.tipoCuotas = async (req, res, next) => {
     try {
         let results = await clientesService.tiposCuotas(req.params.id);
-        // console.log("results", results["dataValues"]["COTIZACIONs"]);
         let unitsList = [];
 
         for (let i = 0; i < results["dataValues"]["COTIZACIONs"].length; i++) {
             const detail = results["dataValues"]["COTIZACIONs"][i]["UNIDAD_COTIZACIONs"];
-
+            
             for (let x = 0; x < detail.length; x++) {
                 const quote = detail[x]["dataValues"]["Id_unidad_UNIDAD"]["dataValues"];
                 console.log(quote);
