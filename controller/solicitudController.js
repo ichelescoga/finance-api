@@ -1,12 +1,13 @@
 const SolicitudRepository = require("../repository/SolicitudRepository");
 const security = require("../src/utils/security");
 const createError = require("http-errors");
-const moment = require('moment'); 
+const moment = require('moment');
+const { convertArrayInObject } = require("../src/utils/convertStringInObject");
 const { getEntitiesById } = require("./entityController");
 
 exports.addSolicitud = async(req, res, next)=>{
     try {
-        
+
         let params = {
             tasa_interes: parseFloat(req.body.tasa_interes),
             tasa_comision: parseFloat(req.body.tasa_comision),
@@ -18,7 +19,7 @@ exports.addSolicitud = async(req, res, next)=>{
             monto_solicitado: req.body.monto_solicitado,
             fecha_factura: moment(req.body.fecha_factura, 'DD/MM/YY').format('YYYY-MM-DD HH:mm:ss'),
             fecha_desembolso: moment(req.body.fecha_desembolso, 'DD/MM/YY').format('YYYY-MM-DD HH:mm:ss'),
-            fecha_pago: moment(req.body.fecha_pago, 'DD/MM/YY').format('YYYY-MM-DD HH:mm:ss'), 
+            fecha_pago: moment(req.body.fecha_pago, 'DD/MM/YY').format('YYYY-MM-DD HH:mm:ss'),
             dias_credito: req.body.dias_credito,
             comision: req.body.comision,
             intereses: req.body.intereses,
@@ -70,21 +71,19 @@ exports.getQuotesRequestClients = async (req, res, next) => {
       const status = req.params.quoteStatus
       const CLIENTS_ENTITY = 8;
       const clients = await getEntitiesById(CLIENTS_ENTITY);
-      
       for(let index = 0; index < clients.length; index++){
         const clientInfo = clients[index];
 
         let results = await SolicitudRepository.getSolicitudesByEstado(status, clientInfo["id"])
         if (results) {
-          quotes.push(results)
-        } 
+          quotes.push(results.map((e) => ({...e['dataValues'], ...clientInfo})))
+        }
       }
 
       res.status(200).json({
         success: true,
         data: quotes.flat()
       })
-    
       } catch (error) {
         next(error);
       }
@@ -115,12 +114,43 @@ exports.getQuotesRequestClients = async (req, res, next) => {
             status: req.body.estado
         }
         await SolicitudRepository.updateSolicitudStatus(params)
-      
+
             res.status(202).json({
                 success: true,
                 message: "Se ha actualizado correctamente el estado de la solicutd",
               });
-        
+
+      } catch (error) {
+        next(error);
+      }
+  };
+
+  exports.getClientebyId = async (req, res, next) => {
+    try {
+
+          id= req.params.id
+
+        let cliente_ = await SolicitudRepository.getClienteEntidadById(id)
+        if(cliente_){
+          let cliente_1 = await SolicitudRepository.getClienteDetailsDoubleById(id,1)
+          let cliente_3= await SolicitudRepository.getClienteDetailsDoubleById(id,3)
+          let cliente_4 = await SolicitudRepository.getClienteDetailsDoubleById(id,4)
+          let detail = [cliente_,cliente_1, cliente_3, cliente_4];
+          if(detail){
+            res.json(detail);
+          }else{
+            res.status(202).json({
+              success: true,
+              message: "Error al obtener datos double del cliente",
+            });
+          }
+        }else{
+          res.status(202).json({
+            success: true,
+            message: "Error al obtener el cliente",
+          });
+        }
+
       } catch (error) {
         next(error);
       }

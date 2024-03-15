@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const auth = require("./../services/auth-middleware")
-const solicitudController = require('../controller/solicitudController')
+const auth = require("../services/auth-middleware")
+const solicitudController = require('../controller/solicitudControllerA')
 
 
 router.post("/addSolicitud", solicitudController.addSolicitud)
 router.get("/getSolicitudesByEstado/:id/:entidad", solicitudController.getSolicitudesByEstado)
-
-router.get("/getSolicitudesByEstado/:quoteStatus", solicitudController.getQuotesRequestClients)
-
 router.get("/getSolicitudById/:id", solicitudController.getSolicitudById)
 router.post("/updateEstadoSolicitud", solicitudController.updateEstadoSolicitud)
+router.post("/addRango", solicitudController.addRango)
+router.get("/getRangosByEntity/:id", solicitudController.getRangosByEntity)
+router.get("/getRangoById/:id", solicitudController.getRangoById)
 router.get("/getClienteById/:id", solicitudController.getClientebyId)
+router.get("/getEmpleadoById/:id", solicitudController.getEmpleadoEntidadById)
 module.exports = router

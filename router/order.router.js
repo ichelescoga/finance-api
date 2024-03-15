@@ -289,6 +289,8 @@ router.post("/CuotasReferencia/:id", auth.verifyToken,  tipoCuota.cuotasReferenc
 router.get("/establecimientos",   establecimientos.listEstablecimiento),
 //Forma de Pago
 router.get("/formasPago",    establecimientos.listFormasPago),
+//cuentaCorrienteCotizacion
+router.get("/cuentasCorriente/:id", auth.verifyToken, tipoCuota.cuentasCorrienteCotizacion),
 
 
 // Create boletaPago

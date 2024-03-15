@@ -215,6 +215,21 @@ let userRepository = function () {
     return cuotas;
   };
 
+
+  let findCtasCorrientesCotizacion = async (params) => {
+    const cotizacion = await db.models.COTIZACION.findAll({
+      where: { Id_cotizacion: params },
+      include: [
+          {
+          model: db.models.CUENTA_CORRIENTE,
+          as: "CUENTA_CORRIENTEs",
+          required: true,
+        },
+      ],
+    });
+    return cotizacion;
+  };
+
   return {
     updateClienteFotoDpi,
     updateCliente,
@@ -225,7 +240,8 @@ let userRepository = function () {
     tiposCuotasCuentaCorriente,
     getClientById,
     pagosReferencia,
-    updateClientUserProfile
+    updateClientUserProfile,
+    findCtasCorrientesCotizacion
   };
 };
 
