@@ -1,3 +1,4 @@
+const { sequelize } = require("../components/conn_finance_mssql");
 const db = require("../src/models");
 const { Op } = require("sequelize");
 
@@ -71,11 +72,11 @@ let userRepository = function () {
     const client = await db.models.CLIENT.update({
       Id_userProfile: idUserProfile
     },
-    {
-      where: {
-        Id_cliente: idClient
+      {
+        where: {
+          Id_cliente: idClient
+        }
       }
-    }
     )
     return client;
   }
@@ -152,18 +153,29 @@ let userRepository = function () {
               model: db.models.CUENTA_CORRIENTE,
               as: "CUENTA_CORRIENTEs",
               required: true,
-              // include: [
-              //   {
-              //     model: db.models.PAGO,
-              //     as: "PAGOs",
-              //     where: {
-              //       [Op.and]: [
-              //         { Id_tipo_pago: params.idTipoPago },
-              //         { Id_status_transaccion: 1 },
-              //       ]
-              //     },
-              //   }
-              // ],
+              include: [
+                {
+                  model: db.models.PAGO,
+                  as: "PAGOs",
+                  include: [
+                    {
+                      model: db.models.TIPO_PAGO, 
+                      as: "Id_tipo_pago_TIPO_PAGO",
+                    },
+                    {
+                      model: db.models.STATUS_PAGO,
+                      as: "Id_status_pago_STATUS_PAGO",
+                    },
+                  ],
+                  where: {
+                    [Op.and]: [
+                      { Id_tipo_pago: { [Op.in]: [1, 2, 3] } },
+                      { Id_status_transaccion: 1 },
+                    ]
+                  },
+
+                }
+              ],
             }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
@@ -196,7 +208,7 @@ let userRepository = function () {
           { Id_cuenta_corriente: params.idCuentaCorriente },
           { Id_tipo_pago: params.idTipoCuota },
           { Id_status_transaccion: 1 },
-          { Categoria: "Principal"},
+          { Categoria: "Principal" },
         ]
       }
     });
@@ -208,7 +220,7 @@ let userRepository = function () {
       where: {
         [Op.and]: [
           { Referencia: params },
-          { Categoria: "Secundaria"},
+          { Categoria: "Secundaria" },
         ]
       }
     });
@@ -220,7 +232,7 @@ let userRepository = function () {
     const cotizacion = await db.models.COTIZACION.findAll({
       where: { Id_cotizacion: params },
       include: [
-          {
+        {
           model: db.models.CUENTA_CORRIENTE,
           as: "CUENTA_CORRIENTEs",
           required: true,

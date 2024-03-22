@@ -247,15 +247,30 @@ exports.tipoCuotas = async (req, res, next) => {
 
         for (let i = 0; i < results["dataValues"]["COTIZACIONs"].length; i++) {
             const detail = results["dataValues"]["COTIZACIONs"][i]["UNIDAD_COTIZACIONs"];
+            const paymentsByQuotes = results["dataValues"]["COTIZACIONs"][i]["CUENTA_CORRIENTEs"][0]["PAGOs"];
+
+            const payments = paymentsByQuotes.map(pq => {
+                return {
+                    "paymentId": pq["Id_pago"],
+                    "paymentFlowId": pq["Id_cuenta_corriente"],
+                    "interest": pq["Interes"],
+                    "lastPaymentDate": "Fecha_limite_pago",
+                    "lateAmount": pq["Mora"],
+                    "type": pq["Id_tipo_pago_TIPO_PAGO"]["Name_pago"],
+                    "status": pq["Id_status_pago_STATUS_PAGO"]["Name_status"],
+                    "amount": pq["Monto"],
+                    "reference": pq["Referencia"]
+                }
+            })
             
             for (let x = 0; x < detail.length; x++) {
                 const quote = detail[x]["dataValues"]["Id_unidad_UNIDAD"]["dataValues"];
-                console.log(quote);
                 unitsList.push({ 
                     unitId: quote["Id_unidad"],
                     projectId: quote["Id_proyecto"],
                     name: quote["Nombre_unidad"],
-                    sellPrice: quote["Precio_Venta"]
+                    sellPrice: quote["Precio_Venta"],
+                    payments
                 })
             }
         }
