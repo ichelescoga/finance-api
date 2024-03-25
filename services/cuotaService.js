@@ -1,5 +1,6 @@
 const db = require("../src/models");
 const { Op } = require("sequelize");
+const { feeStatus, FEE_STATUS_NAMES } = require("../src/shared/finance-app/contants/payment_contant");
 
 
 let userRepository = function () {
@@ -76,9 +77,38 @@ let userRepository = function () {
             Id_forma_pago: params.idFormaPago,
             Id_status_pago: params.idStatusPago,
             Id_establecimiento: params.idEstablecimiento,
+            Id_cotizacion: params.idCotizacion,
+            Id_pago: params.idPago
         });
+        const verificationStatus = FEE_STATUS_NAMES.VERIFICATION
+        await updatePaymentStatusById(params.id_pago, verificationStatus)
         return newBoletaPago;
     };
+
+    let updatePaymentStatusById = async (paymentId, status) => {
+        await db.models.PAGO.update({ Id_status_pago: status }, {
+            where: { Id_pago: paymentId }
+        })
+    }
+
+    let updatePaymentVoucher = async (voucherId, status) => {
+        await db.models.BOLETA_PAGO.update({ Id_status_pago: status }, {
+            where: { Id_boleta_pago: voucherId }
+        })
+    }
+
+    let updateAdminPaymentResolution = async (paymentId, status) => {
+        const paymentData = await db.models.PAGO.findOne({ where: { Id_pago: paymentId } })
+        console.log(paymentData["dataValues"])
+        const voucherId = paymentData["dataValues"]["Id_boleta_pago"];
+        if (voucherId == null) throw new Error("Voucher id comes empty");
+
+        const paymentResult = await updatePaymentStatusById(paymentId, status)
+        const voucherResult = await updatePaymentVoucher(voucherId, status)
+
+        console.log("paymentResult", paymentResult)
+        console.log("voucherResult", voucherResult)
+    }
 
     let getPaymentsByCurrentAccount = async (currentAccId) => {
         return db.models.PAGO.findAll({
@@ -92,7 +122,8 @@ let userRepository = function () {
         cuotasPendientes,
         cuotasReferencia,
         createBoletaPago,
-        getPaymentsByCurrentAccount
+        getPaymentsByCurrentAccount,
+        updateAdminPaymentResolution
     };
 };
 

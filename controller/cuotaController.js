@@ -1,6 +1,7 @@
 const cuotasService = require("../services/cuotaService");
 const currentAccount = require("../services/pagoCuotasService");
 const clientesService = require("../services/clienteService");
+const { feeStatus, FEE_STATUS_NAMES } = require("../src/shared/finance-app/contants/payment_contant");
 
 exports.listcuotasServices = async (req, res, next) => {
     try {
@@ -167,9 +168,10 @@ exports.createBoletaPagos = async (req, res, next) => {
             idFormaPago: req.body.idFormaPago,
             idStatusPago: req.body.idStatusPago,
             idEstablecimiento: req.body.idEstablecimiento,
+            idCotizacion: req.body.idCotizacion,
+            idPago: req.body.idPago
         }
         let results = await cuotasService.createBoletaPago(paramsPagos);
-
 
         res.status(200).json({
             succes: true,
@@ -181,6 +183,35 @@ exports.createBoletaPagos = async (req, res, next) => {
     }
 };
 
+exports.acceptPayment = async (req, res, next) => {
+    try {
+        const paymentId = req.body.paymentId;
+        const acceptedPayment = FEE_STATUS_NAMES.PAYED
+        
+        cuotasService.updateAdminPaymentResolution(paymentId, acceptedPayment)
+
+        res.status(200).json({
+            success: true,
+            message: "Pago actualizado con éxito",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.rejectPayment = async (req, res, next) => {
+    try {
+        const paymentId = req.body.paymentId;
+        const rejectedPayment = FEE_STATUS_NAMES.REJECTED
+        cuotasService.updateAdminPaymentResolution(paymentId, rejectedPayment)
+        res.status(200).json({
+            success: true,
+            message: "Pago actualizado con éxito"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 
@@ -213,23 +244,22 @@ exports.createBoletaPagos = async (req, res, next) => {
 // };
 
 
-
-
 exports.usuariosCuota = async (req, res, next) => {
     try {
-        let results = await clientesService.usuariosCuentaCorriente();
-
-        const longitud = results.length;
+        let statusPaymentId = req.params.paymentStatusId;
+        let clientWithCurrentAccountBalance = await clientesService.usuariosCuentaCorriente(statusPaymentId);
+        const longitud = clientWithCurrentAccountBalance.length;
 
         if (longitud >= 1) {
             res.status(200).json({
                 success: true,
-                data: results,
+                data: clientWithCurrentAccountBalance,
             });
         } else {
+            
             res.status(404).json({
                 success: true,
-                message: "No hay cuentas corrientes para el usuario",
+                message: `No hay cuentas corrientes en estado ${feeStatus[statusPaymentId]} para el usuario `,
             });
         }
     } catch (error) {
@@ -245,8 +275,11 @@ exports.tipoCuotas = async (req, res, next) => {
         let results = await clientesService.tiposCuotas(req.params.id);
         let unitsList = [];
 
+        console.log(results)
+
         for (let i = 0; i < results["dataValues"]["COTIZACIONs"].length; i++) {
             const detail = results["dataValues"]["COTIZACIONs"][i]["UNIDAD_COTIZACIONs"];
+            
             const paymentsByQuotes = results["dataValues"]["COTIZACIONs"][i]["CUENTA_CORRIENTEs"][0]["PAGOs"];
 
             const payments = paymentsByQuotes.map(pq => {
@@ -265,7 +298,9 @@ exports.tipoCuotas = async (req, res, next) => {
             
             for (let x = 0; x < detail.length; x++) {
                 const quote = detail[x]["dataValues"]["Id_unidad_UNIDAD"]["dataValues"];
+                const quoteId = detail[x]["dataValues"]["Id_cotizacion"];
                 unitsList.push({ 
+                    quoteId,
                     unitId: quote["Id_unidad"],
                     projectId: quote["Id_proyecto"],
                     name: quote["Nombre_unidad"],
@@ -343,7 +378,26 @@ exports.pagosReferencia = async (req, res, next) => {
     }
 };
 
+exports.getVoucherByPaymentId = async (req, res, next) => { 
+    try {
+        const paymentId = req.params.paymentId
+        const result = await clientesService.getVoucherByPaymentId(paymentId);
+        if(!result) {
+            return res.status(404).json({
+                success: false,
+                message: "Pago no encontrado"
+            })
+        }
 
+        res.status(200).json({
+            success: true,
+            data: result
+        })
+
+    } catch (error) {
+        next(error)
+    }
+} 
 
 exports.cuentasCorrienteCotizacion = async (req, res, next) => {
     try {

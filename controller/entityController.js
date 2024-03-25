@@ -4,7 +4,7 @@ const createError = require("http-errors");
 
 exports.getComponentsByEntity = async(req, res, next)=>{
     try {
-        let entity= req.body.id
+        let entity= req.params.id
         let component = await EntityRepository.getComponentByEntity(entity)
         let componentes = []
         for(let i =0; i < component.length; i++){

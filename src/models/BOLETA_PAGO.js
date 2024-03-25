@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     Referencia: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(75),
       allowNull: true
     },
     Url: {

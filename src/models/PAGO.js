@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('PAGO', {
     Id_pago: {
       autoIncrement: true,
@@ -15,20 +15,28 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Id_cuenta_corriente'
       }
     },
+    Id_boleta_pago: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'BOLETA_PAGO',
+        key: 'Id_boleta_pago'
+      },
+    },
     Fecha: {
       type: DataTypes.DATE,
       allowNull: true
     },
     Monto: {
-      type: DataTypes.DECIMAL(18,8),
+      type: DataTypes.DECIMAL(18, 8),
       allowNull: true
     },
     Pago_capital: {
-      type: DataTypes.DECIMAL(18,8),
+      type: DataTypes.DECIMAL(18, 8),
       allowNull: true
     },
     Saldo: {
-      type: DataTypes.DECIMAL(18,8),
+      type: DataTypes.DECIMAL(18, 8),
       allowNull: true
     },
     Interes: {
@@ -40,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     Pago: {
-      type: DataTypes.DECIMAL(18,8),
+      type: DataTypes.DECIMAL(18, 8),
       allowNull: true
     },
     Referencia: {
@@ -48,11 +56,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     Categoria: {
-      type: DataTypes.ENUM('Principal','Secundaria'),
+      type: DataTypes.ENUM('Principal', 'Secundaria'),
       allowNull: true
     },
     Mora: {
-      type: DataTypes.DECIMAL(18,8),
+      type: DataTypes.DECIMAL(18, 8),
       allowNull: true
     },
     Id_tipo_pago: {
@@ -107,6 +115,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "Id_cuenta_corriente" },
+        ]
+      },
+      {
+        name: "PAGO_BOLETA_PAGO_FK",
+        using: "BTREE",
+        fields: [
+          { name: "Id_boleta_pago" },
         ]
       },
       {

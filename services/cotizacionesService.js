@@ -180,6 +180,12 @@ const db = require("../src/models");
       return cotizaciones;
     };
 
+    let updateQuoteSellStatus = async (quoteId) => {
+      const UNIT_SELL_STATUS = 3;
+      await db.models.COTIZACION.update({Id_estado: UNIT_SELL_STATUS}, {
+        where: {Id_cotizacion: quoteId}
+      })
+    }
 
     let listCotizAprovadoReservado = async (params) => {
       const Op = db.Sequelize.Op;
@@ -494,6 +500,7 @@ const db = require("../src/models");
     };
 
     return {
+        updateQuoteSellStatus,
         listaCotizaciones,
         creatCotizacion,
         finCotizacionUnidad,

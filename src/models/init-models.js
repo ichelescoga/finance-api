@@ -206,6 +206,8 @@ function initModels(sequelize) {
   COTIZACION.hasMany(UNIDAD_COTIZACION, { as: "UNIDAD_COTIZACIONs", foreignKey: "Id_cotizacion"});
   PAGO.belongsTo(CUENTA_CORRIENTE, { as: "Id_cuenta_corriente_CUENTA_CORRIENTE", foreignKey: "Id_cuenta_corriente"});
   CUENTA_CORRIENTE.hasMany(PAGO, { as: "PAGOs", foreignKey: "Id_cuenta_corriente"});
+  PAGO.belongsTo(BOLETA_PAGO, { foreignKey: 'Id_boleta_pago', as: "Id_boleta_pago_BOLETA_PAGO"});
+
   EMPRESA.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});
   DEPARTAMENTO.hasMany(EMPRESA, { as: "EMPRESAs", foreignKey: "Id_departamento"});
   MUNICIPIO.belongsTo(DEPARTAMENTO, { as: "Id_departamento_DEPARTAMENTO", foreignKey: "Id_departamento"});

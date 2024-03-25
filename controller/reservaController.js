@@ -22,14 +22,14 @@ exports.valorTotalReserva = async (req, res, next) => {
           data: valorTotalReserva,
         });
       } else {
-        res.status(202).json({
+        res.status(200).json({
           success: true,
           message: "Puede reservar sin ningun costo",
-          valor: 0
+          data: 0
         });
       }
     } else {
-      res.status(202).json({
+      res.status(500).json({
         success: true,
         message: "Problemas con la cotizacion",
       });

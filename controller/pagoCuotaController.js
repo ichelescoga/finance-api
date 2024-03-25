@@ -3,6 +3,7 @@ const moment = require('moment')
 const accountService = require("../services/accountService");
 const userService = require("../services/userService");
 const clienteService = require("../services/clienteService");
+const { updateQuoteSellStatus } = require("../services/cotizacionesService");
 
 
 exports.createCuotas = async (req, res, next) => {
@@ -12,14 +13,15 @@ exports.createCuotas = async (req, res, next) => {
 
     let cotizacion = await cuotaService.findOneCotizacion(req.params.id);
     let cuentaCorriente = await cuotaService.findCuentaCorriente(req.params.id);
-
+    // console.log("cuentaCorriente",cuentaCorriente[0]["dataValues"]["Id_cliente"]);
+    const user = await userService.createUserForClientIfNeeded(cuentaCorriente[0]["dataValues"]["Id_cliente"])
 
     if (cuentaCorriente.length > 0) {
       let pagoEnganche = await cuotaService.findOnePagoEnganche(cuentaCorriente[0].CUENTA_CORRIENTEs[0].Id_cuenta_corriente);
 
       if (pagoEnganche) {
 
-        let pagoEngancheValue =  cotizacion.Venta_descuento -  Number(pagoEnganche.Monto)
+        let pagoEngancheValue = cotizacion.Venta_descuento - Number(pagoEnganche.Monto)
         let paramsCuotasCalculate = {
           annualInterest: req.body.interes,
           annualPayments: cotizacion.Meses_plazo,
@@ -69,7 +71,7 @@ exports.createCuotas = async (req, res, next) => {
           precioContado: false,
         }
 
-        
+
         let calculatePaymentList = accountService.pmtCalculateWithInterestMeses(paramsCuotasCalculate);
 
         for (const elemento of calculatePaymentList) {
@@ -100,7 +102,7 @@ exports.createCuotas = async (req, res, next) => {
 
         }
 
-        const user = await userService.createUserForClientIfNeeded(cuentaCorriente[0]["Id_cliente"])
+        updateQuoteSellStatus(cotizacion.Id_cotizacion)
 
         res.status(200).json({
           succes: true,
@@ -119,6 +121,8 @@ exports.createCuotas = async (req, res, next) => {
 
 
   } catch (error) {
+    console.log("error", error)
+
     res.status(406).json({
       succes: false,
       message: "Problemas al crear Cuotas, intentelo de nuevo",

@@ -1,6 +1,7 @@
 const { sequelize } = require("../components/conn_finance_mssql");
 const db = require("../src/models");
 const { Op } = require("sequelize");
+const { bankById, paymentTypeByID } = require("./establecimientoService");
 
 let userRepository = function () {
 
@@ -69,8 +70,8 @@ let userRepository = function () {
 
 
   let updateClientUserProfile = async (idClient, idUserProfile) => {
-    const client = await db.models.CLIENT.update({
-      Id_userProfile: idUserProfile
+    const client = await db.models.CLIENTE.update({
+      Id_user_profile: idUserProfile
     },
       {
         where: {
@@ -103,7 +104,55 @@ let userRepository = function () {
   };
 
 
-  let usuariosCuentaCorriente = async () => {
+  function formatPaymentFee(data) {
+    const results = [];
+    for (const item of data) {
+      const data = {
+        clientId: item.Id_cliente,
+        fullName: item.Primer_nombre,
+        phone: item.Telefono
+      };
+
+      if (item.COTIZACIONs && item.COTIZACIONs.length > 0) {
+        const quote = item.COTIZACIONs[0]; //TODO: Suponiendo que solo hay una cotización por cliente
+
+        // Agregar datos de la cotización
+        data.quoteId = quote.Id_cotizacion;
+        data.adviserId = quote.Id_detalle_asesor;
+        data.quoteStateId = quote.Id_estado;
+        data.sellPrice = quote.Venta_descuento;
+
+        if (quote.CUENTA_CORRIENTEs && quote.CUENTA_CORRIENTEs.length > 0) {
+          const cuentaCorriente = quote.CUENTA_CORRIENTEs[0]; // Suponiendo que solo hay una cuenta corriente por cotización
+
+          data.currentAccountBalanceId = cuentaCorriente.Id_cuenta_corriente;
+          if (cuentaCorriente.PAGOs && cuentaCorriente.PAGOs.length > 0) {
+            const payment = cuentaCorriente.PAGOs[0]; //TODO: MAYBE NEED ADD FOR EACH TO BINDING MORE PAYMENTS
+
+            data.paymentId = payment.Id_pago;
+            data.amount = payment.Monto;
+            data.reference = payment.Referencia;
+            data.category = payment.Categoria;
+
+            if (payment.Id_tipo_pago_TIPO_PAGO) {
+              data.paymentTypeId = payment.Id_tipo_pago_TIPO_PAGO.dataValues.Id_tipo_pago;
+              data.paymentType = payment.Id_tipo_pago_TIPO_PAGO.dataValues.Name_pago;
+            }
+            if (payment.Id_status_pago_STATUS_PAGO) {
+              data.paymentStatusId = payment.Id_status_pago_STATUS_PAGO.dataValues.Id_status_pago;
+              data.paymentStatus = payment.Id_status_pago_STATUS_PAGO.dataValues.Name_status;
+            }
+          }
+        }
+      }
+      results.push(data);
+    }
+    return results;
+  }
+
+
+
+  let usuariosCuentaCorriente = async (paymentStatusId) => {
     const clientes = await db.models.CLIENTE.findAll({
       include: [
         {
@@ -119,6 +168,34 @@ let userRepository = function () {
               model: db.models.CUENTA_CORRIENTE,
               as: "CUENTA_CORRIENTEs",
               required: true,
+              include: [
+                {
+                  model: db.models.PAGO,
+                  as: "PAGOs",
+                  include: [
+                    {
+                      model: db.models.BOLETA_PAGO,
+                      as: "Id_boleta_pago_BOLETA_PAGO"
+                    },
+                    {
+                      model: db.models.TIPO_PAGO,
+                      as: "Id_tipo_pago_TIPO_PAGO",
+                    },
+                    {
+                      model: db.models.STATUS_PAGO,
+                      as: "Id_status_pago_STATUS_PAGO",
+                    },
+                  ],
+                  where: {
+                    [Op.and]: [
+                      { Id_tipo_pago: { [Op.in]: [1, 2, 3] } },
+                      { Id_status_transaccion: 1 },
+                      { Id_status_pago: paymentStatusId },
+                    ]
+                  },
+
+                }
+              ]
             }, {
               model: db.models.UNIDAD_COTIZACION,
               as: "UNIDAD_COTIZACIONs",
@@ -133,8 +210,73 @@ let userRepository = function () {
         },
       ],
     });
-    return clientes;
+
+    const processData = formatPaymentFee(clientes)
+
+    return processData;
   };
+
+  let formatVoucherByPaymentId = async (data) =>  {
+
+    const result = {
+      paymentId : data["dataValues"]["Id_pago"],
+      currentAccountBalanceId : data["dataValues"]["Id_cuenta_corriente"],
+      voucherId : data["dataValues"]["Id_boleta_pago"],
+      date : data["dataValues"]["Fecha"],
+      amount : data["dataValues"]["Monto"],
+      paymentCapital : data["dataValues"]["Pago_capital"],
+      balance : data["dataValues"]["Saldo"],
+      interest : data["dataValues"]["Interes"],
+      paymentLimitDate : data["dataValues"]["Fecha_limite_pago"],
+      payment : data["dataValues"]["Pago"],
+      category : data["dataValues"]["Categoria"],
+      arrears : data["dataValues"]["Mora"],
+      paymentType: data["dataValues"]["Id_tipo_pago_TIPO_PAGO"]["dataValues"]["Name_pago"],
+      statusPayment: data["dataValues"]["Id_status_pago_STATUS_PAGO"]["dataValues"]["Name_status"],
+      reference : data["dataValues"]["Id_boleta_pago_BOLETA_PAGO"]["dataValues"]["Referencia"],
+      voucherUrl : data["dataValues"]["Id_boleta_pago_BOLETA_PAGO"]["dataValues"]["Url"],
+    }
+
+    const paymentTypeId = data?.dataValues?.Id_boleta_pago_BOLETA_PAGO?.dataValues?.Id_forma_pago ?? null;
+    const bankId = data?.dataValues?.Id_boleta_pago_BOLETA_PAGO?.dataValues?.Id_establecimiento ?? null;
+
+    if(paymentTypeId == null|| bankId == null ){
+      return {}
+    }
+    const bank = await bankById(bankId);
+    const paymentType = await paymentTypeByID(paymentTypeId);
+    result.paymentType = paymentType.Nombre;
+    result.bank = bank.Nombre;
+
+    return result;
+  }
+
+  let getVoucherByPaymentId = async (paymentId) => {
+    try {
+        const payment =await  db.models.PAGO.findOne({
+          where: {Id_pago: paymentId},
+          include: [
+            {
+              model: db.models.BOLETA_PAGO,
+              as: "Id_boleta_pago_BOLETA_PAGO"
+            },
+            {
+              model: db.models.TIPO_PAGO,
+              as: "Id_tipo_pago_TIPO_PAGO",
+            },
+            {
+              model: db.models.STATUS_PAGO,
+              as: "Id_status_pago_STATUS_PAGO",
+            },
+          ]
+        });
+
+        return formatVoucherByPaymentId(payment);
+    } catch (error) {
+        next(error)
+    }
+
+}
 
   let tiposCuotas = async (params) => {
     const clientes = await db.models.CLIENTE.findOne({
@@ -159,7 +301,7 @@ let userRepository = function () {
                   as: "PAGOs",
                   include: [
                     {
-                      model: db.models.TIPO_PAGO, 
+                      model: db.models.TIPO_PAGO,
                       as: "Id_tipo_pago_TIPO_PAGO",
                     },
                     {
@@ -253,6 +395,7 @@ let userRepository = function () {
     getClientById,
     pagosReferencia,
     updateClientUserProfile,
+    getVoucherByPaymentId,
     findCtasCorrientesCotizacion
   };
 };

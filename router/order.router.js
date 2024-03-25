@@ -28,11 +28,6 @@ const aprabacionController = require('../controller/aprobacionPago')
 const interesControllers = require('../controller/interesesControllers')
 const establecimientos = require('../controller/establecientoController')
 
-
-
-
-
-
 const companyController = require('../controller/companyController')
 const proyectController = require('../controller/proyectController')
 const componentController = require('../controller/componentController')
@@ -294,9 +289,11 @@ router.get("/cuentasCorriente/:id", auth.verifyToken, tipoCuota.cuentasCorriente
 
 
 // Create boletaPago
+// TODO: for client
 router.post("/createBoletaPago", auth.verifyToken,  tipoCuota.createBoletaPagos),
-
-
+// TODO: for admin
+router.post("/accept-payment-admin", auth.verifyToken,  tipoCuota.acceptPayment),
+router.post("/reject-payment-admin", auth.verifyToken,  tipoCuota.rejectPayment),
 
 
 //Aprobacion de pagos
@@ -328,7 +325,11 @@ router.get("/getMunicipios/:id_departamento", municipioController.listMunicipios
 
 //cuotasUsuario
 // ! ADMIN GET ALL ACCOUNTS 
-router.get("/usuariosCuota",   tipoCuota.usuariosCuota),
+router.get("/payments-by-client/:paymentStatusId",   tipoCuota.usuariosCuota),
+// TODO: has left paymentClients rejected in voucher
+// 1 pending, 2 verification, 3 payed, 4 rejected
+router.get("/payment-voucher/:paymentId", tipoCuota.getVoucherByPaymentId)
+
 //cuentasCorrientesUsuario
 // ! GET OF CLIENT UNITS BY UserProfileId 
 router.get("/cuentasCorrientesUnidad/:id",   tipoCuota.tipoCuotas),

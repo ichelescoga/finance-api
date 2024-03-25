@@ -33,6 +33,12 @@ root user
  docker exec -it finance-api-mysql-1 mysql -u root -p
 ```
 
+## CHANGES IN DATABASE
+
+PAGO
+ALTER TABLE FinanceApp.PAGO ADD CONSTRAINT PAGO_BOLETA_PAGO_FK FOREIGN KEY (Id_boleta_pago) REFERENCES FinanceApp.BOLETA_PAGO(Id_boleta_pago);
+
+
 
 -- MySQL Workbench Forward Engineering
 
